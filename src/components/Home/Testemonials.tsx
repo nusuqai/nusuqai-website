@@ -41,26 +41,69 @@ const testimonials = [
 export default function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
+  const [isMobile, setIsMobile] = useState(false);
 
   const DURATION = 5000;
+  const SWIPE_THRESHOLD = 50;
 
   useEffect(() => {
-    if (isPaused) return;
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isPaused || isDragging) return;
 
     const interval = setInterval(() => {
+      setDirection(1);
       setCurrentIndex((prev) => (prev + 1) % testimonials.length);
     }, DURATION);
 
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isPaused, isDragging]);
 
   const handleDotClick = (index: number) => {
+    const current = currentIndex;
+    if (index > current) {
+      setDirection(1);
+    } else if (index < current) {
+      setDirection(-1);
+    }
     setCurrentIndex(index);
+  };
+
+  const handleDragEnd = (event: any, info: any) => {
+    setIsDragging(false);
+    const offset = info.offset.x;
+    const velocity = info.velocity.x;
+
+    // If dragged more than threshold or has significant velocity
+    if (Math.abs(offset) > SWIPE_THRESHOLD || Math.abs(velocity) > 500) {
+      if (offset > 0) {
+        // Swiped right - go to previous
+        setDirection(-1);
+        setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+      } else {
+        // Swiped left - go to next
+        setDirection(1);
+        setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+      }
+    }
   };
 
   const getVisibleTestimonials = () => {
     const visible = [];
-    for (let i = 0; i < 3; i++) {
+    const count = isMobile ? 1 : 3;
+    
+    for (let i = 0; i < count; i++) {
       const index = (currentIndex + i) % testimonials.length;
       visible.push({ 
         ...testimonials[index], 
@@ -99,32 +142,38 @@ export default function TestimonialsSection() {
         </motion.div>
 
         {/* Testimonials Grid */}
-        <div 
+        <motion.div 
           className="relative mb-12 overflow-hidden"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragStart={() => setIsDragging(true)}
+          onDragEnd={handleDragEnd}
         >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative py-5">
-            <AnimatePresence mode="popLayout" initial={false}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative py-6 pointer-events-none">
+            <AnimatePresence mode="popLayout" initial={false} custom={direction}>
               {visibleTestimonials.map((testimonial) => (
                 <motion.div
                   key={testimonial.uniqueKey}
                   layout
-                  initial={{ x: 400, opacity: 0 }}
+                  custom={direction}
+                  initial={{ x: direction * 400, opacity: 0 }}
                   animate={{ 
                     x: 0, 
-                    opacity: testimonial.position === 1 ? 1 : 0.7,
-                    scale: testimonial.position === 1 ? 1 : 0.95,
+                    opacity: isMobile ? 1 : (testimonial.position === 1 ? 1 : 0.7),
+                    scale: isMobile ? 1 : (testimonial.position === 1 ? 1 : 0.95),
                   }}
-                  exit={{ x: -400, opacity: 0 }}
+                  exit={{ x: direction * -400, opacity: 0 }}
                   transition={{
                     x: { type: "spring", stiffness: 300, damping: 30 },
-                    opacity: { duration: 0.4 },
-                    scale: { duration: 0.4 }
+                    opacity: { duration: 0.3 },
+                    scale: { duration: 0.3 }
                   }}
                   className="flex"
                 >
-                  <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow flex flex-col w-full border border-gray-100">
+                  <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow flex flex-col w-full border border-gray-100 pointer-events-auto cursor-pointer">
                     {/* Quote Text */}
                     <p className="text-[#64748B] leading-relaxed mb-6 flex-1 text-sm">
                       {testimonial.text}
@@ -161,7 +210,7 @@ export default function TestimonialsSection() {
               ))}
             </AnimatePresence>
           </div>
-        </div>
+        </motion.div>
 
         {/* Progress Indicators */}
         <div className="flex justify-center gap-2">

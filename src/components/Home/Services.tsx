@@ -95,7 +95,7 @@ export function ServicesSection() {
   };
 
   return (
-    <section className="py-20 bg-white relative overflow-hidden" id="services">
+    <section className="pt-20 bg-white relative overflow-hidden" id="services">
       {/* Background gradient orbs */}
       <div className="absolute top-20 left-10 w-96 h-96 bg-[#00E0FF]/5 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#00D4C2]/5 rounded-full blur-3xl" />

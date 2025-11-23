@@ -49,7 +49,7 @@ export default function IntegrationsShowcase() {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <section className=" bg-white">
+    <section id="usecases" className=" bg-white">
       <div className="max-w-7xl mt-10 mx-auto px-6 lg:px-8">
         
         {/* Header */}
