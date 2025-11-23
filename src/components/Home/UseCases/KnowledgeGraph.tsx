@@ -47,7 +47,7 @@ export default function MCPArchitectureAnim() {
   }, []);
 
   return (
-    <div className="relative w-full h-[32rem] bg-[#F8FAFF] rounded-xl overflow-hidden border border-slate-200 font-sans select-none">
+    <div className="relative w-full h-[28rem] bg-[#F8FAFF] rounded-xl overflow-hidden border border-slate-200 font-sans select-none">
       
       {/* --- SVG Layer for Connections --- */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
@@ -180,7 +180,7 @@ export default function MCPArchitectureAnim() {
       })}
 
       {/* --- Labels / Context --- */}
-      <div className="absolute bottom-6 w-full text-center">
+      <div className="absolute bottom-5 w-full text-center">
         <motion.div 
             key={isUnified ? "unified" : "chaos"}
             initial={{ opacity: 0, y: 10 }}
@@ -188,10 +188,10 @@ export default function MCPArchitectureAnim() {
             exit={{ opacity: 0, y: -10 }}
             className="inline-block"
         >
-            <h3 className="text-lg font-semibold text-[#0F1E3D]">
+            <h3 className="text-m font-semibold text-[#0F1E3D]">
                 {isUnified ? "Unified MCP Interface" : "Fragmented Integrations"}
             </h3>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-[0.7rem] text-slate-500 mt-1">
                 {isUnified 
                     ? "One protocol connecting all knowledge sources." 
                     : "Multiple custom, brittle API connections."}

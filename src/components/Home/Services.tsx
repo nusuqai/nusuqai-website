@@ -1,5 +1,8 @@
 'use client';
-import { Palette, Code, Smartphone, BarChart3, Zap, Globe, Bot, Cable, BotMessageSquare } from "lucide-react";
+import { 
+  Palette, Code, Smartphone, BarChart3, Zap, Globe, Bot, 
+  Cable, BotMessageSquare, ArrowUpRight 
+} from "lucide-react";
 import { useState, useRef, MouseEvent } from "react";
 import { motion } from "motion/react";
 
@@ -20,38 +23,44 @@ const services = [
     icon: Cable,
     title: "MCP Integration",
     description: "Integrate the Model Context Protocol into your applications for seamless data access",
-    color: "#00E0FF",
+    color: "#00D4C2",
   },
   {
     icon: Smartphone,
     title: "Mobile Apps",
     description: "Design and develop user-friendly mobile applications for iOS and Android",
-    color: "#00D4C2",
+    color: "#00E0FF",
   },
   {
     icon: Zap,
     title: "AI Integration",
     description: "Leverage ChatGPT and AI to automate and enhance your applications",
-    color: "#00E0FF",
+    color: "#00D4C2",
   },
   {
     icon: Bot,
     title: "Chatbots",
     description: "Develop intelligent chatbots to improve customer engagement and support",
-    color: "#00D4C2",
+    color: "#00E0FF",
   },
 ];
 
 export function ServicesSection() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+  
+  // Use Refs for drag logic to prevent re-renders during rapid mouse movement
+  const isDown = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+  
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  // 3D Card Effect
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>, index: number) => {
-    if (isDragging) return;
+    // If we are dragging the carousel, don't do the 3D tilt
+    if (isDragging || isDown.current) return;
     
     const card = cardRefs.current[index];
     if (!card) return;
@@ -75,23 +84,50 @@ export function ServicesSection() {
     card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
   };
 
+  // Drag Scroll Logic
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     if (!scrollContainerRef.current) return;
-    setIsDragging(true);
-    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
-    setScrollLeft(scrollContainerRef.current.scrollLeft);
+    isDown.current = true;
+    startX.current = e.pageX - scrollContainerRef.current.offsetLeft;
+    scrollLeft.current = scrollContainerRef.current.scrollLeft;
   };
 
   const handleMouseMoveScroll = (e: MouseEvent<HTMLDivElement>) => {
-    if (!isDragging || !scrollContainerRef.current) return;
+    if (!isDown.current || !scrollContainerRef.current) return;
     e.preventDefault();
+    
     const x = e.pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+    const walk = (x - startX.current) * 2;
+    
+    // Only set isDragging to true if we've moved more than 5 pixels
+    // This allows clicks to still work if the user's hand shakes slightly
+    if (Math.abs(x - startX.current) > 5) {
+      setIsDragging(true);
+    }
+    
+    scrollContainerRef.current.scrollLeft = scrollLeft.current - walk;
   };
 
   const handleMouseUp = () => {
-    setIsDragging(false);
+    isDown.current = false;
+    // Small timeout to ensure the click event has time to fire/check 
+    // before we reset the dragging state
+    setTimeout(() => {
+      setIsDragging(false);
+    }, 50);
+  };
+
+  // Navigation Logic
+  const handleCardClick = (e: MouseEvent<HTMLDivElement>) => {
+    // Prevent navigation if the user was just dragging/swiping
+    if (isDragging) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    
+    // Navigate to contact section
+    window.location.href = "#contact";
   };
 
   return (
@@ -132,54 +168,93 @@ export function ServicesSection() {
         >
           {services.map((service, index) => {
             const Icon = service.icon;
+            const isHovered = hoveredCard === index;
+
             return (
               <motion.div
                 key={index}
                 ref={(el) => {
-                cardRefs.current[index] = el;
+                  cardRefs.current[index] = el;
                 }}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                onMouseMove={(e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => handleMouseMove(e, index)}
+                onMouseMove={(e: MouseEvent<HTMLDivElement>) => handleMouseMove(e, index)}
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => {
                   handleMouseLeave(index);
                   setHoveredCard(null);
                 }}
-                className="flex-shrink-0 w-[280px] relative"
+                onClick={handleCardClick}
+                className="flex-shrink-0 w-[280px] relative cursor-pointer group"
                 style={{
                   transition: "transform 0.1s ease-out",
                   transformStyle: "preserve-3d",
                 }}
               >
-                <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-md hover:shadow-md transition-shadow h-64 flex flex-col relative overflow-hidden">
-                  {/* Gradient overlay on hover */}
+                <div className="bg-white rounded-xl border border-gray-100 shadow-md hover:shadow-xl transition-all duration-300 h-72 relative overflow-hidden">
+                  
+                  {/* Solid Background Fill Transition */}
                   <div
-                    className="absolute inset-0 opacity-0 transition-opacity duration-300"
+                    className="absolute inset-0 transition-opacity duration-300 ease-in-out"
                     style={{
-                      background: `linear-gradient(135deg, ${service.color}15 0%, transparent 100%)`,
-                      opacity: hoveredCard === index ? 0.5 : 0,
+                      backgroundColor: service.color,
+                      opacity: isHovered ? 1 : 0,
                     }}
                   />
 
-                  <div className="relative z-10">
-                    <div
-                      className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 transition-all duration-300"
-                      style={{
-                        backgroundColor: hoveredCard === index ? service.color : `${service.color}15`,
-                      }}
+                  {/* Content Wrapper */}
+                  <div className="relative z-10 h-full p-6 flex flex-col">
+                    
+                    {/* Icon - Moves up and out */}
+                    <div 
+                      className={`mb-4 transition-all duration-300 transform ${
+                        isHovered ? "-translate-y-16 opacity-0" : "translate-y-0 opacity-100"
+                      }`}
                     >
-                      <Icon
-                        className="w-8 h-8 transition-colors duration-300"
-                        style={{
-                          color: hoveredCard === index ? "white" : service.color,
-                        }}
-                      />
+                        <div 
+                          className="w-14 h-14 rounded-lg flex items-center justify-center transition-colors duration-300"
+                          style={{ backgroundColor: `${service.color}15` }}
+                        >
+                          <Icon
+                            className="w-7 h-7 transition-colors duration-300"
+                            style={{ color: service.color }}
+                          />
+                        </div>
                     </div>
-                    <h3 className="text-[#0F1E3D] mb-3 text-xl">{service.title}</h3>
-                    <p className="text-[#94A3B8] flex-1 leading-relaxed">{service.description}</p>
+
+                    {/* Text Content - Moves up to fill space */}
+                    <div 
+                      className={`flex-1 transition-all duration-300 transform ${
+                        isHovered ? "-translate-y-8" : "translate-y-0"
+                      }`}
+                    >
+                        <h3 
+                          className={`mb-3 text-xl transition-all duration-300 ${
+                            isHovered ? "text-white font-bold" : "text-[#0F1E3D] font-semibold"
+                          }`}
+                        >
+                          {service.title}
+                        </h3>
+                        
+                        <p 
+                          className={`leading-relaxed transition-all duration-300 ${
+                            isHovered ? "text-white/90 font-medium" : "text-[#94A3B8] font-normal"
+                          }`}
+                        >
+                          {service.description}
+                        </p>
+                    </div>
+
+                    {/* Arrow - Appears bottom right */}
+                    <ArrowUpRight 
+                      className={`absolute bottom-5 right-5 w-6 h-6 text-white transition-all duration-300 ${
+                        isHovered 
+                          ? "opacity-100 translate-y-0 scale-100" 
+                          : "opacity-0 translate-y-4 scale-75"
+                      }`}
+                    />
                   </div>
                 </div>
               </motion.div>

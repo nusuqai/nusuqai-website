@@ -2,26 +2,24 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { 
-  Terminal, 
   Share2, 
   Database, 
-  ChevronRight, 
   Bot 
 } from "lucide-react";
 
+// Assuming these are in the same directory structure as before
 import KnowledgeGraphAnim from "./KnowledgeGraph";
 import DatabaseActionAnim from "./DatabaseAction";
 import SupportAutomationAnim from "./CustomerSupport";
 
 const useCases = [
-
   {
     id: "knowledge",
     icon: Share2,
     title: "Unified MCP Interface",
     subtitle: "Connect all your data",
     color: "#00D4C2",
-    description: "Instead of building separate connectors for each AI model, the Model Context Protocol (MCP) provides a unified interface to connect your knowledge sources. This allows any LLM to securely access your databases, file systems, and APIs through a standard protocol, which makes it more efficient to integrate and scale.",
+    description: "Instead of building separate connectors for each AI model, the Model Context Protocol (MCP) provides a unified interface to connect your knowledge sources. This allows any LLM to securely access your databases, file systems, and APIs through a standard protocol.",
     component: KnowledgeGraphAnim
   },
   {
@@ -33,7 +31,6 @@ const useCases = [
     description: "Move beyond passive chat. Setup MCP servers that can listen to database streams and trigger API actions safely, turning your LLM into an active participant in your infrastructure.",
     component: DatabaseActionAnim
   },
-
   {
     id: "support",
     icon: Bot,
@@ -45,27 +42,28 @@ const useCases = [
   }
 ];
 
-export default function IntegrationsShowcase() {
+export default function IntegrationsShowcaseHorizontal() {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <section id="usecases" className=" bg-white">
-      <div className="max-w-7xl mt-10 mx-auto px-6 lg:px-8">
+    <section id="usecases" className="bg-white py-16">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
         
         {/* Header */}
-        <div className="text-center mt-5 mb-16 max-w-3xl mx-auto">
+        <div className="text-center mb-12 max-w-3xl mx-auto">
           <h2 className="text-3xl lg:text-4xl text-[#0F1E3D] mb-4 tracking-tight font-poppins">
             Built on the Model Context Protocol
           </h2>
           <p className="text-lg text-slate-500 font-inter">
-            We don't just build chatbots. We build interoperable systems that securely connect your AI models to your actual data and tools using standard MCP interfaces.
+            We don't just build chatbots. We build interoperable systems that securely connect your AI models to your actual data.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-12 items-start">
+        {/* Main Container */}
+        <div className="flex flex-col gap-8">
           
-          {/* Left: Interactive Tabs */}
-          <div className="lg:col-span-5 flex flex-col gap-3">
+          {/* TOP: Horizontal Navigation Tabs */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {useCases.map((useCase, index) => {
               const isActive = activeTab === index;
               const Icon = useCase.icon;
@@ -74,94 +72,98 @@ export default function IntegrationsShowcase() {
                 <button
                   key={useCase.id}
                   onClick={() => setActiveTab(index)}
-                  className={`group relative text-left p-5 rounded-2xl transition-all duration-300 border overflow-hidden ${
+                  className={`group relative flex flex-col items-center justify-center p-6 rounded-2xl transition-all duration-300 border ${
                     isActive 
-                      ? "bg-white border-transparent shadow-xl shadow-[#0F1E3D]/5" 
+                      ? "bg-white border-transparent shadow-lg shadow-[#0F1E3D]/5" 
                       : "bg-transparent border-slate-100 hover:bg-[#F8FAFF] hover:border-slate-200"
                   }`}
                 >
-                  {/* Active Indicator Bar */}
+                  {/* Active Indicator Bar (Bottom) */}
                   {isActive && (
                     <motion.div
                       layoutId="active-indicator"
-                      className="absolute left-0 top-6 bottom-6 w-1 rounded-r-full"
+                      className="absolute bottom-0 left-0 right-0 h-1 rounded-b-2xl"
                       style={{ backgroundColor: useCase.color }}
                     />
                   )}
 
-                  <div className="flex items-start gap-4">
-                    <div 
-                      className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors duration-300`}
-                      style={{ 
-                        backgroundColor: isActive ? useCase.color : "#F1F5F9",
-                        color: isActive ? "#FFFFFF" : "#94A3B8"
-                      }}
-                    >
-                      <Icon className="w-6 h-6" />
-                    </div>
-                    
-                    <div className="flex-1">
-                      <h3 className={`font-semibold text-lg mb-0.5 transition-colors font-poppins ${
-                        isActive ? "text-[#0F1E3D]" : "text-slate-600"
-                      }`}>
-                        {useCase.title}
-                      </h3>
-                      <p className="text-sm font-medium font-inter transition-colors"
+                  <div 
+                    className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors duration-300 mb-4`}
+                    style={{ 
+                      backgroundColor: isActive ? useCase.color : "#F1F5F9",
+                      color: isActive ? "#FFFFFF" : "#94A3B8"
+                    }}
+                  >
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  
+                  <div className="text-center">
+                    <h3 className={`font-semibold text-lg mb-1 transition-colors font-poppins ${
+                      isActive ? "text-[#0F1E3D]" : "text-slate-600"
+                    }`}>
+                      {useCase.title}
+                    </h3>
+                    <p className="text-sm font-medium font-inter transition-colors"
                          style={{ color: isActive ? useCase.color : "#94A3B8" }}>
-                        {useCase.subtitle}
-                      </p>
-                    </div>
-
-                    <ChevronRight className={`w-5 h-5 mt-1 transition-all duration-300 ${
-                      isActive 
-                        ? "opacity-100 translate-x-0" 
-                        : "opacity-0 -translate-x-2"
-                    }`} style={{ color: useCase.color }} />
+                      {useCase.subtitle}
+                    </p>
                   </div>
                 </button>
               );
             })}
           </div>
 
-          {/* Right: Display Area */}
-          <div className="lg:col-span-7 p-2 relative lg:sticky lg:top-8">
-            <div className="bg-white rounded-[20px] p-8 h-full shadow-sm min-h-[500px] flex flex-col">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeTab}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex flex-col h-full"
-                >
-                  {/* The Dynamic Animation Component */}  
-                  <div className="mb-8 flex-1 flex items-center justify-center">
-                    {(() => {
-                      const ActiveComponent = useCases[activeTab].component;
-                      return <ActiveComponent />;
-                    })()}
+          {/* BOTTOM: Split Content Area (Animation Left, Text Right) */}
+          <div className="bg-white rounded-[20px] border border-slate-100 p-8 shadow-sm min-h-[450px] overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="grid lg:grid-cols-2 gap-12 h-full items-center"
+              >
+                
+                {/* Left Column: Animation */}
+                <div className="w-full h-[350px] lg:h-[400px] bg-slate-50/50 rounded-xl flex items-center justify-center border border-slate-100/50">
+                  {(() => {
+                    const ActiveComponent = useCases[activeTab].component;
+                    return <ActiveComponent />;
+                  })()}
+                </div>
+
+                {/* Right Column: Text Details */}
+                <div className="flex flex-col justify-center space-y-6">
+                  <div className="flex items-center gap-2">
+                    <span 
+                      className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#F8FAFF]"
+                      style={{ color: useCases[activeTab].color }}
+                    >
+                      MCP Protocol
+                    </span>
                   </div>
 
-                  {/* Contextual Description */}
-                  <div className="space-y-4 border-t border-slate-100 pt-6">
-                    <div className="flex items-center gap-2">
-                      <span 
-                        className="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-[#F8FAFF] text-[#94A3B8]"
-                      >
-                        MCP Use Case
-                      </span>
-                      <h3 className="text-xl font-bold font-poppins text-[#0F1E3D]">
-                        {useCases[activeTab].title}
-                      </h3>
-                    </div>
-                    <p className="text-slate-500 leading-relaxed text-base font-inter">
+                  <div>
+                    <h3 className="text-2xl lg:text-3xl font-bold font-poppins text-[#0F1E3D] mb-4">
+                      {useCases[activeTab].title}
+                    </h3>
+                    <p className="text-slate-500 text-lg leading-relaxed font-inter">
                       {useCases[activeTab].description}
                     </p>
                   </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
+
+                  {/* Optional: Call to action or specific metric per tab */}
+                  <div className="pt-4 border-t border-slate-100">
+                    <button className="text-sm font-semibold flex items-center gap-2 hover:gap-3 transition-all"
+                        style={{ color: useCases[activeTab].color }}>
+                      Explore Integration <span>→</span>
+                    </button>
+                  </div>
+                </div>
+
+              </motion.div>
+            </AnimatePresence>
           </div>
 
         </div>

@@ -31,16 +31,17 @@ export default function Navbar() {
       <div className="flex items-center justify-between h-20 px-4 sm:px-6 lg:px-8">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="relative inline-block">
-              <Image
-                src="/logo.png"
-                alt="NUSUQAI Logo"
-                width={1074} 
-                height={313}
-                className="h-10 w-auto"
-                priority
-              />
-            </Link>
+        <Link href="/" className="relative inline-block max-w-[160px] sm:max-w-[200px]">
+          <Image
+            src="/logo.png"
+            alt="NUSUQAI Logo"
+            width={1074}
+            height={313}
+            className="w-full h-auto"
+            priority
+          />
+        </Link>
+
           </div>
 
           {/* Desktop Navigation Links */}
