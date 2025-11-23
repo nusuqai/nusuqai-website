@@ -42,7 +42,7 @@ export default function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  const DURATION = 5000; // 5 seconds per testimonial
+  const DURATION = 5000;
 
   useEffect(() => {
     if (isPaused) return;
@@ -54,12 +54,19 @@ export default function TestimonialsSection() {
     return () => clearInterval(interval);
   }, [isPaused]);
 
-  // Get three testimonials to display
+  const handleDotClick = (index: number) => {
+    setCurrentIndex(index);
+  };
+
   const getVisibleTestimonials = () => {
     const visible = [];
     for (let i = 0; i < 3; i++) {
       const index = (currentIndex + i) % testimonials.length;
-      visible.push({ ...testimonials[index], position: i });
+      visible.push({ 
+        ...testimonials[index], 
+        position: i,
+        uniqueKey: `${index}-${currentIndex}-${i}`
+      });
     }
     return visible;
   };
@@ -67,7 +74,15 @@ export default function TestimonialsSection() {
   const visibleTestimonials = getVisibleTestimonials();
 
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section className="py-20 relative overflow-hidde">
+      {/* Dotted pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `radial-gradient(circle at 2px 2px, #0F1E3D 1px, transparent 1px)`,
+          backgroundSize: "32px 32px",
+        }}
+      />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Header */}
@@ -85,26 +100,31 @@ export default function TestimonialsSection() {
 
         {/* Testimonials Grid */}
         <div 
-          className="relative h-[350px] mb-12"
+          className="relative mb-12 overflow-hidden"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
-            <AnimatePresence mode="popLayout">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative py-5">
+            <AnimatePresence mode="popLayout" initial={false}>
               {visibleTestimonials.map((testimonial) => (
                 <motion.div
-                  key={testimonial.id}
-                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  key={testimonial.uniqueKey}
+                  layout
+                  initial={{ x: 400, opacity: 0 }}
                   animate={{ 
-                    opacity: testimonial.position === 1 ? 1 : 0.6,
+                    x: 0, 
+                    opacity: testimonial.position === 1 ? 1 : 0.7,
                     scale: testimonial.position === 1 ? 1 : 0.95,
-                    y: 0 
                   }}
-                  exit={{ opacity: 0, scale: 0.9, y: -20 }}
-                  transition={{ duration: 0.5 }}
+                  exit={{ x: -400, opacity: 0 }}
+                  transition={{
+                    x: { type: "spring", stiffness: 300, damping: 30 },
+                    opacity: { duration: 0.4 },
+                    scale: { duration: 0.4 }
+                  }}
                   className="flex"
                 >
-                  <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow flex flex-col h-full border border-gray-100">
+                  <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow flex flex-col w-full border border-gray-100">
                     {/* Quote Text */}
                     <p className="text-[#64748B] leading-relaxed mb-6 flex-1 text-sm">
                       {testimonial.text}
@@ -148,7 +168,7 @@ export default function TestimonialsSection() {
           {testimonials.map((_, index) => (
             <button
               key={index}
-              onClick={() => setCurrentIndex(index)}
+              onClick={() => handleDotClick(index)}
               className={`h-2 rounded-full transition-all duration-300 ${
                 index === currentIndex
                   ? 'w-8 bg-gradient-to-r from-[#00E0FF] to-[#00D4C2]'

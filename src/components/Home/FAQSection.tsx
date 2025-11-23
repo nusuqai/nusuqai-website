@@ -42,7 +42,7 @@ function FAQSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#0F1E3D] mb-6">
+            <h2 className="text-4xl lg:text-5xl text-[#0F1E3D] mb-6">
               Frequently Asked Questions
             </h2>
             <p className="text-lg text-[#94A3B8] mb-8">

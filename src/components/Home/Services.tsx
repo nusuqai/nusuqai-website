@@ -1,15 +1,9 @@
 'use client';
-import { Palette, Code, Smartphone, BarChart3, Zap, Globe } from "lucide-react";
+import { Palette, Code, Smartphone, BarChart3, Zap, Globe, Bot, Cable, BotMessageSquare } from "lucide-react";
 import { useState, useRef, MouseEvent } from "react";
 import { motion } from "motion/react";
 
 const services = [
-  {
-    icon: Palette,
-    title: "Product Design",
-    description: "Creating intuitive and engaging user experiences that delight customers",
-    color: "#00E0FF",
-  },
   {
     icon: Code,
     title: "Web Development",
@@ -17,15 +11,21 @@ const services = [
     color: "#00D4C2",
   },
   {
-    icon: Smartphone,
-    title: "Mobile Apps",
-    description: "Native and cross-platform mobile solutions for iOS and Android",
+    icon: BotMessageSquare,
+    title: "RAG Systems",
+    description: "Retrieval-Augmented Generation systems to enhance LLM responses with real-time data",
     color: "#00E0FF",
   },
   {
-    icon: BarChart3,
-    title: "Data Analytics",
-    description: "Transform your data into actionable insights for business growth",
+    icon: Cable,
+    title: "MCP Integration",
+    description: "Integrate the Model Context Protocol into your applications for seamless data access",
+    color: "#00E0FF",
+  },
+  {
+    icon: Smartphone,
+    title: "Mobile Apps",
+    description: "Design and develop user-friendly mobile applications for iOS and Android",
     color: "#00D4C2",
   },
   {
@@ -35,9 +35,9 @@ const services = [
     color: "#00E0FF",
   },
   {
-    icon: Globe,
-    title: "Cloud Solutions",
-    description: "Secure and scalable cloud infrastructure for your digital products",
+    icon: Bot,
+    title: "Chatbots",
+    description: "Develop intelligent chatbots to improve customer engagement and support",
     color: "#00D4C2",
   },
 ];
@@ -124,7 +124,7 @@ export function ServicesSection() {
           onMouseMove={handleMouseMoveScroll}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
-            className="flex gap-6 justify-start overflow-x-auto pb-8  select-none scrollbar-hide"
+          className="flex gap-6 justify-start overflow-x-auto overflow-y-hidden pb-8 select-none scrollbar-hide"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
