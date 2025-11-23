@@ -173,7 +173,7 @@ export default function TestimonialsSection() {
                   }}
                   className="flex"
                 >
-                  <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow flex flex-col w-full border border-gray-100 pointer-events-auto cursor-pointer">
+                  <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow flex flex-col w-full border border-gray-100 pointer-events-auto cursor-pointer min-h-[300px] md:min-h-0">
                     {/* Quote Text */}
                     <p className="text-[#64748B] leading-relaxed mb-6 flex-1 text-sm">
                       {testimonial.text}

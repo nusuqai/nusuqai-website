@@ -7,7 +7,7 @@ import PortfolioShowcase from "@/components/Home/Portfolio";
 import TestimonialsSection from "@/components/Home/Testemonials";
 export default function Home() {
   return (
-    <main>
+    <main className="overflow-x-hidden">
       <HeroSection />
       <ServicesSection />
       <PortfolioShowcase />

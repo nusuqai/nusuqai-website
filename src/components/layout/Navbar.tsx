@@ -8,7 +8,7 @@ interface ContainerProps {
   children: ReactNode;
 }
 const Container: React.FC<ContainerProps> = ({ children }) => (
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div className="max-w-7xl mx-auto">
     {children}
   </div>
 );
@@ -27,7 +27,7 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
       <Container>
-        <div className="flex items-center justify-between h-20">
+      <div className="flex items-center justify-between h-20 px-4 sm:px-6 lg:px-8">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="relative inline-block">
@@ -103,7 +103,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="lg:hidden py-4 border-t border-gray-100">
+        <div className="lg:hidden py-4 px-4 sm:px-6 lg:px-8 border-t border-gray-100">
             <div className="flex flex-col gap-4">
               <Link 
                 href="#services" 
