@@ -3,6 +3,7 @@
 import { ReactNode, SetStateAction, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 interface ContainerProps {
   children: ReactNode;
@@ -31,12 +32,14 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="relative inline-block">
-              <span className="text-xl font-bold text-[#0F1E3D] tracking-tight" style={{ fontFamily: 'Raleway, sans-serif', fontWeight: 800 }}>
-                NUSUQAI
-              </span>
-              <span className="absolute bottom-0.5 font-bold text-[#0F1E3D]" style={{ fontSize:'0.6rem', fontFamily: 'Raleway, sans-serif' }}>
-                .COM
-              </span>
+              <Image
+                src="/logo.png"
+                alt="NUSUQAI Logo"
+                width={1074} 
+                height={313}
+                className="h-10 w-auto"
+                priority
+              />
             </Link>
           </div>
 
