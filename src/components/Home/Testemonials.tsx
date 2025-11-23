@@ -117,7 +117,7 @@ export default function TestimonialsSection() {
   const visibleTestimonials = getVisibleTestimonials();
 
   return (
-    <section id="about" className="py-20 relative overflow-hidde">
+    <section id="about" className="py-20 relative overflow-hidde  bg-gray-50">
       {/* Dotted pattern */}
       <div
         className="absolute inset-0 opacity-[0.03]"

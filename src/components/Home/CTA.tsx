@@ -39,7 +39,7 @@ export function CTA() {
               Ready to Transform Your Business with AI?
             </h2>
             <p className="text-xl text-gray-600 mb-8">
-              Schedule a free consultation with our AI integration experts. We'll assess your 
+              Schedule a free consultation with us. We'll assess your 
               needs and show you how AI can work seamlessly with your existing infrastructure.
             </p>
 

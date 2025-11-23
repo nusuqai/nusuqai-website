@@ -5,30 +5,21 @@ import { motion, AnimatePresence } from "motion/react";
 const projects = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop",
-    title: "Document Management Application Helps Users Store, Organize, And Access Files Securely In One Place.",
-    description: "We delivered a complete web solution through end-to-end development of AWJ Murasalah. The system was architected from the ground up to support secure document workflows, cloud storage, and dynamic approval routes.",
-    client: "AWJ Holding Co.",
-    features: "24 Custom Feature",
-    team: "12+ Team Members"
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
+    title: "Intelligent E-Commerce Assistant Leverages MCP To Connect Salla APIs For Real-Time Store Management And Conversational Shopping.",
+    description: "Revolutionizing the merchant and shopper experience by integrating Large Language Models directly with the Salla ecosystem. Using the Model Context Protocol (MCP), this intelligent agent bypasses traditional UI, allowing users to query inventory, process orders, and fetch real-time analytics using natural language.",
+    client: "Internal Prototype",
+    features: "MCP Integration",
+    team: "Demo"
   },
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
-    title: "E-Commerce Platform Revolutionizes Online Shopping Experience With AI-Powered Recommendations.",
-    description: "Built a cutting-edge e-commerce platform featuring AI-driven product recommendations, real-time inventory management, and seamless payment integration.",
-    client: "RetailTech Solutions",
-    features: "18 Custom Feature",
-    team: "8+ Team Members"
-  },
-  {
-    id: 3,
-    image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=600&fit=crop",
-    title: "Healthcare Management System Streamlines Patient Care And Medical Records Across Multiple Facilities.",
-    description: "Developed an integrated healthcare management system that connects hospitals, clinics, and pharmacies in a unified network.",
-    client: "MediCare Network",
-    features: "32 Custom Feature",
-    team: "15+ Team Members"
+    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop",
+    title: "Dynamic Voucher Management System Enables Businesses To Generate Secure Coupons And Automate Redemption For Seamless Loyalty Campaigns",
+    description: "We delivered a robust promotional infrastructure that manages the entire lifecycle of digital coupons. The system handles high-volume code generation with complex validation logic to prevent fraud, ensuring that vouchers are redeemed securely and only within their specific validity parameters.",
+    client: "Internal Prototype",
+    features: "MCP Integration",
+    team: "Demo"
   }
 ];
 
@@ -49,7 +40,7 @@ export default function PortfolioShowcase() {
   const currentProject = projects[currentIndex];
 
   return (
-    <section className="py-20 bg-white relative overflow-hidden" id="portfolio">
+    <section className="py-20  bg-gray-50 relative overflow-hidden " id="portfolio">
       {/* Injecting a dynamic style tag for the keyframe. 
         Alternatively, add this to your global CSS or Tailwind config.
       */}

@@ -134,7 +134,6 @@ export default function KnowledgeGraphAnim() {
         )}
       </AnimatePresence>
 
-      {/* 3. The Data Sources */}
       {SOURCES.map((node) => {
         const x = isUnified ? node.unifiedPos.x : node.chaosPos.x;
         const y = isUnified ? node.unifiedPos.y : node.chaosPos.y;

@@ -5,20 +5,20 @@ import { ChevronDown, HelpCircle } from "lucide-react";
 
 const faqs = [
   {
-    question: "How does App help people in problems?",
-    answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Volutpat, tempor condimentum commodo tincidunt sit dictumst. Eu placerat to a arcu at sem vitae eros, purus nonprofit organizations for all, Lorem ipsum dolor sit amet, to the consectr adipiscing elit. Volutpat to the full tempor to the condimentum vitae vel purus.",
+    question: "What exactly is MCP and why should my business care?",
+    answer: "MCP (Model Context Protocol) is a universal standard that lets AI models access tools, data, and workflows in a structured, secure way. In simpler terms: it removes the chaos from AI integrations and makes everything consistent, scalable, and easier to maintain.",
   },
   {
-    question: "What happens if I go over my subscription limits?",
-    answer: "When you reach your subscription limits, we'll notify you via email. You'll have the option to upgrade your plan, purchase additional credits, or continue with your current plan and wait until the next billing cycle.",
+    question: "Do we need technical knowledge to use MCP integrations?",
+    answer: "Not at all. We handle all the technical setup, model routing, MCP server configuration, and tool definitions. You just tell us what problems you want solved, and we make the AI handle them.",
   },
   {
-    question: "Why we are so confident about the future?",
-    answer: "Our confidence stems from our dedicated team, innovative technology, and strong customer satisfaction. We continuously invest in research and development to stay ahead of market trends and deliver cutting-edge solutions.",
+    question: "Can you integrate MCP with our existing tools or internal APIs?",
+    answer: "Yes. MCP is designed for modularity. We can connect your internal APIs, databases, authentication systems, and third-party tools to create a unified AI-powered interface that works across your entire software ecosystem.",
   },
   {
-    question: "Where's the funding goes?",
-    answer: "Our funding is strategically allocated across product development, infrastructure improvements, customer support expansion, and research initiatives. We maintain transparency in how we use resources to ensure sustainable growth.",
+    question: "Is our data safe when using your AI systems?",
+    answer: "Absolutely. MCP forces strict boundaries on what the AI can access. We implement access controls, sandboxing, encryption, and on-premise deployment options to guarantee your data stays secure and under your control.",
   },
 ];
 
@@ -46,7 +46,7 @@ function FAQSection() {
               Frequently Asked Questions
             </h2>
             <p className="text-lg text-[#94A3B8] mb-8">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit olutpat tempor.
+              Have questions about our AI solutions? Here are some common queries we receive from businesses like yours.
             </p>
           </motion.div>
 
