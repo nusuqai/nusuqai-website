@@ -125,9 +125,6 @@ export function ServicesSection() {
       e.stopPropagation();
       return;
     }
-    
-    // Navigate to contact section
-    window.location.href = "#contact";
   };
 
   return (
