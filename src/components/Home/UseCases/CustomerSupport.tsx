@@ -121,7 +121,7 @@ export default function SupportAutomationAnim() {
 
             {/* Perfectly aligned icon */}
             <foreignObject
-            x={`${node.x - 3.5}%`}
+            x={`${node.x - 3.9}%`}
             y={`${node.y - 6}%`}
             width="50"
             height="50"

@@ -49,7 +49,7 @@ export default function PortfolioShowcase() {
   const currentProject = projects[currentIndex];
 
   return (
-    <section className="py-20 bg-white relative overflow-hidden">
+    <section className="py-20 bg-white relative overflow-hidden" id="portfolio">
       {/* Injecting a dynamic style tag for the keyframe. 
         Alternatively, add this to your global CSS or Tailwind config.
       */}

@@ -29,7 +29,7 @@ const useCases = [
     icon: Database,
     title: "Read/Write Pipelines",
     subtitle: "From query to action",
-    color: "#00E0FF", // Primary Cyan
+    color: "#00E0FF", 
     description: "Move beyond passive chat. Setup MCP servers that can listen to database streams and trigger API actions safely, turning your LLM into an active participant in your infrastructure.",
     component: DatabaseActionAnim
   },
@@ -39,7 +39,7 @@ const useCases = [
     icon: Bot,
     title: "AI Customer Support",
     subtitle: "Service Automation",
-    color: "#00D4C2", // Accent Teal
+    color: "#00D4C2",
     description: "Instead of generic answers, the bot pulls actual customer history from the CRM and solutions from the Knowledge Base to resolve tickets and trigger workflows automatically.",
     component: SupportAutomationAnim
   }
@@ -50,11 +50,11 @@ export default function IntegrationsShowcase() {
 
   return (
     <section className=" bg-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="max-w-7xl mt-10 mx-auto px-6 lg:px-8">
         
         {/* Header */}
-        <div className="text-center mb-16 max-w-3xl mx-auto">
-          <h2 className="text-3xl lg:text-4xl font-bold text-[#0F1E3D] mb-4 tracking-tight font-poppins">
+        <div className="text-center mt-5 mb-16 max-w-3xl mx-auto">
+          <h2 className="text-3xl lg:text-4xl text-[#0F1E3D] mb-4 tracking-tight font-poppins">
             Built on the Model Context Protocol
           </h2>
           <p className="text-lg text-slate-500 font-inter">
