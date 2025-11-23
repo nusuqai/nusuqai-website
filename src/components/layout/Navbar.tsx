@@ -42,7 +42,7 @@ export default function Navbar() {
                 style={{ 
                   width: '100%', 
                   height: 'auto',
-                  maxWidth: '100%' 
+                  maxWidth: '80%' 
                 }}
                 sizes="(max-width: 640px) 140px, (max-width: 1024px) 180px, 200px"
               />
