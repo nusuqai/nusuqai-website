@@ -27,7 +27,7 @@ export default function PortfolioShowcase() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  const DURATION = 8000; // 8 seconds per project
+  const DURATION = 8000; 
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % projects.length);
@@ -74,12 +74,6 @@ export default function PortfolioShowcase() {
               className="h-1 flex-1 bg-gray-200 rounded-full overflow-hidden cursor-pointer relative"
               onClick={() => setCurrentIndex(index)}
             >
-              {/* LOGIC: 
-                 1. If index < currentIndex: Show full bar (Completed)
-                 2. If index === currentIndex: Render the animating bar
-                 3. If index > currentIndex: Show empty (handled by container bg)
-              */}
-              
               {/* Completed Bars */}
               {index < currentIndex && (
                 <div className="h-full w-full bg-gradient-to-r from-[#00E0FF] to-[#00D4C2]" />
@@ -90,12 +84,9 @@ export default function PortfolioShowcase() {
                 <div
                   className="h-full bg-gradient-to-r from-[#00E0FF] to-[#00D4C2]"
                   style={{
-                    // Simply animate width from 0 to 100
                     animation: `grow-progress ${DURATION}ms linear`,
-                    // Native CSS pause functionality
                     animationPlayState: isPaused ? 'paused' : 'running' 
                   }}
-                  // When CSS animation ends, React triggers this event
                   onAnimationEnd={handleNext} 
                 />
               )}

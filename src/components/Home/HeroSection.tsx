@@ -51,25 +51,34 @@ export function HeroSection() {
           <div className="space-y-8">
             <div className="inline-block">
               <span className="px-4 py-2 bg-[#00E0FF]/10 text-[#0F1E3D] rounded-full">
-                Nearshoring software company
+                AI Integration & MCP Specialists
               </span>
             </div>
 
             <h1 className="text-4xl lg:text-6xl text-[#0F1E3D]">
-              We help global brands develop digital world
+              Seamlessly Connect Your LLMs to Your Infrastructure
             </h1>
 
             <p className="text-lg text-[#94A3B8]">
-              We specialise in delivering end-to-end services and mobile & web applications 
-              for innovation companies around the world
+              Transform isolated chatbots into powerful agents. We specialize in end-to-end AI adoption and MCP architecture to make your systems talk to each other.
             </p>
 
             <div className="flex flex-wrap gap-4 items-center">
-            <button className="bg-[var(--nusuqai-teal)] text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity">
+            <button className="bg-[var(--nusuqai-teal)] text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
+                    onClick={ 
+                    () => {
+                        window.location.href = "#contact";
+                    }
+                }>
             Book a Meeting
             </button>
-            <button className="bg-white text-black border  px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors">
-            Our portfolio
+            <button className="bg-white text-black border px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                onClick={
+                    () => {
+                        window.location.href = "#portfolio";
+                    }
+                }>
+                Our portfolio
             </button>
             </div>
           </div>
