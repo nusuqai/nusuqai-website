@@ -8,6 +8,7 @@ import Image from "next/image";
 interface ContainerProps {
   children: ReactNode;
 }
+
 const Container: React.FC<ContainerProps> = ({ children }) => (
   <div className="max-w-7xl mx-auto">
     {children}
@@ -28,23 +29,26 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
       <Container>
-      <div className="flex items-center justify-between h-20 px-4 sm:px-6 lg:px-8">
-          {/* Logo */}
-          <div className="flex items-center">
-        <Link href="/" className="relative inline-block max-w-[160px] sm:max-w-[200px]">
-          <Image
-            src="/logo.png"
-            alt="NUSUQAI Logo"
-            width={1074}
-            height={313}
-            className="w-full h-auto"
-            priority
-          />
-        </Link>
-
+        <div className="flex items-center justify-between h-20 px-4 sm:px-6 lg:px-8">
+          
+          <div className="flex items-center flex-shrink-0">
+            <Link 
+              href="/" 
+              className="relative block w-[140px] sm:w-[180px] lg:w-[200px]"
+            >
+              <Image
+                src="/logo.png"
+                alt="NUSUQAI Logo"
+                width={1074}
+                height={313}
+                className="w-full h-auto object-contain"
+                priority
+                sizes="(max-width: 640px) 140px, (max-width: 1024px) 180px, 200px"
+              />
+            </Link>
           </div>
 
-          {/* Desktop Navigation Links */}
+          {/* --- DESKTOP NAVIGATION LINKS --- */}
           <div className="hidden lg:flex items-center gap-8">
             <Link href="#services" className="text-[#0F1E3D] hover:text-[#00D4C2] transition-colors">
               Services
@@ -63,7 +67,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Language Selector */}
+          {/* --- DESKTOP LANGUAGE SELECTOR --- */}
           <div className="hidden lg:block relative group">
             <div className="flex items-center gap-2 text-[#0F1E3D] cursor-pointer font-semibold transition-colors group-hover:text-[#00D4C2]">
               <span className="text-sm">{language}</span>
@@ -95,7 +99,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* --- MOBILE MENU BUTTON --- */}
           <button
             onClick={toggleMenu}
             className="lg:hidden text-[#0F1E3D] hover:text-[#00D4C2] transition-colors"
@@ -105,9 +109,9 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* --- MOBILE MENU CONTENT --- */}
         {isOpen && (
-        <div className="lg:hidden py-4 px-4 sm:px-6 lg:px-8 border-t border-gray-100">
+          <div className="lg:hidden py-4 px-4 sm:px-6 lg:px-8 border-t border-gray-100">
             <div className="flex flex-col gap-4">
               <Link 
                 href="#services" 
