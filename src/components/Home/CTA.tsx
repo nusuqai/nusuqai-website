@@ -45,20 +45,20 @@ export function CTA() {
 
             <div className="space-y-6 mb-8">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Mail size={20} className="text-blue-600" />
+                <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Mail size={20} className="text-nusuqai-cyan" />
                 </div>
                 <div>
                   <h3 className="mb-1">Email Us</h3>
-                  <a href="mailto:hello@nusuqai.com" className="text-blue-600 hover:underline">
+                  <a href="mailto:hello@nusuqai.com" className="text-gray-600 hover:underline">
                     hello@nusuqai.com
                   </a>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Building size={20} className="text-purple-600" />
+                <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Building size={20} className="text-nusuqai-teal" />
                 </div>
                 <div>
                   <h3 className="mb-1">Phone Number</h3>

@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 const projects = [
@@ -7,7 +7,7 @@ const projects = [
     id: 1,
     image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop",
     title: "Document Management Application Helps Users Store, Organize, And Access Files Securely In One Place.",
-    description: "We delivered a complete web solution through end-to-end development of AWJ Murasalah. The system was architected from the ground up to support secure document workflows, cloud storage, and dynamic approval routes. Custom UI/UX was crafted for ease of use and accessibility, with special focus on iPadOS browser behavior to ensure flawless interaction across devices. The CMS was integrated with modern APIs to handle system notifications, file management, and permission-based document access, while secure authentication ensured compliance and data integrity.",
+    description: "We delivered a complete web solution through end-to-end development of AWJ Murasalah. The system was architected from the ground up to support secure document workflows, cloud storage, and dynamic approval routes.",
     client: "AWJ Holding Co.",
     features: "24 Custom Feature",
     team: "12+ Team Members"
@@ -16,7 +16,7 @@ const projects = [
     id: 2,
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
     title: "E-Commerce Platform Revolutionizes Online Shopping Experience With AI-Powered Recommendations.",
-    description: "Built a cutting-edge e-commerce platform featuring AI-driven product recommendations, real-time inventory management, and seamless payment integration. The system leverages machine learning algorithms to personalize user experiences and boost conversion rates. Implemented robust security measures including encrypted transactions and fraud detection systems.",
+    description: "Built a cutting-edge e-commerce platform featuring AI-driven product recommendations, real-time inventory management, and seamless payment integration.",
     client: "RetailTech Solutions",
     features: "18 Custom Feature",
     team: "8+ Team Members"
@@ -25,7 +25,7 @@ const projects = [
     id: 3,
     image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=600&fit=crop",
     title: "Healthcare Management System Streamlines Patient Care And Medical Records Across Multiple Facilities.",
-    description: "Developed an integrated healthcare management system that connects hospitals, clinics, and pharmacies in a unified network. The platform enables real-time patient data sharing, appointment scheduling, and prescription management while maintaining HIPAA compliance. Features include telemedicine capabilities, automated billing, and comprehensive analytics dashboards for healthcare providers.",
+    description: "Developed an integrated healthcare management system that connects hospitals, clinics, and pharmacies in a unified network.",
     client: "MediCare Network",
     features: "32 Custom Feature",
     team: "15+ Team Members"
@@ -34,41 +34,31 @@ const projects = [
 
 export default function PortfolioShowcase() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [progress, setProgress] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
   const DURATION = 8000; // 8 seconds per project
 
-  useEffect(() => {
-    if (isPaused) return;
-
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          setCurrentIndex((current) => (current + 1) % projects.length);
-          return 0;
-        }
-        return prev + (100 / (DURATION / 100));
-      });
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, [isPaused]);
-
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % projects.length);
-    setProgress(0);
   };
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
-    setProgress(0);
   };
 
   const currentProject = projects[currentIndex];
 
   return (
     <section className="py-20 bg-white relative overflow-hidden">
+      {/* Injecting a dynamic style tag for the keyframe. 
+        Alternatively, add this to your global CSS or Tailwind config.
+      */}
+      <style jsx>{`
+        @keyframes grow-progress {
+          from { width: 0%; }
+          to { width: 100%; }
+        }
+      `}</style>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Header */}
@@ -79,9 +69,7 @@ export default function PortfolioShowcase() {
           transition={{ duration: 0.5 }}
           className="mb-12"
         >
-          <h2 className="text-3xl lg:text-5xl text-[#0F1E3D] mb-4">
-            Our Work
-          </h2>
+          <h2 className="text-3xl lg:text-5xl text-[#0F1E3D] mb-4">Our Work</h2>
           <p className="text-lg text-[#94A3B8]">
             Explore Demos and Case Studies of Our Recent Projects
           </p>
@@ -92,20 +80,34 @@ export default function PortfolioShowcase() {
           {projects.map((_, index) => (
             <div
               key={index}
-              className="h-1 flex-1 bg-gray-200 rounded-full overflow-hidden cursor-pointer"
-              onClick={() => {
-                setCurrentIndex(index);
-                setProgress(0);
-              }}
+              className="h-1 flex-1 bg-gray-200 rounded-full overflow-hidden cursor-pointer relative"
+              onClick={() => setCurrentIndex(index)}
             >
-              <motion.div
-                className="h-full rounded-full"
-                style={{
-                  background: "linear-gradient(90deg, #00E0FF 0%, #00D4C2 100%)",
-                  width: index === currentIndex ? `${progress}%` : index < currentIndex ? "100%" : "0%"
-                }}
-                transition={{ duration: 0.1 }}
-              />
+              {/* LOGIC: 
+                 1. If index < currentIndex: Show full bar (Completed)
+                 2. If index === currentIndex: Render the animating bar
+                 3. If index > currentIndex: Show empty (handled by container bg)
+              */}
+              
+              {/* Completed Bars */}
+              {index < currentIndex && (
+                <div className="h-full w-full bg-gradient-to-r from-[#00E0FF] to-[#00D4C2]" />
+              )}
+
+              {/* Active Bar with CSS Animation */}
+              {index === currentIndex && (
+                <div
+                  className="h-full bg-gradient-to-r from-[#00E0FF] to-[#00D4C2]"
+                  style={{
+                    // Simply animate width from 0 to 100
+                    animation: `grow-progress ${DURATION}ms linear`,
+                    // Native CSS pause functionality
+                    animationPlayState: isPaused ? 'paused' : 'running' 
+                  }}
+                  // When CSS animation ends, React triggers this event
+                  onAnimationEnd={handleNext} 
+                />
+              )}
             </div>
           ))}
         </div>
