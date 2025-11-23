@@ -30,24 +30,24 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
       <Container>
         <div className="flex items-center justify-between h-20 px-4 sm:px-6 lg:px-8">
-          
-          <div className="flex items-center flex-shrink-0">
-            <Link 
-              href="/" 
-              className="relative block w-[140px] sm:w-[180px] lg:w-[200px]"
-            >
+          <div className="flex-shrink-0 relative w-[140px] sm:w-[180px] lg:w-[200px]">
+            <Link href="/" className="block w-full h-full">
               <Image
                 src="/logo.png"
                 alt="NUSUQAI Logo"
                 width={1074}
                 height={313}
-                className="w-full h-auto object-contain"
                 priority
+                className="object-contain" 
+                style={{ 
+                  width: '100%', 
+                  height: 'auto',
+                  maxWidth: '100%' 
+                }}
                 sizes="(max-width: 640px) 140px, (max-width: 1024px) 180px, 200px"
               />
             </Link>
           </div>
-
           {/* --- DESKTOP NAVIGATION LINKS --- */}
           <div className="hidden lg:flex items-center gap-8">
             <Link href="#services" className="text-[#0F1E3D] hover:text-[#00D4C2] transition-colors">

@@ -98,9 +98,6 @@ export function ServicesSection() {
     
     const x = e.pageX - scrollContainerRef.current.offsetLeft;
     const walk = (x - startX.current) * 2;
-    
-    // Only set isDragging to true if we've moved more than 5 pixels
-    // This allows clicks to still work if the user's hand shakes slightly
     if (Math.abs(x - startX.current) > 5) {
       setIsDragging(true);
     }
@@ -110,16 +107,12 @@ export function ServicesSection() {
 
   const handleMouseUp = () => {
     isDown.current = false;
-    // Small timeout to ensure the click event has time to fire/check 
-    // before we reset the dragging state
     setTimeout(() => {
       setIsDragging(false);
     }, 50);
   };
 
-  // Navigation Logic
   const handleCardClick = (e: MouseEvent<HTMLDivElement>) => {
-    // Prevent navigation if the user was just dragging/swiping
     if (isDragging) {
       e.preventDefault();
       e.stopPropagation();
