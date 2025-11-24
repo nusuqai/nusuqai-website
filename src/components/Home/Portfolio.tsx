@@ -40,10 +40,7 @@ export default function PortfolioShowcase() {
   const currentProject = projects[currentIndex];
 
   return (
-    <section className="py-20  bg-gray-50 relative overflow-hidden " id="portfolio">
-      {/* Injecting a dynamic style tag for the keyframe. 
-        Alternatively, add this to your global CSS or Tailwind config.
-      */}
+    <section className="py-20 bg-gray-50 relative overflow-hidden" id="portfolio">
       <style jsx>{`
         @keyframes grow-progress {
           from { width: 0%; }
@@ -52,7 +49,7 @@ export default function PortfolioShowcase() {
       `}</style>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        {/* Header */}
+        {/* Header (No Change) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -66,7 +63,7 @@ export default function PortfolioShowcase() {
           </p>
         </motion.div>
 
-        {/* Progress Bars */}
+        {/* Progress Bars (No Change) */}
         <div className="flex gap-2 mb-8">
           {projects.map((_, index) => (
             <div
@@ -78,7 +75,6 @@ export default function PortfolioShowcase() {
               {index < currentIndex && (
                 <div className="h-full w-full bg-gradient-to-r from-[#00E0FF] to-[#00D4C2]" />
               )}
-
               {/* Active Bar with CSS Animation */}
               {index === currentIndex && (
                 <div
@@ -94,7 +90,7 @@ export default function PortfolioShowcase() {
           ))}
         </div>
 
-        {/* Main Content */}
+        {/* Main Content (No Change to Grid structure) */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left - Image */}
           <motion.div
@@ -109,19 +105,24 @@ export default function PortfolioShowcase() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 50 }}
                 transition={{ duration: 0.5 }}
-                className="relative rounded-2xl overflow-hidden shadow-2xl"
+                // --- MODIFIED CLASSES HERE ---
+                // Removed fixed height (h-96)
+                // Used aspect-square (1:1) for mobile to prevent overflow
+                // Used aspect-[4/3] for desktop (lg:), which is closer to original image ratio
+                className="relative rounded-2xl overflow-hidden shadow-2xl aspect-square lg:aspect-[4/3]"
               >
                 <div className="absolute inset-0 from-[#00E0FF]/20 to-[#00D4C2]/20 z-10" />
                 <img
                   src={currentProject.image}
                   alt={currentProject.title}
-                  className="w-full h-[500px] object-cover"
+                  // Enforced image to fill the responsive container
+                  className="w-full h-full object-cover" 
                 />
               </motion.div>
             </AnimatePresence>
           </motion.div>
 
-          {/* Right - Content */}
+          {/* Right - Content (No Change) */}
           <div
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
@@ -141,7 +142,7 @@ export default function PortfolioShowcase() {
                   {currentProject.description}
                 </p>
 
-                {/* Stats */}
+                {/* Stats (No Change) */}
                 <div className="grid grid-cols-3 gap-6 mb-8">
                   <div>
                     <p className="text-sm text-[#94A3B8] mb-1">Client</p>
@@ -157,7 +158,7 @@ export default function PortfolioShowcase() {
                   </div>
                 </div>
 
-                {/* Navigation Buttons */}
+                {/* Navigation Buttons (No Change) */}
                 <div className="flex gap-4">
                   <button
                     onClick={handlePrev}
