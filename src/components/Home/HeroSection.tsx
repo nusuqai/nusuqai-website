@@ -3,17 +3,34 @@ import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { Container } from "../ui/Container";
 import { useState, useEffect } from "react";
 
-const heroImages = [
-  "https://images.unsplash.com/photo-1761570255027-6c251f8fbc68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBnbGFzcyUyMHNreXNjcmFwZXJzJTIwbmlnaHR8ZW58MXx8fHwxNzYzODEwMDk3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-  "https://images.unsplash.com/photo-1710797213431-c89129979ca5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3Jwb3JhdGUlMjBvZmZpY2UlMjBidWlsZGluZyUyMGJsdWV8ZW58MXx8fHwxNzYzODEwMDk3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-  "https://images.unsplash.com/photo-1685210461560-080329a34d2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBhcmNoaXRlY3R1cmUlMjB0ZWNobm9sb2d5fGVufDF8fHx8MTc2Mzc2MDYzM3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+// 1. Updated Data Structure for Slides
+const heroSlides = [
+  { 
+    image: "./1.png", 
+    title: "Connect MCP to your E-Commerce", 
+    // here we explain how this benefits
+    subtext: "Make your LLMs interact with your store's APIs" 
+  },
+  { 
+    image: "./2.png", 
+    title: "AI-Powered Warehouse Management", 
+    subtext: "Optimize inventory with intelligent systems" 
+  },
+  { 
+    image: "./3.jpg", 
+    title: "Client Portal V2", 
+    subtext: "Multi-Cloud Solutions (MCP)" 
+  },
 ];
+
+// Time in milliseconds for the slide duration
+const SLIDE_DURATION_MS = 10000; // 10 seconds
 
 export function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [scrollY, setScrollY] = useState(0);
+  const [progress, setProgress] = useState(0);
 
-  // Handle Scroll for Parallax (mobile only)
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
@@ -22,26 +39,40 @@ export function HeroSection() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Handle Carousel Auto-play
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-    }, 4000);
-    return () => clearInterval(timer);
+    // 2. Updated Timer Logic for 10 seconds
+    // Interval runs every 100ms. 
+    // To reach 100% in 10000ms (10s), we need a step of: 
+    // 100 / (10000 / 100) = 100 / 100 = 1% per interval.
+    const step = 100 / (SLIDE_DURATION_MS / 100); 
+
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          setCurrentSlide((current) => (current + 1) % heroSlides.length);
+          return 0;
+        }
+        return prev + step; 
+      });
+    }, 100);
+
+    return () => clearInterval(interval);
   }, []);
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    setProgress(0);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + heroImages.length) % heroImages.length);
+    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+    setProgress(0);
   };
 
   return (
     <section className="relative min-h-screen bg-[#F8FAFF] pt-20 overflow-hidden">
       
-      {/* MOBILE-ONLY PARALLAX BACKGROUND SHAPES */}
+      {/* MOBILE-ONLY PARALLAX BACKGROUND SHAPES (Code truncated for brevity) */}
       <div className="absolute inset-0 w-full h-full lg:hidden pointer-events-none z-0">
         <div 
           className="absolute top-1/3 -left-10 w-32 h-32 border-4 border-[#00D4C2]/10 rounded-xl transform rotate-12"
@@ -60,7 +91,7 @@ export function HeroSection() {
         </svg>
       </div>
 
-      {/* DESKTOP DECORATION (Original Dots) */}
+      {/* DESKTOP DECORATION (Code truncated for brevity) */}
       <div className="absolute top-32 left-12 w-24 h-24 opacity-30 hidden lg:block">
         <svg viewBox="0 0 100 100" className="w-full h-full">
           {Array.from({ length: 25 }).map((_, i) => (
@@ -78,7 +109,7 @@ export function HeroSection() {
       <Container className="py-12 lg:py-16 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           
-          {/* LEFT CONTENT */}
+          {/* LEFT CONTENT (Code truncated for brevity) */}
           <div className="space-y-6 lg:space-y-8 text-center lg:text-left">
             <div className="inline-block">
               <span className="px-4 py-2 bg-[#00E0FF]/10 text-[#0F1E3D] rounded-full text-sm">
@@ -108,75 +139,89 @@ export function HeroSection() {
               >
                 Our portfolio
               </button>
+            </div>
+
+            <button
+              className="flex items-center gap-3 group transition-all hover:opacity-80 pt-2 lg:pt-0 w-full lg:w-auto justify-center lg:justify-start"
+              onClick={() => window.location.href = "#video"}
+            >
+              <div className="w-10 h-10 rounded-full border-[1.5px] border-[#00E0FF] flex items-center justify-center bg-white group-hover:bg-[#00E0FF]/5 transition-colors">
+                <Play className="w-4 h-4 text-[#00E0FF] fill-current ml-0.5" />
+              </div>
+              <span className="text-[#0F1E3D] font-medium">
+                Try Our Demo
+              </span>
+            </button>
           </div>
 
-              <button
-                className="flex items-center gap-3 group transition-all hover:opacity-80 pt-2 lg:pt-0 w-full lg:w-auto justify-center lg:justify-start"
-                onClick={() => window.location.href = "#video"}
-              >
-                <div className="w-10 h-10 rounded-full border-[1.5px] border-[#00E0FF] flex items-center justify-center bg-white group-hover:bg-[#00E0FF]/5 transition-colors">
-                  <Play className="w-4 h-4 text-[#00E0FF] fill-current ml-0.5" />
-                </div>
-                <span className="text-[#0F1E3D] font-medium">
-                  Try Our Demo
-                </span>
-              </button>
-            </div>
-
-          {/* RIGHT CONTENT - HIDDEN on Mobile */}
-          <div className="relative hidden lg:block">
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-              <div className="relative aspect-square">
-                {heroImages.map((image, index) => (
-                  <div
-                    key={index}
-                    className={`absolute inset-0 transition-opacity duration-500 ${
-                      index === currentSlide ? "opacity-100" : "opacity-0"
-                    }`}
-                  >
+          {/* RIGHT CONTENT - 3D Card Stack */}
+          <div className="relative hidden lg:block h-[500px]" style={{ perspective: '1500px' }}>
+            {/* Map over the new heroSlides data structure */}
+            {heroSlides.map((slide, index) => {
+              const position = (index - currentSlide + heroSlides.length) % heroSlides.length;
+              
+              return (
+                <div
+                  key={index}
+                  className="absolute top-0 left-0 w-full h-full transition-all duration-700 ease-out"
+                  style={{
+                    zIndex: heroSlides.length - position,
+                    transform: `
+                      translateX(${position * 35}px) 
+                      translateY(${position * 25}px) 
+                      rotateY(${position * -10}deg) 
+                      scale(${1 - position * 0.08})
+                    `,
+                    transformStyle: 'preserve-3d',
+                    opacity: position < 3 ? 1 : 0,
+                    pointerEvents: position === 0 ? 'auto' : 'none',
+                  }}
+                >
+                  <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl">
                     <img
-                      src={image}
-                      alt={`Slide ${index + 1}`}
+                      // Use slide.image
+                      src={slide.image}
+                      alt={`Card ${index + 1}: ${slide.title}`}
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute bottom-0 right-0 w-32 h-32">
-                      <div className="w-full h-full bg-[#00E0FF] opacity-80" 
-                           style={{
-                             clipPath: "polygon(100% 0, 100% 100%, 0 100%)"
-                           }}
-                      />
+                    
+                    {/* Dark gradient overlay from bottom */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                    
+                    {/* Timer progress bar on active card */}
+                    {position === 0 && (
+                      <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
+                        <div 
+                          className="h-full bg-[#00E0FF] transition-all duration-100 ease-linear"
+                          style={{
+                            width: `${progress}%`,
+                          }}
+                        />
+                      </div>
+                    )}
+                    
+                    {/* Card content overlay */}
+                    <div className="absolute bottom-6 left-6 right-6 text-white">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-1">
+                          {/* Use slide.title and slide.subtext */}
+                          <h3 className="text-xl">{slide.title}</h3>
+                          <p className="text-sm text-white/80">{slide.subtext}</p>
+                        </div>
+                        {position === 0 && (
+                          <button
+                            onClick={nextSlide}
+                            className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors backdrop-blur-sm"
+                          >
+                            <ChevronRight className="w-5 h-5" />
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
-
-              <button
-                onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white flex items-center justify-center transition-colors z-10"
-              >
-                <ChevronLeft className="w-6 h-6 text-[#0F1E3D]" />
-              </button>
-              <button
-                onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white flex items-center justify-center transition-colors z-10"
-              >
-                <ChevronRight className="w-6 h-6 text-[#0F1E3D]" />
-              </button>
-
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                {heroImages.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      index === currentSlide
-                        ? "bg-[#00D4C2] w-8"
-                        : "bg-white/50 hover:bg-white/80"
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
+                </div>
+              );
+            })}
             
             <div className="absolute -top-8 -right-8 w-32 h-32 bg-[#00E0FF]/20 rounded-full blur-3xl -z-10" />
             <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-[#00D4C2]/20 rounded-full blur-3xl -z-10" />
@@ -184,7 +229,7 @@ export function HeroSection() {
         </div>
       </Container>
 
-      {/* Wave Transition */}
+      {/* Wave Transition (Code truncated for brevity) */}
       <div className="absolute -bottom-5 left-0 right-0 overflow-hidden leading-none z-20">
         <svg
           className="relative block w-full h-16 lg:h-24"
