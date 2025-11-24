@@ -173,9 +173,9 @@ export default function Navbar() {
               </Link>
               
               {/* Mobile Language Selector */}
-              <div className="border-t border-gray-100 pt-4 mt-2">
-                <div className="flex items-center gap-2 text-[#0F1E3D] mb-3">
-                  <span className="font-semibold">Language: {language === "EN" ? "English" : "العربية"}</span>
+              <div className="text-center border-t border-gray-100 pt-4 mt-2">
+                <div className="text-center flex items-center gap-2 text-[#0F1E3D] mb-3">
+                  <span className=" text-center font-semibold">Language: {language === "EN" ? "English" : "العربية"}</span>
                 </div>
                 <div className="flex flex-col gap-2 pl-2">
                   <button
@@ -183,7 +183,7 @@ export default function Navbar() {
                       toggleLanguage("en");
                       toggleMenu();
                     }}
-                    className={`text-left py-1 px-3 rounded transition-colors ${
+                    className={`text-center py-1 px-3 rounded transition-colors ${
                       language === "EN" 
                         ? "text-[#00D4C2] font-semibold bg-gray-50" 
                         : "text-[#0F1E3D] hover:bg-gray-50"
@@ -196,7 +196,7 @@ export default function Navbar() {
                       toggleLanguage("ar");
                       toggleMenu();
                     }}
-                    className={`text-left py-1 px-3 rounded transition-colors ${
+                    className={`text-center py-1 px-3 rounded transition-colors ${
                       language === "AR" 
                         ? "text-[#00D4C2] font-semibold bg-gray-50" 
                         : "text-[#0F1E3D] hover:bg-gray-50"

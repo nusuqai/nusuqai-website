@@ -63,7 +63,7 @@ export function HeroSection() {
   const isRtl = ["ar"].includes(locale); 
   const directionMultiplier = isRtl ? -1 : 1;
   return (
-    <section className="relative min-h-screen bg-[#F8FAFF] pt-20 overflow-hidden">
+    <section className="rtl:text-center relative min-h-screen bg-[#F8FAFF] pt-20 overflow-hidden">
       
       {/* MOBILE-ONLY PARALLAX BACKGROUND SHAPES */}
       <div className="absolute inset-0 w-full h-full lg:hidden pointer-events-none z-0">
@@ -85,6 +85,7 @@ export function HeroSection() {
       </div>
 
       {/* DESKTOP DECORATION */}
+
       <div className="absolute top-32 left-12 w-24 h-24 opacity-30 hidden lg:block">
         <svg viewBox="0 0 100 100" className="w-full h-full">
           {Array.from({ length: 25 }).map((_, i) => (
@@ -103,18 +104,18 @@ export function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           
           {/* LEFT CONTENT */}
-          <div className="rtl:text-right  space-y-6 lg:space-y-8 text-center lg:text-left">
+          <div className="space-y-6 lg:space-y-8 text-center lg:text-left lg:rtl:text-right">
             <div className="inline-block">
               <span className="px-4 py-2 bg-[#00E0FF]/10 text-[#0F1E3D] rounded-full text-sm">
                 {t("badge")}
               </span>
             </div>
 
-            <h1 className="rtl:text-right text-4xl lg:text-4xl text-[#0F1E3D] font-bold lg:font-normal">
+            <h1 className="text-4xl lg:text-4xl text-[#0F1E3D] font-bold lg:font-normal">
               {t("title")}
             </h1>
 
-            <p className="rtl:text-right text-base lg:text-lg text-[#94A3B8] max-w-xl mx-auto lg:mx-0">
+            <p className="text-base lg:text-lg text-[#94A3B8] max-w-xl mx-auto lg:mx-0">
               {t("description")}
             </p>
 
