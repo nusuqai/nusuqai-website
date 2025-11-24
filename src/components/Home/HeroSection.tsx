@@ -108,6 +108,7 @@ export function HeroSection() {
               >
                 Our portfolio
               </button>
+          </div>
 
               <button
                 className="flex items-center gap-3 group transition-all hover:opacity-80 pt-2 lg:pt-0 w-full lg:w-auto justify-center lg:justify-start"
@@ -117,11 +118,10 @@ export function HeroSection() {
                   <Play className="w-4 h-4 text-[#00E0FF] fill-current ml-0.5" />
                 </div>
                 <span className="text-[#0F1E3D] font-medium">
-                  Watch our company video
+                  Try Our Demo
                 </span>
               </button>
             </div>
-          </div>
 
           {/* RIGHT CONTENT - HIDDEN on Mobile */}
           <div className="relative hidden lg:block">
