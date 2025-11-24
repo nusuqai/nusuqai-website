@@ -2,34 +2,35 @@
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { Container } from "../ui/Container";
 import { useState, useEffect } from "react";
+import { useTranslations, useLocale } from "next-intl";
 
-// 1. Updated Data Structure for Slides
-const heroSlides = [
-  { 
-    image: "./1.png", 
-    title: "Connect MCP to your E-Commerce", 
-    // here we explain how this benefits
-    subtext: "Make your LLMs interact with your store's APIs" 
-  },
-  { 
-    image: "./2.png", 
-    title: "AI-Powered Warehouse Management", 
-    subtext: "Optimize inventory with intelligent systems" 
-  },
-  { 
-    image: "./3.jpg", 
-    title: "Client Portal V2", 
-    subtext: "Multi-Cloud Solutions (MCP)" 
-  },
-];
-
-// Time in milliseconds for the slide duration
-const SLIDE_DURATION_MS = 10000; // 10 seconds
 
 export function HeroSection() {
+  const t = useTranslations("Hero");
+  const locale = useLocale();
+  const heroSlides = [
+    { 
+      image: "./1.png", 
+      title: t("slides.ecommerce.title"),
+      subtext: t("slides.ecommerce.subtitle")
+    },
+    { 
+      image: "./2.png", 
+      title: t("slides.warehouse.title"),
+      subtext: t("slides.warehouse.subtitle")
+    },
+    { 
+      image: "./3.jpg", 
+      title: t("slides.portal.title"),
+      subtext: t("slides.portal.subtitle")
+    },
+  ];
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [scrollY, setScrollY] = useState(0);
   const [progress, setProgress] = useState(0);
+
+  const SLIDE_DURATION_MS = 10000;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,10 +41,6 @@ export function HeroSection() {
   }, []);
 
   useEffect(() => {
-    // 2. Updated Timer Logic for 10 seconds
-    // Interval runs every 100ms. 
-    // To reach 100% in 10000ms (10s), we need a step of: 
-    // 100 / (10000 / 100) = 100 / 100 = 1% per interval.
     const step = 100 / (SLIDE_DURATION_MS / 100); 
 
     const interval = setInterval(() => {
@@ -63,16 +60,12 @@ export function HeroSection() {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     setProgress(0);
   };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
-    setProgress(0);
-  };
-
+  const isRtl = ["ar"].includes(locale); 
+  const directionMultiplier = isRtl ? -1 : 1;
   return (
     <section className="relative min-h-screen bg-[#F8FAFF] pt-20 overflow-hidden">
       
-      {/* MOBILE-ONLY PARALLAX BACKGROUND SHAPES (Code truncated for brevity) */}
+      {/* MOBILE-ONLY PARALLAX BACKGROUND SHAPES */}
       <div className="absolute inset-0 w-full h-full lg:hidden pointer-events-none z-0">
         <div 
           className="absolute top-1/3 -left-10 w-32 h-32 border-4 border-[#00D4C2]/10 rounded-xl transform rotate-12"
@@ -91,7 +84,7 @@ export function HeroSection() {
         </svg>
       </div>
 
-      {/* DESKTOP DECORATION (Code truncated for brevity) */}
+      {/* DESKTOP DECORATION */}
       <div className="absolute top-32 left-12 w-24 h-24 opacity-30 hidden lg:block">
         <svg viewBox="0 0 100 100" className="w-full h-full">
           {Array.from({ length: 25 }).map((_, i) => (
@@ -109,35 +102,35 @@ export function HeroSection() {
       <Container className="py-12 lg:py-16 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           
-          {/* LEFT CONTENT (Code truncated for brevity) */}
-          <div className="space-y-6 lg:space-y-8 text-center lg:text-left">
+          {/* LEFT CONTENT */}
+          <div className="rtl:text-right  space-y-6 lg:space-y-8 text-center lg:text-left">
             <div className="inline-block">
               <span className="px-4 py-2 bg-[#00E0FF]/10 text-[#0F1E3D] rounded-full text-sm">
-                AI Integration & MCP Specialists
+                {t("badge")}
               </span>
             </div>
 
-            <h1 className="text-4xl lg:text-4xl text-[#0F1E3D] font-bold lg:font-normal">
-              Seamlessly Connect Your LLMs to Your Infrastructure
+            <h1 className="rtl:text-right text-4xl lg:text-4xl text-[#0F1E3D] font-bold lg:font-normal">
+              {t("title")}
             </h1>
 
-            <p className="text-base lg:text-lg text-[#94A3B8] max-w-xl mx-auto lg:mx-0">
-              Transform isolated chatbots into powerful agents. We specialize in end-to-end AI adoption and MCP architecture to make your systems talk to each other.
+            <p className="rtl:text-right text-base lg:text-lg text-[#94A3B8] max-w-xl mx-auto lg:mx-0">
+              {t("description")}
             </p>
 
-            <div className="flex flex-wrap gap-4 items-center justify-center lg:justify-start">
+            <div className=" flex flex-wrap gap-4 items-center justify-center lg:justify-start">
               <button 
                 className="bg-[#00D4C2] text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
                 onClick={() => window.location.href = "#contact"}
               >
-                Book a Meeting
+                {t("bookMeeting")}
               </button>
               
               <button 
                 className="bg-white text-black border px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors"
                 onClick={() => window.location.href = "#portfolio"}
               >
-                Our portfolio
+                {t("portfolio")}
               </button>
             </div>
 
@@ -149,14 +142,13 @@ export function HeroSection() {
                 <Play className="w-4 h-4 text-[#00E0FF] fill-current ml-0.5" />
               </div>
               <span className="text-[#0F1E3D] font-medium">
-                Try Our Demo
+                {t("tryDemo")}
               </span>
             </button>
           </div>
 
           {/* RIGHT CONTENT - 3D Card Stack */}
           <div className="relative hidden lg:block h-[500px]" style={{ perspective: '1500px' }}>
-            {/* Map over the new heroSlides data structure */}
             {heroSlides.map((slide, index) => {
               const position = (index - currentSlide + heroSlides.length) % heroSlides.length;
               
@@ -167,9 +159,9 @@ export function HeroSection() {
                   style={{
                     zIndex: heroSlides.length - position,
                     transform: `
-                      translateX(${position * 35}px) 
+                      translateX(${position * 35 * directionMultiplier}px) 
                       translateY(${position * 25}px) 
-                      rotateY(${position * -10}deg) 
+                      rotateY(${position * -10 * directionMultiplier}deg) 
                       scale(${1 - position * 0.08})
                     `,
                     transformStyle: 'preserve-3d',
@@ -179,16 +171,13 @@ export function HeroSection() {
                 >
                   <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl">
                     <img
-                      // Use slide.image
                       src={slide.image}
                       alt={`Card ${index + 1}: ${slide.title}`}
                       className="w-full h-full object-cover"
                     />
                     
-                    {/* Dark gradient overlay from bottom */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                     
-                    {/* Timer progress bar on active card */}
                     {position === 0 && (
                       <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
                         <div 
@@ -200,11 +189,9 @@ export function HeroSection() {
                       </div>
                     )}
                     
-                    {/* Card content overlay */}
                     <div className="absolute bottom-6 left-6 right-6 text-white">
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
-                          {/* Use slide.title and slide.subtext */}
                           <h3 className="text-xl">{slide.title}</h3>
                           <p className="text-sm text-white/80">{slide.subtext}</p>
                         </div>
@@ -213,7 +200,11 @@ export function HeroSection() {
                             onClick={nextSlide}
                             className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors backdrop-blur-sm"
                           >
-                            <ChevronRight className="w-5 h-5" />
+                          {
+                            isRtl 
+                            ? <ChevronLeft className="w-5 h-5" />
+                            : <ChevronRight className="w-5 h-5" /> 
+                            }
                           </button>
                         )}
                       </div>
@@ -229,7 +220,7 @@ export function HeroSection() {
         </div>
       </Container>
 
-      {/* Wave Transition (Code truncated for brevity) */}
+      {/* Wave Transition */}
       <div className="absolute -bottom-5 left-0 right-0 overflow-hidden leading-none z-20">
         <svg
           className="relative block w-full h-16 lg:h-24"

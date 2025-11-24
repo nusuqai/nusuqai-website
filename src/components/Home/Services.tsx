@@ -1,55 +1,57 @@
 'use client';
 import { 
-  Palette, Code, Smartphone, BarChart3, Zap, Globe, Bot, 
+  Code, Smartphone, Zap, Bot, 
   Cable, BotMessageSquare, ArrowUpRight 
 } from "lucide-react";
 import { useState, useRef, MouseEvent } from "react";
 import { motion } from "motion/react";
-
-const services = [
-  {
-    icon: Code,
-    title: "Web Development",
-    description: "Building scalable and performant web applications with modern technologies",
-    color: "#00D4C2",
-  },
-  {
-    icon: BotMessageSquare,
-    title: "RAG Systems",
-    description: "Retrieval-Augmented Generation systems to enhance LLM responses with real-time data",
-    color: "#00E0FF",
-  },
-  {
-    icon: Cable,
-    title: "MCP Integration",
-    description: "Integrate the Model Context Protocol into your applications for seamless data access",
-    color: "#00D4C2",
-  },
-  {
-    icon: Smartphone,
-    title: "Mobile Apps",
-    description: "Design and develop user-friendly mobile applications for iOS and Android",
-    color: "#00E0FF",
-  },
-  {
-    icon: Zap,
-    title: "AI Integration",
-    description: "Leverage ChatGPT and AI to automate and enhance your applications",
-    color: "#00D4C2",
-  },
-  {
-    icon: Bot,
-    title: "Chatbots",
-    description: "Develop intelligent chatbots to improve customer engagement and support",
-    color: "#00E0FF",
-  },
-];
+import { useTranslations } from "next-intl";
 
 export function ServicesSection() {
+  const t = useTranslations("Services");
+  
+  const services = [
+    {
+      icon: Code,
+      title: t("items.webDev.title"),
+      description: t("items.webDev.description"),
+      color: "#00D4C2",
+    },
+    {
+      icon: BotMessageSquare,
+      title: t("items.rag.title"),
+      description: t("items.rag.description"),
+      color: "#00E0FF",
+    },
+    {
+      icon: Cable,
+      title: t("items.mcp.title"),
+      description: t("items.mcp.description"),
+      color: "#00D4C2",
+    },
+    {
+      icon: Smartphone,
+      title: t("items.mobile.title"),
+      description: t("items.mobile.description"),
+      color: "#00E0FF",
+    },
+    {
+      icon: Zap,
+      title: t("items.ai.title"),
+      description: t("items.ai.description"),
+      color: "#00D4C2",
+    },
+    {
+      icon: Bot,
+      title: t("items.chatbots.title"),
+      description: t("items.chatbots.description"),
+      color: "#00E0FF",
+    },
+  ];
+
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   
-  // Use Refs for drag logic to prevent re-renders during rapid mouse movement
   const isDown = useRef(false);
   const startX = useRef(0);
   const scrollLeft = useRef(0);
@@ -57,9 +59,7 @@ export function ServicesSection() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // 3D Card Effect
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>, index: number) => {
-    // If we are dragging the carousel, don't do the 3D tilt
     if (isDragging || isDown.current) return;
     
     const card = cardRefs.current[index];
@@ -84,7 +84,6 @@ export function ServicesSection() {
     card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
   };
 
-  // Drag Scroll Logic
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     if (!scrollContainerRef.current) return;
     isDown.current = true;
@@ -122,7 +121,6 @@ export function ServicesSection() {
 
   return (
     <section className="py-20 bg-white relative overflow-hidden" id="services">
-      {/* Background gradient orbs */}
       <div className="absolute top-20 left-10 w-96 h-96 bg-[#00E0FF]/5 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#00D4C2]/5 rounded-full blur-3xl" />
 
@@ -135,15 +133,14 @@ export function ServicesSection() {
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-3xl lg:text-5xl text-[#0F1E3D] mb-4">
-              Explore What We Offer
+              {t("title")}
             </h2>
             <p className="text-lg text-[#94A3B8] max-w-2xl mx-auto">
-              Comprehensive digital solutions tailored to your business needs
+              {t("description")}
             </p>
           </motion.div>
         </div>
 
-        {/* Scrollable Container */}
         <div
           ref={scrollContainerRef}
           onMouseDown={handleMouseDown}
@@ -185,7 +182,6 @@ export function ServicesSection() {
               >
                 <div className="bg-white rounded-xl border border-gray-100 shadow-md hover:shadow-xl transition-all duration-300 h-72 relative overflow-hidden">
                   
-                  {/* Solid Background Fill Transition */}
                   <div
                     className="absolute inset-0 transition-opacity duration-300 ease-in-out"
                     style={{
@@ -194,10 +190,8 @@ export function ServicesSection() {
                     }}
                   />
 
-                  {/* Content Wrapper */}
                   <div className="relative z-10 h-full p-6 flex flex-col">
                     
-                    {/* Icon - Moves up and out */}
                     <div 
                       className={`mb-4 transition-all duration-300 transform ${
                         isHovered ? "-translate-y-16 opacity-0" : "translate-y-0 opacity-100"
@@ -214,7 +208,6 @@ export function ServicesSection() {
                         </div>
                     </div>
 
-                    {/* Text Content - Moves up to fill space */}
                     <div 
                       className={`flex-1 transition-all duration-300 transform ${
                         isHovered ? "-translate-y-8" : "translate-y-0"
@@ -237,7 +230,6 @@ export function ServicesSection() {
                         </p>
                     </div>
 
-                    {/* Arrow - Appears bottom right */}
                     <ArrowUpRight 
                       className={`absolute bottom-5 right-5 w-6 h-6 text-white transition-all duration-300 ${
                         isHovered 
@@ -252,7 +244,6 @@ export function ServicesSection() {
           })}
         </div>
 
-        {/* Scroll indicator */}
         <div className="flex justify-center gap-2 mt-8">
           {services.map((_, index) => (
             <div

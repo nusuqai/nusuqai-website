@@ -5,6 +5,7 @@ import FAQSection from "@/components/Home/FAQSection";
 import UseCases from "@/components/Home/UseCases/UseCases";
 import PortfolioShowcase from "@/components/Home/Portfolio";
 import TestimonialsSection from "@/components/Home/Testemonials";
+import { useTranslations } from "next-intl";
 export default function Home() {
   return (
     <main className="overflow-x-hidden">

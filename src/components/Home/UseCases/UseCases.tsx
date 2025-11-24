@@ -1,68 +1,63 @@
 'use client';
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  Share2, 
-  Database, 
-  Bot 
-} from "lucide-react";
+import { Share2, Database, Bot } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-// Assuming these are in the same directory structure as before
 import KnowledgeGraphAnim from "./KnowledgeGraph";
 import DatabaseActionAnim from "./DatabaseAction";
 import SupportAutomationAnim from "./CustomerSupport";
 
-const useCases = [
-  {
-    id: "knowledge",
-    icon: Share2,
-    title: "Unified MCP Interface",
-    subtitle: "Connect all your data",
-    color: "#00D4C2",
-    description: "Instead of building separate connectors for each AI model, the Model Context Protocol (MCP) provides a unified interface to connect your knowledge sources. This allows any LLM to securely access your databases, file systems, and APIs through a standard protocol.",
-    component: KnowledgeGraphAnim
-  },
-  {
-    id: "actions",
-    icon: Database,
-    title: "Read/Write Pipelines",
-    subtitle: "From query to action",
-    color: "#00E0FF", 
-    description: "Move beyond passive chat. Setup MCP servers that can listen to database streams and trigger API actions safely, turning your LLM into an active participant in your infrastructure.",
-    component: DatabaseActionAnim
-  },
-  {
-    id: "support",
-    icon: Bot,
-    title: "AI Customer Support",
-    subtitle: "Service Automation",
-    color: "#00D4C2",
-    description: "Instead of generic answers, the bot pulls actual customer history from the CRM and solutions from the Knowledge Base to resolve tickets and trigger workflows automatically.",
-    component: SupportAutomationAnim
-  }
-];
-
 export default function IntegrationsShowcaseHorizontal() {
+  const t = useTranslations("UseCases");
+  
+  const useCases = [
+    {
+      id: "knowledge",
+      icon: Share2,
+      title: t("cases.knowledge.title"),
+      subtitle: t("cases.knowledge.subtitle"),
+      color: "#00D4C2",
+      description: t("cases.knowledge.description"),
+      component: KnowledgeGraphAnim
+    },
+    {
+      id: "actions",
+      icon: Database,
+      title: t("cases.actions.title"),
+      subtitle: t("cases.actions.subtitle"),
+      color: "#00E0FF", 
+      description: t("cases.actions.description"),
+      component: DatabaseActionAnim
+    },
+    {
+      id: "support",
+      icon: Bot,
+      title: t("cases.support.title"),
+      subtitle: t("cases.support.subtitle"),
+      color: "#00D4C2",
+      description: t("cases.support.description"),
+      component: SupportAutomationAnim
+    }
+  ];
+
   const [activeTab, setActiveTab] = useState(0);
 
   return (
     <section id="usecases" className="bg-white py-16">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         
-        {/* Header */}
         <div className="text-center mb-12 max-w-3xl mx-auto">
           <h2 className="text-3xl lg:text-4xl text-[#0F1E3D] mb-4 tracking-tight font-poppins">
-            Built on the Model Context Protocol
+            {t("title")}
           </h2>
           <p className="text-lg text-slate-500 font-inter">
-            We don't just build chatbots. We build interoperable systems that securely connect your AI models to your actual data.
+            {t("description")}
           </p>
         </div>
 
-        {/* Main Container */}
         <div className="flex flex-col gap-8">
           
-          {/* TOP: Horizontal Navigation Tabs */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {useCases.map((useCase, index) => {
               const isActive = activeTab === index;
@@ -78,7 +73,6 @@ export default function IntegrationsShowcaseHorizontal() {
                       : "bg-transparent border-slate-100 hover:bg-[#F8FAFF] hover:border-slate-200"
                   }`}
                 >
-                  {/* Active Indicator Bar (Bottom) */}
                   {isActive && (
                     <motion.div
                       layoutId="active-indicator"
@@ -113,7 +107,6 @@ export default function IntegrationsShowcaseHorizontal() {
             })}
           </div>
 
-          {/* BOTTOM: Split Content Area (Animation Left, Text Right) */}
           <div className="bg-white rounded-[20px] border border-slate-100 p-8 shadow-sm min-h-[450px] overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div
@@ -125,7 +118,6 @@ export default function IntegrationsShowcaseHorizontal() {
                 className="grid lg:grid-cols-2 gap-12 h-full items-center"
               >
                 
-                {/* Left Column: Animation */}
                 <div className="w-full h-[350px] lg:h-[400px] bg-slate-50/50 rounded-xl flex items-center justify-center border border-slate-100/50">
                   {(() => {
                     const ActiveComponent = useCases[activeTab].component;
@@ -133,14 +125,13 @@ export default function IntegrationsShowcaseHorizontal() {
                   })()}
                 </div>
 
-                {/* Right Column: Text Details */}
                 <div className="flex flex-col justify-center space-y-6">
                   <div className="flex items-center gap-2">
                     <span 
                       className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#F8FAFF]"
                       style={{ color: useCases[activeTab].color }}
                     >
-                      MCP Protocol
+                      {t("mcpProtocol")}
                     </span>
                   </div>
 
@@ -153,13 +144,7 @@ export default function IntegrationsShowcaseHorizontal() {
                     </p>
                   </div>
 
-                  {/* Optional: Call to action or specific metric per tab */}
-                  <div className="pt-4 border-t border-slate-100">
-                    <button className="text-sm font-semibold flex items-center gap-2 hover:gap-3 transition-all"
-                        style={{ color: useCases[activeTab].color }}>
-                      Explore Integration <span>→</span>
-                    </button>
-                  </div>
+
                 </div>
 
               </motion.div>

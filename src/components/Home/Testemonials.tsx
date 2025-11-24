@@ -2,47 +2,50 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Star } from "lucide-react";
-
-const testimonials = [
-  {
-    id: 1,
-    text: "Lorem Ipsum is simply dummy text of the printing typesetting industry Lorem Ipsum.",
-    name: "Robert Browsman",
-    company: "Google",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces",
-    rating: 5
-  },
-  {
-    id: 2,
-    text: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point using lorem ipsum is it a long established fact that a reader.",
-    name: "Nelson Mendela",
-    company: "Google",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces",
-    rating: 5
-  },
-  {
-    id: 3,
-    text: "Lorem Ipsum is simply dummy text of the printing typesetting industry Lorem Ipsum.",
-    name: "Stephen Hawking",
-    company: "Google",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=faces",
-    rating: 5
-  },
-  {
-    id: 4,
-    text: "The team delivered exceptional results beyond our expectations. Their attention to detail and commitment to quality is unmatched in the industry.",
-    name: "Sarah Johnson",
-    company: "Microsoft",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces",
-    rating: 5
-  }
-];
+import { useTranslations } from "next-intl";
 
 export default function TestimonialsSection() {
+  const t = useTranslations("Testimonials");
+  
+  const testimonials = [
+    {
+      id: 1,
+      text: t("items.1.text"),
+      name: t("items.1.name"),
+      company: t("items.1.company"),
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces",
+      rating: 5
+    },
+    {
+      id: 2,
+      text: t("items.2.text"),
+      name: t("items.2.name"),
+      company: t("items.2.company"),
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces",
+      rating: 5
+    },
+    {
+      id: 3,
+      text: t("items.3.text"),
+      name: t("items.3.name"),
+      company: t("items.3.company"),
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=faces",
+      rating: 5
+    },
+    {
+      id: 4,
+      text: t("items.4.text"),
+      name: t("items.4.name"),
+      company: t("items.4.company"),
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces",
+      rating: 5
+    }
+  ];
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
+  const [direction, setDirection] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
 
   const DURATION = 5000;
@@ -85,14 +88,11 @@ export default function TestimonialsSection() {
     const offset = info.offset.x;
     const velocity = info.velocity.x;
 
-    // If dragged more than threshold or has significant velocity
     if (Math.abs(offset) > SWIPE_THRESHOLD || Math.abs(velocity) > 500) {
       if (offset > 0) {
-        // Swiped right - go to previous
         setDirection(-1);
         setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
       } else {
-        // Swiped left - go to next
         setDirection(1);
         setCurrentIndex((prev) => (prev + 1) % testimonials.length);
       }
@@ -118,7 +118,6 @@ export default function TestimonialsSection() {
 
   return (
     <section id="about" className="py-20 relative overflow-hidde  bg-gray-50">
-      {/* Dotted pattern */}
       <div
         className="absolute inset-0 opacity-[0.03]"
         style={{
@@ -128,7 +127,6 @@ export default function TestimonialsSection() {
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -137,11 +135,10 @@ export default function TestimonialsSection() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl lg:text-5xl text-[#0F1E3D] mb-4">
-            What Our Clients Say
+            {t("title")}
           </h2>
         </motion.div>
 
-        {/* Testimonials Grid */}
         <motion.div 
           className="relative mb-12 overflow-hidden"
           onMouseEnter={() => setIsPaused(true)}
@@ -174,12 +171,10 @@ export default function TestimonialsSection() {
                   className="flex"
                 >
                   <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow flex flex-col w-full border border-gray-100 pointer-events-auto cursor-pointer min-h-[300px] md:min-h-0">
-                    {/* Quote Text */}
                     <p className="text-[#64748B] leading-relaxed mb-6 flex-1 text-sm">
                       {testimonial.text}
                     </p>
 
-                    {/* Rating */}
                     <div className="flex gap-1 mb-6">
                       {[...Array(testimonial.rating)].map((_, i) => (
                         <Star
@@ -189,7 +184,6 @@ export default function TestimonialsSection() {
                       ))}
                     </div>
 
-                    {/* Author Info */}
                     <div className="flex items-center gap-4">
                       <img
                         src={testimonial.avatar}
@@ -212,7 +206,6 @@ export default function TestimonialsSection() {
           </div>
         </motion.div>
 
-        {/* Progress Indicators */}
         <div className="flex justify-center gap-2">
           {testimonials.map((_, index) => (
             <button

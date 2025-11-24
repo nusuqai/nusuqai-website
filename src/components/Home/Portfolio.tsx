@@ -1,29 +1,32 @@
 'use client';
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-
-const projects = [
-  {
-    id: 1,
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
-    title: "Intelligent E-Commerce Assistant Leverages MCP To Connect Salla APIs For Real-Time Store Management And Conversational Shopping.",
-    description: "Revolutionizing the merchant and shopper experience by integrating Large Language Models directly with the Salla ecosystem. Using the Model Context Protocol (MCP), this intelligent agent bypasses traditional UI, allowing users to query inventory, process orders, and fetch real-time analytics using natural language.",
-    client: "Internal Prototype",
-    features: "MCP Integration",
-    team: "Demo"
-  },
-  {
-    id: 2,
-    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop",
-    title: "Dynamic Voucher Management System Enables Businesses To Generate Secure Coupons And Automate Redemption For Seamless Loyalty Campaigns",
-    description: "We delivered a robust promotional infrastructure that manages the entire lifecycle of digital coupons. The system handles high-volume code generation with complex validation logic to prevent fraud, ensuring that vouchers are redeemed securely and only within their specific validity parameters.",
-    client: "Internal Prototype",
-    features: "MCP Integration",
-    team: "Demo"
-  }
-];
+import { useTranslations,useLocale } from "next-intl";
 
 export default function PortfolioShowcase() {
+  const t = useTranslations("Portfolio");
+  const locale = useLocale();
+  const projects = [
+    {
+      id: 1,
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
+      title: t("projects.ecommerce.title"),
+      description: t("projects.ecommerce.description"),
+      client: t("projects.ecommerce.client"),
+      features: t("projects.ecommerce.features"),
+      team: t("projects.ecommerce.team")
+    },
+    {
+      id: 2,
+      image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop",
+      title: t("projects.voucher.title"),
+      description: t("projects.voucher.description"),
+      client: t("projects.voucher.client"),
+      features: t("projects.voucher.features"),
+      team: t("projects.voucher.team")
+    }
+  ];
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -38,7 +41,7 @@ export default function PortfolioShowcase() {
   };
 
   const currentProject = projects[currentIndex];
-
+  const IsRTL = ["ar"].includes(locale);
   return (
     <section className="py-20 bg-gray-50 relative overflow-hidden" id="portfolio">
       <style jsx>{`
@@ -49,7 +52,6 @@ export default function PortfolioShowcase() {
       `}</style>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        {/* Header (No Change) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -57,13 +59,12 @@ export default function PortfolioShowcase() {
           transition={{ duration: 0.5 }}
           className="mb-12"
         >
-          <h2 className="text-3xl lg:text-5xl text-[#0F1E3D] mb-4">Our Work</h2>
+          <h2 className="text-3xl lg:text-5xl text-[#0F1E3D] mb-4">{t("title")}</h2>
           <p className="text-lg text-[#94A3B8]">
-            Explore Demos and Case Studies of Our Recent Projects
+            {t("description")}
           </p>
         </motion.div>
 
-        {/* Progress Bars (No Change) */}
         <div className="flex gap-2 mb-8">
           {projects.map((_, index) => (
             <div
@@ -71,11 +72,9 @@ export default function PortfolioShowcase() {
               className="h-1 flex-1 bg-gray-200 rounded-full overflow-hidden cursor-pointer relative"
               onClick={() => setCurrentIndex(index)}
             >
-              {/* Completed Bars */}
               {index < currentIndex && (
                 <div className="h-full w-full bg-gradient-to-r from-[#00E0FF] to-[#00D4C2]" />
               )}
-              {/* Active Bar with CSS Animation */}
               {index === currentIndex && (
                 <div
                   className="h-full bg-gradient-to-r from-[#00E0FF] to-[#00D4C2]"
@@ -90,9 +89,7 @@ export default function PortfolioShowcase() {
           ))}
         </div>
 
-        {/* Main Content (No Change to Grid structure) */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left - Image */}
           <motion.div
             className="relative"
             onMouseEnter={() => setIsPaused(true)}
@@ -105,24 +102,18 @@ export default function PortfolioShowcase() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 50 }}
                 transition={{ duration: 0.5 }}
-                // --- MODIFIED CLASSES HERE ---
-                // Removed fixed height (h-96)
-                // Used aspect-square (1:1) for mobile to prevent overflow
-                // Used aspect-[4/3] for desktop (lg:), which is closer to original image ratio
                 className="relative rounded-2xl overflow-hidden shadow-2xl aspect-square lg:aspect-[4/3]"
               >
                 <div className="absolute inset-0 from-[#00E0FF]/20 to-[#00D4C2]/20 z-10" />
                 <img
                   src={currentProject.image}
                   alt={currentProject.title}
-                  // Enforced image to fill the responsive container
                   className="w-full h-full object-cover" 
                 />
               </motion.div>
             </AnimatePresence>
           </motion.div>
 
-          {/* Right - Content (No Change) */}
           <div
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
@@ -142,30 +133,29 @@ export default function PortfolioShowcase() {
                   {currentProject.description}
                 </p>
 
-                {/* Stats (No Change) */}
                 <div className="grid grid-cols-3 gap-6 mb-8">
                   <div>
-                    <p className="text-sm text-[#94A3B8] mb-1">Client</p>
+                    <p className="text-sm text-[#94A3B8] mb-1">{t("stats.client")}</p>
                     <p className="text-[#0F1E3D] font-medium">{currentProject.client}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-[#94A3B8] mb-1">Integrations</p>
+                    <p className="text-sm text-[#94A3B8] mb-1">{t("stats.integrations")}</p>
                     <p className="text-[#0F1E3D] font-medium">{currentProject.features}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-[#94A3B8] mb-1">Team</p>
+                    <p className="text-sm text-[#94A3B8] mb-1">{t("stats.team")}</p>
                     <p className="text-[#0F1E3D] font-medium">{currentProject.team}</p>
                   </div>
                 </div>
 
-                {/* Navigation Buttons (No Change) */}
                 <div className="flex gap-4">
+                  
                   <button
                     onClick={handlePrev}
                     className="w-12 h-12 rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-[#00E0FF] hover:bg-[#00E0FF]/10 transition-all group"
                   >
                     <svg
-                      className="w-5 h-5 text-[#94A3B8] group-hover:text-[#00E0FF] transition-colors"
+                      className="rtl:rotate-180 w-5 h-5 text-[#94A3B8] group-hover:text-[#00E0FF] transition-colors"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -173,12 +163,13 @@ export default function PortfolioShowcase() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
                   </button>
+
                   <button
                     onClick={handleNext}
                     className="w-12 h-12 rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-[#00E0FF] hover:bg-[#00E0FF]/10 transition-all group"
                   >
                     <svg
-                      className="w-5 h-5 text-[#94A3B8] group-hover:text-[#00E0FF] transition-colors"
+                      className="rtl:rotate-180 w-5 h-5 text-[#94A3B8] group-hover:text-[#00E0FF] transition-colors"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -186,6 +177,7 @@ export default function PortfolioShowcase() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </button>
+                  
                 </div>
               </motion.div>
             </AnimatePresence>
