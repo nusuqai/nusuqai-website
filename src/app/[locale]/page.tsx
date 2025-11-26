@@ -6,14 +6,16 @@ import UseCases from "@/components/Home/UseCases/UseCases";
 import PortfolioShowcase from "@/components/Home/Portfolio";
 import TestimonialsSection from "@/components/Home/Testemonials";
 import { useTranslations } from "next-intl";
+import AboutSection from "@/components/Home/Aboutus";
 export default function Home() {
   return (
     <main className="overflow-x-hidden">
       <HeroSection />
       <ServicesSection />
+      <AboutSection />      
       <PortfolioShowcase />
       <UseCases />
-      <TestimonialsSection />      
+      <TestimonialsSection />
       <FAQSection />
       <CTA />
     </main>

@@ -20,7 +20,7 @@ export function HeroSection() {
       subtext: t("slides.warehouse.subtitle")
     },
     { 
-      image: "./3.jpg", 
+      image: "./3.png", 
       title: t("slides.portal.title"),
       subtext: t("slides.portal.subtitle")
     },
@@ -148,7 +148,6 @@ export function HeroSection() {
             </button>
           </div>
 
-          {/* RIGHT CONTENT - 3D Card Stack */}
           <div className="relative hidden lg:block h-[500px]" style={{ perspective: '1500px' }}>
             {heroSlides.map((slide, index) => {
               const position = (index - currentSlide + heroSlides.length) % heroSlides.length;
@@ -193,8 +192,8 @@ export function HeroSection() {
                     <div className="absolute bottom-6 left-6 right-6 text-white">
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
-                          <h3 className="text-xl">{slide.title}</h3>
-                          <p className="text-sm text-white/80">{slide.subtext}</p>
+                          <h3 className="text-xl rtl:text-right">{slide.title}</h3>
+                          <p className="text-sm text-white/80 rtl:text-right">{slide.subtext}</p>
                         </div>
                         {position === 0 && (
                           <button

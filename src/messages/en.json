@@ -23,8 +23,8 @@
         "subtitle": "Optimize inventory with intelligent systems"
       },
       "portal": {
-        "title": "Client Portal V2",
-        "subtitle": "Multi-Cloud Solutions (MCP)"
+        "title": "Smart Hotel Booking Recommendations",
+        "subtitle": "AI Recommendations for Optimal Stays"
       }
     }
   },
@@ -83,6 +83,43 @@
       "team": "Team"
     }
   },
+  "About": {
+  "title": "Learn More About Us",
+  "description": "We simplify your user journey with AI tools that boost engagement, efficiency, and revenue.",
+  "tabs": {
+    "story": {
+      "label": "Our Story",
+      "title": "Empowering Businesses With Smarter Digital Experiences",
+      "content": "We're NusuqAI, a team of AI engineers helping businesses deliver smoother, faster, and smarter user experiences Whether you want to connect your website or app to AI tools or build a fully tailored AI system, we make the entire process simple, scalable, and effective."
+    },
+    "problem": {
+      "label": "Problem",
+      "title": "Users Expect Simpler, Faster, Smarter Experiences",
+      "content": "Today, people expect apps and websites to be effortless. The easier your product is to use, the more customers engage, convert, and stay loyal. But many businesses struggle with outdated user flows, slow processes, and experiences that don't match modern expectations."
+    },
+    "solution": {
+      "label": "Solution",
+      "title": "NusuqAI: Seamless AI Integration",
+      "content": "We help businesses integrate AI into their digital products with ease. Our team builds and connects intelligent systems, from AI chatbots to automated workflows, enabling users to perform actions directly through ChatGPT or your own AI assistant."
+    },
+    "whynow": {
+      "label": "Why Now",
+      "title": "AI Platforms Are Evolving",
+      "content": "ChatGPT is becoming a full application platform similar to Google Play and the App Store. Early adopters are already launching tools inside it. This is the perfect moment for businesses to build their presence in this new ecosystem."
+    },
+    "caseStudies": {
+      "label": "Case Studies",
+      "booking": {
+        "title": "Booking.com: Seamless Travel Planning",
+        "content": "By connecting Booking.com to ChatGPT through a dedicated assistant, users can explore hotels, find the best deals, and apply filters using simple text or voice."
+      },
+      "spotify": {
+        "title": "Spotify: Revolutionizing Music Discovery",
+        "content": "With ChatGPT integration, Spotify users can add songs, explore new music, and create personalized playlists instantly through conversation, completely transforming music discovery."
+      }
+    }
+  }
+},
   "UseCases": {
     "title": "Built on the Model Context Protocol",
     "description": "We don't just build chatbots. We build interoperable systems that securely connect your AI models to your actual data.",

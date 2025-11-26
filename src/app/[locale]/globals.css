@@ -204,16 +204,13 @@ html {
   font-size: var(--font-size);
   scroll-behavior: smooth;
 }
-/* ===== Modern Auto-hide Scrollbar (NusuqAI Brand) ===== */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--nusuqai-light-bg);
 }
-
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(
     to bottom,
@@ -221,32 +218,11 @@ html {
     var(--nusuqai-teal)
   );
   border-radius: 12px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  border: 2px solid var(--nusuqai-light-bg);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    to bottom,
-    var(--nusuqai-cyan),
-    var(--nusuqai-teal)
-  );
-}
-
-/* Show scrollbar on hover or while scrolling */
-*:hover::-webkit-scrollbar-thumb,
-*:active::-webkit-scrollbar-thumb {
-  opacity: 1;
-}
-
-/* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-  transition: scrollbar-color 0.3s ease;
+  scrollbar-color: var(--nusuqai-teal) var(--nusuqai-light-bg);
 }
 
-*:hover,
-*:active {
-  scrollbar-color: var(--nusuqai-teal) transparent;
-}

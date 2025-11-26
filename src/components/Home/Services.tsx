@@ -96,7 +96,7 @@ export function ServicesSection() {
     e.preventDefault();
     
     const x = e.pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX.current) * 2;
+    const walk = (x - startX.current);
     if (Math.abs(x - startX.current) > 5) {
       setIsDragging(true);
     }
@@ -120,7 +120,7 @@ export function ServicesSection() {
   };
 
   return (
-    <section className="py-20 bg-white relative overflow-hidden" id="services">
+    <section className="py-10 bg-white relative overflow-hidden" id="services">
       <div className="absolute top-20 left-10 w-96 h-96 bg-[#00E0FF]/5 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#00D4C2]/5 rounded-full blur-3xl" />
 
