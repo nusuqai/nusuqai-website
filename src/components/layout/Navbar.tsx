@@ -52,7 +52,7 @@ export default function Navbar() {
   return (
     <nav dir="ltr" className="rtl:text-center fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
       <Container>
-        <div className="rtl:text-center rtl:flex-row-reverse flex items-center justify-between h-20 px-4 sm:px-6 lg:px-8">
+        <div className="rtl:text-center rtl:flex-row-reverse flex items-center justify-between h-20 px-4 rtl:pr-0 sm:px-6 lg:px-8">
           <div className="rtl:text-center flex-shrink-0 relative w-[140px] sm:w-[180px] lg:w-[200px]">
             <Link href="/" className="block w-full h-full">
               <Image
