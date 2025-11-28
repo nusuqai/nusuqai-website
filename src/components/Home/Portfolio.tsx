@@ -16,15 +16,15 @@ export default function PortfolioShowcase() {
       features: t("projects.ecommerce.features"),
       team: t("projects.ecommerce.team")
     },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop",
-      title: t("projects.voucher.title"),
-      description: t("projects.voucher.description"),
-      client: t("projects.voucher.client"),
-      features: t("projects.voucher.features"),
-      team: t("projects.voucher.team")
-    }
+    // {
+    //   id: 2,
+    //   image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop",
+    //   title: t("projects.voucher.title"),
+    //   description: t("projects.voucher.description"),
+    //   client: t("projects.voucher.client"),
+    //   features: t("projects.voucher.features"),
+    //   team: t("projects.voucher.team")
+    // }
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);

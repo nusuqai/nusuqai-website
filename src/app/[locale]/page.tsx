@@ -12,9 +12,9 @@ export default function Home() {
     <main className="overflow-x-hidden">
       <HeroSection />
       <ServicesSection />
-      <AboutSection />      
       <PortfolioShowcase />
       <UseCases />
+      <AboutSection />      
       <TestimonialsSection />
       <FAQSection />
       <CTA />
