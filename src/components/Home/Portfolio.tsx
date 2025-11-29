@@ -9,7 +9,7 @@ export default function PortfolioShowcase() {
   const projects = [
     {
       id: 1,
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
+      image: "./demo.png",
       title: t("projects.ecommerce.title"),
       description: t("projects.ecommerce.description"),
       client: t("projects.ecommerce.client"),
