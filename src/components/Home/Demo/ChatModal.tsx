@@ -18,17 +18,21 @@ import {
 import { sendChatMessage } from "@/app/actions/chat";
 import ReactMarkdown from "react-markdown";
 
+
+interface ChatModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  sendChatMessage: (msg: string) => Promise<any>;
+}
+
+
+
 // --- Types ---
 interface Message {
   id: number;
   type: "bot" | "user";
   text: string;
   timestamp: Date;
-}
-
-interface ChatModalProps {
-  isOpen: boolean;
-  onClose: () => void;
 }
 
 interface PromptSuggestion {
@@ -57,7 +61,7 @@ const PROMPT_SUGGESTIONS: PromptSuggestion[] = [
   },
 ];
 
-export function ChatModal({ isOpen, onClose }: ChatModalProps) {
+export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) {
   // --- State ---
   const [messages, setMessages] = useState<Message[]>([
     {
