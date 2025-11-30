@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useTranslations, useLocale } from "next-intl";
 import { ChatModal } from "./Demo/ChatModal"; // Import the ChatModal component
 import { ArrowRight } from "lucide-react";
+import { sendChatMessage } from "@/app/actions/chat";
 
 export default function PortfolioShowcase() {
   const t = useTranslations("Portfolio");
@@ -193,7 +194,11 @@ export default function PortfolioShowcase() {
       </section>
 
       {/* Chat Modal */}
-      <ChatModal isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+      <ChatModal 
+        isOpen={isChatOpen} 
+        onClose={() => setIsChatOpen(false)}
+        sendChatMessage={sendChatMessage}
+/>
     </>
   );
 }
