@@ -16,6 +16,7 @@ import {
   PanelLeftOpen,
 } from "lucide-react";
 import { sendChatMessage } from "@/app/actions/chat";
+import ReactMarkdown from "react-markdown";
 
 // --- Types ---
 interface Message {
@@ -326,7 +327,38 @@ export function ChatModal({ isOpen, onClose }: ChatModalProps) {
                               : "bg-white text-gray-800 border border-gray-200/60 rounded-2xl rounded-tl-sm"
                           }`}
                         >
-                          {message.text}
+                          {message.type === "bot" ? (
+                            <div className="prose prose-sm max-w-none prose-p:my-2 prose-pre:bg-gray-100 prose-pre:text-gray-800 prose-code:text-gray-800 prose-headings:text-gray-900 prose-strong:text-gray-900 prose-ul:my-2 prose-ol:my-2 prose-li:my-0">
+                              <ReactMarkdown
+                                components={{
+                                  code: ({
+                                    node,
+                                    className,
+                                    children,
+                                    ...props
+                                  }) => {
+                                    const isInline = !className;
+                                    return isInline ? (
+                                      <code
+                                        className="bg-gray-100 text-gray-800 px-1 py-0.5 rounded text-xs"
+                                        {...props}
+                                      >
+                                        {children}
+                                      </code>
+                                    ) : (
+                                      <code className={className} {...props}>
+                                        {children}
+                                      </code>
+                                    );
+                                  },
+                                }}
+                              >
+                                {message.text}
+                              </ReactMarkdown>
+                            </div>
+                          ) : (
+                            message.text
+                          )}
                         </div>
                         <span className="text-[10px] text-gray-400 px-1">
                           {message.timestamp.toLocaleTimeString([], {
