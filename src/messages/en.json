@@ -1,241 +1,238 @@
 {
-  "Navbar": {
-    "services": "Services",
-    "ourWork": "Our Work",
-    "useCases": "Use Cases",
-    "about": "About us",
-    "contact": "Contact"
-  },
-  "Hero": {
-    "badge": "AI-Integration solutions",
-    "title": "Seamlessly Connect Your LLMs to Your Infrastructure",
-    "description": "Transform isolated chatbots into powerful agents. We specialize in end-to-end AI adoption and MCP architecture to make your systems talk to each other.",
-    "bookMeeting": "Book a Meeting",
-    "portfolio": "Our portfolio",
-    "tryDemo": "Try Our Demo",
-    "slides": {
-      "ecommerce": {
-        "title": "Connect MCP to your E-Commerce",
-        "subtitle": "Make your LLMs interact with your store's APIs"
-      },
-      "warehouse": {
-        "title": "AI-Powered Warehouse Management",
-        "subtitle": "Optimize inventory with intelligent systems"
-      },
-      "portal": {
-        "title": "Smart Hotel Booking Recommendations",
-        "subtitle": "AI Recommendations for Optimal Stays"
-      }
-    }
-  },
-  "Services": {
-    "title": "Explore What We Offer",
-    "description": "Comprehensive digital solutions tailored to your business needs",
-    "items": {
-      "webDev": {
-        "title": "Web Development",
-        "description": "Building scalable and performant web applications with modern technologies"
-      },
-      "rag": {
-        "title": "RAG Systems",
-        "description": "Retrieval-Augmented Generation systems to enhance LLM responses with real-time data"
-      },
-      "mcp": {
-        "title": "MCP Integration",
-        "description": "Integrate the Model Context Protocol into your applications for seamless data access"
-      },
-      "mobile": {
-        "title": "Mobile Apps",
-        "description": "Design and develop user-friendly mobile applications for iOS and Android"
-      },
-      "ai": {
-        "title": "AI Integration",
-        "description": "Leverage ChatGPT and AI to automate and enhance your applications"
-      },
-      "chatbots": {
-        "title": "Chatbots",
-        "description": "Develop intelligent chatbots to improve customer engagement and support"
-      }
-    }
-  },
-  "Portfolio": {
-    "title": "Our Work",
-    "description": "Explore Demos and Case Studies of Our Recent Projects",
-    "projects": {
-      "ecommerce": {
-        "title": "Intelligent E-Commerce Assistant Leverages MCP To Connect Salla APIs For Real-Time Store Management And Conversational Shopping.",
-        "description": "Revolutionizing the merchant and shopper experience by integrating Large Language Models directly with the Salla ecosystem. Using the Model Context Protocol (MCP), this intelligent agent bypasses traditional UI, allowing users to query inventory, process orders, and fetch real-time analytics using natural language.",
-        "client": "Internal Prototype",
-        "features": "MCP Integration",
-        "team": "Demo"
-      },
-      "voucher": {
-        "title": "Dynamic Voucher Management System Enables Businesses To Generate Secure Coupons And Automate Redemption For Seamless Loyalty Campaigns",
-        "description": "We delivered a robust promotional infrastructure that manages the entire lifecycle of digital coupons. The system handles high-volume code generation with complex validation logic to prevent fraud, ensuring that vouchers are redeemed securely and only within their specific validity parameters.",
-        "client": "Internal Prototype",
-        "features": "MCP Integration",
-        "team": "Demo"
-      }
-    },
-    "stats": {
-      "client": "Client",
-      "integrations": "Integrations",
-      "team": "Team"
-    }
-  },
-  "About": {
-  "title": "Learn More About Us",
-  "description": "We simplify your user journey with AI tools that boost engagement, efficiency, and revenue.",
-  "tabs": {
-    "story": {
-      "label": "Our Story",
-      "title": "Empowering Businesses With Smarter Digital Experiences",
-      "content": "We're NusuqAI, a team of AI engineers helping businesses deliver smoother, faster, and smarter user experiences Whether you want to connect your website or app to AI tools or build a fully tailored AI system, we make the entire process simple, scalable, and effective."
-    },
-    "problem": {
-      "label": "Problem",
-      "title": "Users Expect Simpler, Faster, Smarter Experiences",
-      "content": "Today, people expect apps and websites to be effortless. The easier your product is to use, the more customers engage, convert, and stay loyal. But many businesses struggle with outdated user flows, slow processes, and experiences that don't match modern expectations."
-    },
-    "solution": {
-      "label": "Solution",
-      "title": "NusuqAI: Seamless AI Integration",
-      "content": "We help businesses integrate AI into their digital products with ease. Our team builds and connects intelligent systems, from AI chatbots to automated workflows, enabling users to perform actions directly through ChatGPT or your own AI assistant."
-    },
-    "whynow": {
-      "label": "Why Now",
-      "title": "AI Platforms Are Evolving",
-      "content": "ChatGPT is becoming a full application platform similar to Google Play and the App Store. Early adopters are already launching tools inside it. This is the perfect moment for businesses to build their presence in this new ecosystem."
-    },
-    "caseStudies": {
-      "label": "Case Studies",
-      "booking": {
-        "title": "Booking.com: Seamless Travel Planning",
-        "content": "By connecting Booking.com to ChatGPT through a dedicated assistant, users can explore hotels, find the best deals, and apply filters using simple text or voice."
-      },
-      "spotify": {
-        "title": "Spotify: Revolutionizing Music Discovery",
-        "content": "With ChatGPT integration, Spotify users can add songs, explore new music, and create personalized playlists instantly through conversation, completely transforming music discovery."
-      }
-    }
+ "Navbar": {
+  "services": "Services",
+  "ourWork": "Our Work",
+  "useCases": "Use Cases",
+  "about": "About us",
+  "contact": "Contact"
+ },
+ "Hero": {
+  "badge": "AI-Integration solutions",
+  "title": "Seamlessly Connect Your LLMs to Your Infrastructure",
+  "description": "Transform isolated chatbots into powerful agents. We specialize in end-to-end AI adoption to make your systems talk to each other.",
+  "bookMeeting": "Book a Meeting",
+  "portfolio": "Our portfolio",
+  "tryDemo": "Try Our Demo",
+  "slides": {
+   "ecommerce": {
+    "title": "Connect Chatbot to your E-Commerce",
+    "subtitle": "Make your LLMs interact with your store's APIs"
+   },
+   "warehouse": {
+    "title": "AI-Powered Warehouse Management",
+    "subtitle": "Optimize inventory with intelligent systems"
+   },
+   "portal": {
+    "title": "Smart Hotel Booking Recommendations",
+    "subtitle": "AI Recommendations for Optimal Stays"
+   }
   }
+ },
+ "Services": {
+  "title": "Explore What We Offer",
+  "description": "Comprehensive digital solutions tailored to your business needs",
+  "items": {
+   "webDev": {
+    "title": "Web Development",
+    "description": "Building scalable and performant web applications with modern technologies"
+   },
+   "rag": {
+    "title": "RAG Systems",
+    "description": "Retrieval-Augmented Generation systems to enhance LLM responses with real-time data"
+   },
+   "mobile": {
+    "title": "Mobile Apps",
+    "description": "Design and develop user-friendly mobile applications for iOS and Android"
+   },
+   "ai": {
+    "title": "AI Integration",
+    "description": "Leverage ChatGPT and AI to automate and enhance your applications"
+   },
+   "chatbots": {
+    "title": "Chatbots",
+    "description": "Develop intelligent chatbots to improve customer engagement and support"
+   }
+  }
+ },
+ "Portfolio": {
+  "title": "Our Work",
+  "description": "Explore Demos and Case Studies of Our Recent Projects",
+  "projects": {
+   "ecommerce": {
+    "title": "Intelligent E-Commerce Chatbot that Connects Salla APIs For Real-Time Store Management And Conversational Shopping.",
+    "description": "Revolutionizing the merchant and shopper experience by integrating Large Language Models directly with the Salla ecosystem. this intelligent agent bypasses traditional UI, allowing users to query inventory, process orders, and fetch real-time analytics using natural language.",
+    "client": "Internal Prototype",
+    "features": "AI Integration",
+    "team": "Demo"
+   },
+   "voucher": {
+    "title": "Dynamic Voucher Management System Enables Businesses To Generate Secure Coupons And Automate Redemption For Seamless Loyalty Campaigns",
+    "description": "We delivered a robust promotional infrastructure that manages the entire lifecycle of digital coupons. The system handles high-volume code generation with complex validation logic to prevent fraud, ensuring that vouchers are redeemed securely and only within their specific validity parameters.",
+    "client": "Internal Prototype",
+    "features": "AI Integration",
+    "team": "Demo"
+   }
+  },
+  "stats": {
+   "client": "Client",
+   "integrations": "Integrations",
+   "team": "Team"
+  }
+ },
+ "About": {
+ "title": "Learn More About Us",
+ "description": "We simplify your user journey with AI tools that boost engagement, efficiency, and revenue.",
+ "tabs": {
+  "story": {
+   "label": "Our Story",
+   "title": "Empowering Businesses With Smarter Digital Experiences",
+   "content": "We're NusuqAI, a team of AI engineers helping businesses deliver smoother, faster, and smarter user experiences Whether you want to connect your website or app to AI tools or build a fully tailored AI system, we make the entire process simple, scalable, and effective."
+  },
+  "problem": {
+   "label": "Problem",
+   "title": "Users Expect Simpler, Faster, Smarter Experiences",
+   "content": "Today, people expect apps and websites to be effortless. The easier your product is to use, the more customers engage, convert, and stay loyal. But many businesses struggle with outdated user flows, slow processes, and experiences that don't match modern expectations."
+  },
+  "solution": {
+   "label": "Solution",
+   "title": "NusuqAI: Seamless AI Integration",
+   "content": "We help businesses integrate AI into their digital products with ease. Our team builds and connects intelligent systems, from AI chatbots to automated workflows, enabling users to perform actions directly through ChatGPT or your own AI assistant."
+  },
+  "whynow": {
+   "label": "Why Now",
+   "title": "AI Platforms Are Evolving",
+   "content": "ChatGPT is becoming a full application platform similar to Google Play and the App Store. Early adopters are already launching tools inside it. This is the perfect moment for businesses to build their presence in this new ecosystem."
+  },
+  "caseStudies": {
+   "label": "Case Studies",
+   "booking": {
+    "title": "Booking.com: Seamless Travel Planning",
+    "content": "By connecting Booking.com to ChatGPT through a dedicated assistant, users can explore hotels, find the best deals, and apply filters using simple text or voice."
+   },
+   "spotify": {
+    "title": "Spotify: Revolutionizing Music Discovery",
+    "content": "With ChatGPT integration, Spotify users can add songs, explore new music, and create personalized playlists instantly through conversation, completely transforming music discovery."
+   }
+  }
+ }
 },
-  "UseCases": {
-    "title": "Built on the Model Context Protocol",
-    "description": "We don't just build chatbots. We build interoperable systems that securely connect your AI models to your actual data.",
-    "cases": {
-      "knowledge": {
-        "title": "Unified MCP Interface",
-        "subtitle": "Connect all your data",
-        "description": "Instead of building separate connectors for each AI model, the Model Context Protocol (MCP) provides a unified interface to connect your knowledge sources. This allows any LLM to securely access your databases, file systems, and APIs through a standard protocol."
-      },
-      "actions": {
-        "title": "Read/Write Pipelines",
-        "subtitle": "From query to action",
-        "description": "Move beyond passive chat. Setup MCP servers that can listen to database streams and trigger API actions safely, turning your LLM into an active participant in your infrastructure."
-      },
-      "support": {
-        "title": "AI Customer Support",
-        "subtitle": "Service Automation",
-        "description": "Instead of generic answers, the bot pulls actual customer history from the CRM and solutions from the Knowledge Base to resolve tickets and trigger workflows automatically."
-      }
-    },
-    "exploreIntegration": "Explore Integration",
-    "mcpProtocol": "MCP Protocol"
+ "UseCases": {
+  "title": "AI That Takes Action",
+  "description": "We don't just build chatbots. We build interoperable systems that securely connect your AI models to your actual data.",
+  "cases": {
+   "knowledge": {
+    "title": "Unified Interface",
+    "subtitle": "Connect all your data",
+    "description": "Instead of building separate connectors for each AI model, we create a unified interface to connect your knowledge sources. This allows any LLM to securely access your databases, file systems, and APIs through a standard way."
+   },
+   "actions": {
+    "title": "Read/Write Pipelines",
+    "subtitle": "From query to action",
+    "description": "Move beyond passive chat. build chatbots that can listen to database streams and trigger API actions safely, turning your LLM into an active participant in your infrastructure."
+   },
+   "support": {
+    "title": "AI Customer Support",
+    "subtitle": "Service Automation",
+    "description": "Instead of generic answers, the bot pulls actual customer history from the CRM and solutions from the Knowledge Base to resolve tickets and trigger workflows automatically."
+   }
   },
-  "Testimonials": {
-    "title": "What Our Clients Say",
-    "items": {
-      "1": {
-        "text": "Lorem Ipsum is simply dummy text of the printing typesetting industry Lorem Ipsum.",
-        "name": "Robert Browsman",
-        "company": "Google"
-      },
-      "2": {
-        "text": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point using lorem ipsum is it a long established fact that a reader.",
-        "name": "Nelson Mendela",
-        "company": "Google"
-      },
-      "3": {
-        "text": "Lorem Ipsum is simply dummy text of the printing typesetting industry Lorem Ipsum.",
-        "name": "Stephen Hawking",
-        "company": "Google"
-      },
-      "4": {
-        "text": "The team delivered exceptional results beyond our expectations. Their attention to detail and commitment to quality is unmatched in the industry.",
-        "name": "Sarah Johnson",
-        "company": "Microsoft"
-      }
-    }
-  },
-  "FAQ": {
-    "title": "Frequently Asked Questions",
-    "description": "Have questions about our AI solutions? Here are some common queries we receive from businesses like yours.",
-    "items": {
-      "1": {
-        "question": "What exactly is MCP and why should my business care?",
-        "answer": "MCP (Model Context Protocol) is a universal standard that lets AI models access tools, data, and workflows in a structured, secure way. In simpler terms: it removes the chaos from AI integrations and makes everything consistent, scalable, and easier to maintain."
-      },
-      "2": {
-        "question": "Do we need technical knowledge to use MCP integrations?",
-        "answer": "Not at all. We handle all the technical setup, model routing, MCP server configuration, and tool definitions. You just tell us what problems you want solved, and we make the AI handle them."
-      },
-      "3": {
-        "question": "Can you integrate MCP with our existing tools or internal APIs?",
-        "answer": "Yes. MCP is designed for modularity. We can connect your internal APIs, databases, authentication systems, and third-party tools to create a unified AI-powered interface that works across your entire software ecosystem."
-      },
-      "4": {
-        "question": "Is our data safe when using your AI systems?",
-        "answer": "Absolutely. MCP forces strict boundaries on what the AI can access. We implement access controls, sandboxing, encryption, and on-premise deployment options to guarantee your data stays secure and under your control."
-      }
-    }
-  },
-  "CTA": {
-    "title": "Ready to Transform Your Business with AI?",
-    "description": "Schedule a free consultation with us. We'll assess your needs and show you how AI can work seamlessly with your existing infrastructure.",
-    "emailLabel": "Email Us",
-    "phoneLabel": "Phone Number",
-    "formTitle": "Get Started Today",
-    "form": {
-      "name": "Full Name",
-      "email": "Work Email",
-      "company": "Company Name",
-      "message": "Tell us about your needs",
-      "messagePlaceholder": "What AI integration challenges are you looking to solve?",
-      "submit": "Book a Meeting",
-      "privacy": "By submitting this form, you agree to our privacy policy.",
-      "successTitle": "Form Submitted Successfully!",
-      "successMessage": "You will hear from us back shortly."
-    }
-  },
-  "Animations": {
-    "database": {
-      "postgres": "Postgres",
-      "dashboard": "Dashboard"
-    },
-    "knowledge": {
-      "github": "GitHub",
-      "postgres": "Postgres",
-      "slack": "Slack",
-      "drive": "Drive",
-      "api": "REST API",
-      "json": "Local Data",
-      "aiBot": "AI Bot",
-      "mcpProtocol": "MCP Protocol",
-      "unified": "Unified MCP Interface",
-      "unifiedDesc": "One protocol connecting all knowledge sources.",
-      "fragmented": "Fragmented Integrations",
-      "fragmentedDesc": "Multiple custom, brittle API connections."
-    },
-    "support": {
-      "ticket": "Ticket",
-      "userDb": "User DB",
-      "knowledge": "Knowledge",
-      "result": "Result",
-      "analyzing": "Analyzing Request",
-      "accessing": "Accessing Database",
-      "querying": "Querying Knowledge Base",
-      "resolving": "Resolving"
-    }
+  "exploreIntegration": "Explore Integration",
+  "mcpProtocol": " "
+ },
+ "Testimonials": {
+  "title": "What Our Clients Say",
+  "items": {
+   "1": {
+    "text": "Lorem Ipsum is simply dummy text of the printing typesetting industry Lorem Ipsum.",
+    "name": "Robert Browsman",
+    "company": "Google"
+   },
+   "2": {
+    "text": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point using lorem ipsum is it a long established fact that a reader.",
+    "name": "Nelson Mendela",
+    "company": "Google"
+   },
+   "3": {
+    "text": "Lorem Ipsum is simply dummy text of the printing typesetting industry Lorem Ipsum.",
+    "name": "Stephen Hawking",
+    "company": "Google"
+   },
+   "4": {
+    "text": "The team delivered exceptional results beyond our expectations. Their attention to detail and commitment to quality is unmatched in the industry.",
+    "name": "Sarah Johnson",
+    "company": "Microsoft"
+   }
   }
+ },
+
+ "FAQ": {
+  "title": "Frequently Asked Questions",
+  "description": "Have questions about our AI solutions? Here are some common queries we receive from businesses like yours.",
+  "items": {
+   "1": {
+    "question": "How can your AI solutions help my business?",
+    "answer": "Our AI solutions transform how you operate by automating repetitive tasks, enhancing customer experiences, and unlocking insights from your data. Whether you need intelligent chatbots, process automation, or data-driven decision support, we build custom AI systems that integrate seamlessly with your existing workflows helping you save time, reduce costs, and scale efficiently."
+   },
+   "2": {
+    "question": "What are your pricing plans?",
+    "answer": "Our pricing is customizable based on your project's scope, complexity, and specific requirements."
+   },
+   "3": {
+    "question": "Do I need technical expertise to work with your team?",
+    "answer": "Not at all. We handle all the technical complexity for you. Our team works closely with you to understand your business challenges in plain language, then translates those needs into powerful AI solutions. We provide intuitive interfaces and comprehensive training so your team can leverage the AI effectively no coding required on your end."
+   },
+    "4": {
+    "question": "What industries do you work with?",
+    "answer": "We work across a diverse range of industries including e-commerce, healthcare, finance, logistics, education, and professional services. Our approach is industry-agnostic—we focus on understanding your unique business processes and challenges, then craft AI solutions tailored to your specific operational needs, regardless of your sector."
+   }
+  }
+ },
+ "CTA": {
+  "title": "Ready to Transform Your Business with AI?",
+  "description": "Schedule a free consultation with us. We'll assess your needs and show you how AI can work seamlessly with your existing infrastructure.",
+  "emailLabel": "Email Us",
+  "phoneLabel": "Phone Number",
+  "formTitle": "Get Started Today",
+  "form": {
+   "name": "Full Name",
+   "email": "Work Email",
+   "company": "Company Name",
+   "message": "Tell us about your needs",
+   "messagePlaceholder": "What AI integration challenges are you looking to solve?",
+   "submit": "Book a Meeting",
+   "privacy": "By submitting this form, you agree to our privacy policy.",
+   "successTitle": "Form Submitted Successfully!",
+   "successMessage": "You will hear from us back shortly."
+  }
+ },
+ "Animations": {
+  "database": {
+   "postgres": "Postgres",
+   "dashboard": "Dashboard"
+  },
+  "knowledge": {
+   "github": "GitHub",
+   "postgres": "Postgres",
+   "slack": "Slack",
+   "drive": "Drive",
+   "api": "REST API",
+   "json": "Local Data",
+   "aiBot": "AI Bot",
+   "mcpProtocol": "AI Protocol",
+   "unified": "Unified Interface",
+   "unifiedDesc": "connecting all knowledge sources.",
+   "fragmented": "Fragmented Integrations",
+   "fragmentedDesc": "Multiple custom, brittle API connections."
+  },
+  "support": {
+   "ticket": "Ticket",
+   "userDb": "User DB",
+   "knowledge": "Knowledge",
+   "result": "Result",
+   "analyzing": "Analyzing Request",
+   "accessing": "Accessing Database",
+   "querying": "Querying Knowledge Base",
+   "resolving": "Resolving"
+  }
+ }
 }

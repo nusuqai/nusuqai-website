@@ -3,7 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslations, useLocale } from "next-intl";
 import { ChatModal } from "./Demo/ChatModal"; // Import the ChatModal component
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { sendChatMessage } from "@/app/actions/chat";
 
 export default function PortfolioShowcase() {
@@ -182,8 +182,13 @@ export default function PortfolioShowcase() {
                       className="ml-auto flex items-center gap-2 text-[#0F1E3D] hover:text-[#00E0FF] transition-colors group"
                     >
                       <span className="text-sm font-medium">Try demo</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </button>
+                      {!IsRTL ? (
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      ) : (
+                        <ArrowLeft className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      )}
+
+                      </button>
                   </div>
                   
                 </motion.div>

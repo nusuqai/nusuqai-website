@@ -24,28 +24,22 @@ export function ServicesSection() {
       color: "#00E0FF",
     },
     {
-      icon: Cable,
-      title: t("items.mcp.title"),
-      description: t("items.mcp.description"),
-      color: "#00D4C2",
-    },
-    {
       icon: Smartphone,
       title: t("items.mobile.title"),
       description: t("items.mobile.description"),
-      color: "#00E0FF",
+      color: "#00D4C2",
     },
     {
       icon: Zap,
       title: t("items.ai.title"),
       description: t("items.ai.description"),
-      color: "#00D4C2",
+      color: "#00E0FF",
     },
     {
       icon: Bot,
       title: t("items.chatbots.title"),
       description: t("items.chatbots.description"),
-      color: "#00E0FF",
+      color: "#00D4C2",
     },
   ];
 

@@ -32,7 +32,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <button onClick={() => scrollToSection('services')} className="hover:text-white transition-colors">
-                  MCP Development
+                  App Development
                 </button>
               </li>
               <li>

@@ -127,7 +127,7 @@ export default function KnowledgeGraphAnim() {
                   />
               </div>
               <span className="bg-[#00D4C2] text-white text-[8px] md:text-xs font-bold px-2 md:px-3 py-1 rounded-full shadow-sm whitespace-nowrap">
-                MCP Protocol
+                Unified Interface
               </span>
             </div>
           </motion.div>
@@ -170,13 +170,13 @@ export default function KnowledgeGraphAnim() {
             exit={{ opacity: 0, y: -10 }}
             className="inline-block"
         >
-<h3 className="text-[0.55rem] sm:text-[0.65rem] md:text-sm font-semibold text-[#0F1E3D]">
-  {isUnified ? "Unified MCP Interface" : "Fragmented Integrations"}
-</h3>
+{/* <h3 className="text-[0.55rem] sm:text-[0.65rem] md:text-sm font-semibold text-[#0F1E3D]">
+  {isUnified ? "Unified Interface" : "Fragmented Integrations"}
+</h3> */}
 
 <p className="text-[0.45rem] sm:text-[0.55rem] md:text-[0.65rem] text-slate-500 mt-0.5 md:mt-1">
   {isUnified 
-    ? "One protocol connecting all knowledge sources." 
+    ? "Connect all your knowledge sources." 
     : "Multiple custom, brittle API connections."}
 </p>
 
