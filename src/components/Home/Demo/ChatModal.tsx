@@ -14,6 +14,7 @@ import {
   ExternalLink,
   PanelLeftClose,
   PanelLeftOpen,
+  CirclePlus,
 } from "lucide-react";
 import { sendChatMessage } from "@/app/actions/chat";
 import ReactMarkdown from "react-markdown";
@@ -43,9 +44,9 @@ const PROMPT_SUGGESTIONS: PromptSuggestion[] = [
   {
     icon: Package,
     title: "Browse Products",
-    prompt: "Show me all available products",
+    prompt: "Show me available products",
   },
-  { icon: Search, title: "Search Items", prompt: "Search for electronics" },
+  { icon: Search, title: "Search Items", prompt: "Search for winter clothes" },
   {
     icon: ShoppingCart,
     title: "Check Inventory",
@@ -54,12 +55,21 @@ const PROMPT_SUGGESTIONS: PromptSuggestion[] = [
   {
     icon: Package,
     title: "Product Details",
-    prompt: "Tell me about product ID 12345",
+    prompt: "Tell me about product {Product Name or ID}",
   },
+{ 
+    icon: CirclePlus,
+    title: "Add Product",
+    prompt: `Add this product to the store:
+  Product Name: 
+  Description: 
+  Price: 
+  Image URL: 
+  Quantity: `,
+    },
 ];
 
 export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) {
-  // --- State ---
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
