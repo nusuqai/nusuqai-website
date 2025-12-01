@@ -137,7 +137,7 @@ export function HeroSection() {
 
             <button
               className="flex items-center gap-3 group transition-all hover:opacity-80 pt-2 lg:pt-0 w-full lg:w-auto justify-center lg:justify-start"
-              onClick={() => window.location.href = "#video"}
+              onClick={() => window.location.href = "#portfolio"}
             >
               <div className="w-10 h-10 rounded-full border-[1.5px] border-[#00E0FF] flex items-center justify-center bg-white group-hover:bg-[#00E0FF]/5 transition-colors">
                 <Play className="w-4 h-4 text-[#00E0FF] fill-current ml-0.5" />
