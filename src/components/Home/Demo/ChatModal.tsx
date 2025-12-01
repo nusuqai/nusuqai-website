@@ -18,14 +18,11 @@ import {
 import { sendChatMessage } from "@/app/actions/chat";
 import ReactMarkdown from "react-markdown";
 
-
 interface ChatModalProps {
   isOpen: boolean;
   onClose: () => void;
   sendChatMessage: (msg: string) => Promise<any>;
 }
-
-
 
 // --- Types ---
 interface Message {
@@ -105,7 +102,7 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
 
   // --- Handlers ---
   const handleSend = async () => {
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() || isTyping) return;
 
     const userMessage: Message = {
       id: Date.now(),
@@ -124,11 +121,10 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
       const botMessage: Message = {
         id: Date.now() + 1,
         type: "bot",
-        text: result.success
-          ? result.data?.response ||
-            result.data?.message ||
-            "Request processed."
-          : "I couldn't complete that request.",
+        text:
+          result.success
+            ? result.data?.response || result.data?.message || "Request processed."
+            : "I couldn't complete that request.",
         timestamp: new Date(),
       };
 
@@ -154,7 +150,7 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && isTyping == false) {
       e.preventDefault();
       handleSend();
     }
@@ -216,12 +212,11 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
 
           {/* Modal Container */}
           <motion.div
-           dir="ltr"
+            dir="ltr"
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.2 }}
-            // LAYOUT UPDATE: Increased desktop size (w-[1100px], h-[85vh])
             className="fixed z-50 flex flex-col overflow-hidden bg-white shadow-2xl
               w-[92vw] h-[80vh] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl
               sm:w-[1100px] sm:h-[85vh] sm:max-h-[800px]"
@@ -321,50 +316,115 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                       }`}
                     >
                       <div
-                        className={`max-w-[85%] sm:max-w-[70%] space-y-1 ${
-                          message.type === "user" ? "items-end" : "items-start"
+                        className={`max-w-[90%] sm:max-w-[75%] space-y-1 ${
+                          message.type === "user"
+                            ? "items-end"
+                            : "items-start"
                         } flex flex-col`}
                       >
+                        {/* --- MESSAGE BUBBLE STARTS HERE --- */}
                         <div
-                          className={`px-4 py-3 text-[14px] sm:text-[15px] leading-relaxed shadow-sm ${
+                          className={`px-4 py-3 text-[15px] leading-relaxed shadow-sm w-full overflow-hidden ${
                             message.type === "user"
                               ? "bg-[#0F1E3D] text-white rounded-2xl rounded-tr-sm"
-                              : "bg-white text-gray-800 border border-gray-200/60 rounded-2xl rounded-tl-sm"
+                              : "bg-white text-gray-900 border border-gray-200/60 rounded-2xl rounded-tl-sm"
                           }`}
                         >
-                          {message.type === "bot" ? (
-                            <div className="prose prose-sm max-w-none prose-p:my-2 prose-pre:bg-gray-100 prose-pre:text-gray-800 prose-code:text-gray-800 prose-headings:text-gray-900 prose-strong:text-gray-900 prose-ul:my-2 prose-ol:my-2 prose-li:my-0">
+                          {message.type === "user" ? (
+                            // Render user text simply without Markdown overhead
+                            <div className="whitespace-pre-wrap">
+                              {message.text}
+                            </div>
+                          ) : (
+                            // Render Bot text with Markdown
+                            <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-2 prose-li:my-0.5 prose-img:my-2 text-inherit dark:prose-invert break-words">
                               <ReactMarkdown
                                 components={{
-                                  code: ({
-                                    node,
-                                    className,
-                                    children,
-                                    ...props
-                                  }) => {
-                                    const isInline = !className;
-                                    return isInline ? (
-                                      <code
-                                        className="bg-gray-100 text-gray-800 px-1 py-0.5 rounded text-xs"
-                                        {...props}
-                                      >
-                                        {children}
-                                      </code>
-                                    ) : (
-                                      <code className={className} {...props}>
-                                        {children}
-                                      </code>
-                                    );
-                                  },
+                                  // Auto-Detect Text Direction
+                                  p: ({ children }) => (
+                                    <p dir="auto" className="m-0 mb-2 last:mb-0">
+                                      {children}
+                                    </p>
+                                  ),
+                                  h1: ({ children }) => (
+                                    <h1 dir="auto" className="text-lg font-bold mb-2">
+                                      {children}
+                                    </h1>
+                                  ),
+                                  h2: ({ children }) => (
+                                    <h2 dir="auto" className="text-base font-bold mb-2">
+                                      {children}
+                                    </h2>
+                                  ),
+                                  h3: ({ children }) => (
+                                    <h3 dir="auto" className="text-sm font-bold mb-1">
+                                      {children}
+                                    </h3>
+                                  ),
+                                  // Images: Stacked, Rounded, Styled
+                                  img: ({ src, alt }) => (
+                                    <div className="relative w-full my-3 overflow-hidden rounded-xl border border-gray-100 shadow-sm bg-gray-50">
+                                      <img
+                                        src={src || ""}
+                                        alt={alt || "Product Image"}
+                                        className="w-full h-auto max-h-[300px] object-cover object-center block m-0"
+                                        loading="lazy"
+                                      />
+                                    </div>
+                                  ),
+                                  // Lists: RTL friendly
+                                  ul: ({ children }) => (
+                                    <ul
+                                      dir="auto"
+                                      className="list-disc list-inside space-y-1 my-2 ps-2"
+                                    >
+                                      {children}
+                                    </ul>
+                                  ),
+                                  ol: ({ children }) => (
+                                    <ol
+                                      dir="auto"
+                                      className="list-decimal list-inside space-y-1 my-2 ps-2"
+                                    >
+                                      {children}
+                                    </ol>
+                                  ),
+                                  li: ({ children }) => (
+                                    <li className="marker:text-gray-400 text-inherit">
+                                      {children}
+                                    </li>
+                                  ),
+                                  // Links: Styled with icon
+                                  a: ({ href, children }) => (
+                                    <a
+                                      href={href}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-baseline gap-1 font-medium text-blue-600 hover:text-blue-700 hover:underline decoration-blue-300 underline-offset-2 transition-colors"
+                                      dir="auto"
+                                    >
+                                      <span>{children}</span>
+                                      <ExternalLink
+                                        size={12}
+                                        strokeWidth={2.5}
+                                        className="opacity-60 self-center"
+                                      />
+                                    </a>
+                                  ),
+                                  // Code blocks
+                                  code: ({ className, children }) => (
+                                    <code className="px-1.5 py-0.5 rounded-md bg-gray-100 text-gray-800 text-xs font-mono border border-gray-200">
+                                      {children}
+                                    </code>
+                                  ),
                                 }}
                               >
                                 {message.text}
                               </ReactMarkdown>
                             </div>
-                          ) : (
-                            message.text
                           )}
                         </div>
+
                         <span className="text-[10px] text-gray-400 px-1">
                           {message.timestamp.toLocaleTimeString([], {
                             hour: "2-digit",
