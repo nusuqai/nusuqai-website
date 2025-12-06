@@ -15,14 +15,17 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   CirclePlus,
+  Paperclip,
+  FileSpreadsheet,
+  FileText,
+  File,
 } from "lucide-react";
-import { sendChatMessage } from "@/app/actions/chat";
 import ReactMarkdown from "react-markdown";
 
 interface ChatModalProps {
   isOpen: boolean;
   onClose: () => void;
-  sendChatMessage: (msg: string) => Promise<any>;
+  sendChatMessage: (msg: string, file?: File) => Promise<any>;
 }
 
 // --- Types ---
@@ -31,6 +34,11 @@ interface Message {
   type: "bot" | "user";
   text: string;
   timestamp: Date;
+  file?: {
+    name: string;
+    size: number;
+    type: string;
+  };
 }
 
 interface PromptSuggestion {
@@ -57,7 +65,7 @@ const PROMPT_SUGGESTIONS: PromptSuggestion[] = [
     title: "Product Details",
     prompt: "Tell me about product {Product Name or ID}",
   },
-{ 
+  { 
     icon: CirclePlus,
     title: "Add Product",
     prompt: `Add this product to the store:
@@ -66,8 +74,23 @@ const PROMPT_SUGGESTIONS: PromptSuggestion[] = [
   Price: 
   Image URL: 
   Quantity: `,
-    },
+  },
 ];
+
+const ACCEPTED_FILE_TYPES = [
+  '.csv',
+  '.xls',
+  '.xlsx',
+  '.pdf',
+  '.docx',
+  'text/csv',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+];
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) {
   const [messages, setMessages] = useState<Message[]>([
@@ -81,10 +104,12 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -110,23 +135,79 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
     };
   }, [isOpen]);
 
+  // --- File Handling ---
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file size
+    if (file.size > MAX_FILE_SIZE) {
+      alert(`File size must be less than ${MAX_FILE_SIZE / (1024 * 1024)}MB`);
+      return;
+    }
+
+    // Validate file type
+    const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
+    if (!ACCEPTED_FILE_TYPES.some(type => type === fileExtension || type === file.type)) {
+      alert('Please upload a supported file type: CSV, Excel, PDF, or Word document');
+      return;
+    }
+
+    setSelectedFile(file);
+  };
+
+  const removeFile = () => {
+    setSelectedFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const getFileIcon = (fileName: string) => {
+    const ext = fileName.split('.').pop()?.toLowerCase();
+    if (ext === 'csv' || ext === 'xls' || ext === 'xlsx') {
+      return FileSpreadsheet;
+    } else if (ext === 'pdf' || ext === 'docx') {
+      return FileText;
+    }
+    return File;
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  };
+
   // --- Handlers ---
   const handleSend = async () => {
-    if (!inputValue.trim() || isTyping) return;
+    if ((!inputValue.trim() && !selectedFile) || isTyping) return;
 
     const userMessage: Message = {
       id: Date.now(),
       type: "user",
-      text: inputValue,
+      text: inputValue || (selectedFile ? `Uploaded file: ${selectedFile.name}` : ''),
       timestamp: new Date(),
+      file: selectedFile ? {
+        name: selectedFile.name,
+        size: selectedFile.size,
+        type: selectedFile.type
+      } : undefined
     };
 
     setMessages((prev) => [...prev, userMessage]);
+    const messageToSend = inputValue;
+    const fileToSend = selectedFile || undefined;
+    
     setInputValue("");
+    setSelectedFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
     setIsTyping(true);
 
     try {
-      const result = await sendChatMessage(inputValue);
+      const result = await sendChatMessage(messageToSend, fileToSend);
 
       const botMessage: Message = {
         id: Date.now() + 1,
@@ -160,7 +241,7 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey && isTyping == false) {
+    if (e.key === "Enter" && !e.shiftKey && !isTyping) {
       e.preventDefault();
       handleSend();
     }
@@ -340,17 +421,38 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                               : "bg-white text-gray-900 border border-gray-200/60 rounded-2xl rounded-tl-sm"
                           }`}
                         >
+                          {/* File attachment display */}
+                          {message.file && (
+                            <div className={`mb-2 flex items-center gap-2 p-2 rounded-lg ${
+                              message.type === "user" ? "bg-white/10" : "bg-gray-50"
+                            }`}>
+                              {(() => {
+                                const Icon = getFileIcon(message.file.name);
+                                return <Icon size={16} className={message.type === "user" ? "text-white" : "text-gray-600"} />;
+                              })()}
+                              <div className="flex-1 min-w-0">
+                                <p className={`text-xs font-medium truncate ${
+                                  message.type === "user" ? "text-white" : "text-gray-700"
+                                }`}>
+                                  {message.file.name}
+                                </p>
+                                <p className={`text-[10px] ${
+                                  message.type === "user" ? "text-white/70" : "text-gray-500"
+                                }`}>
+                                  {formatFileSize(message.file.size)}
+                                </p>
+                              </div>
+                            </div>
+                          )}
+
                           {message.type === "user" ? (
-                            // Render user text simply without Markdown overhead
                             <div className="whitespace-pre-wrap">
                               {message.text}
                             </div>
                           ) : (
-                            // Render Bot text with Markdown
                             <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-2 prose-li:my-0.5 prose-img:my-2 text-inherit dark:prose-invert break-words">
                               <ReactMarkdown
                                 components={{
-                                  // Auto-Detect Text Direction
                                   p: ({ children }) => (
                                     <p dir="auto" className="m-0 mb-2 last:mb-0">
                                       {children}
@@ -371,7 +473,6 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                                       {children}
                                     </h3>
                                   ),
-                                  // Images: Stacked, Rounded, Styled
                                   img: ({ src, alt }) => (
                                     <div className="relative w-full my-3 overflow-hidden rounded-xl border border-gray-100 shadow-sm bg-gray-50">
                                       <img
@@ -382,7 +483,6 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                                       />
                                     </div>
                                   ),
-                                  // Lists: RTL friendly
                                   ul: ({ children }) => (
                                     <ul
                                       dir="auto"
@@ -404,7 +504,6 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                                       {children}
                                     </li>
                                   ),
-                                  // Links: Styled with icon
                                   a: ({ href, children }) => (
                                     <a
                                       href={href}
@@ -421,8 +520,7 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                                       />
                                     </a>
                                   ),
-                                  // Code blocks
-                                  code: ({ className, children }) => (
+                                  code: ({ children }) => (
                                     <code className="px-1.5 py-0.5 rounded-md bg-gray-100 text-gray-800 text-xs font-mono border border-gray-200">
                                       {children}
                                     </code>
@@ -477,8 +575,54 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                     ))}
                   </div>
 
+                  {/* File Preview */}
+                  {selectedFile && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mb-3 p-3 bg-gray-50 border border-gray-200 rounded-lg"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                          {(() => {
+                            const Icon = getFileIcon(selectedFile.name);
+                            return <Icon size={20} className="text-gray-600 flex-shrink-0" />;
+                          })()}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">
+                              {selectedFile.name}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {formatFileSize(selectedFile.size)}
+                            </p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={removeFile}
+                          className="p-1 hover:bg-gray-200 rounded transition-colors flex-shrink-0"
+                        >
+                          <X size={16} className="text-gray-500" />
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+
                   {/* Input Field */}
                   <div className="relative flex items-start gap-2">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept={ACCEPTED_FILE_TYPES.join(',')}
+                      onChange={handleFileSelect}
+                      className="hidden"
+                    />
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="p-3.5 text-gray-500 hover:text-[#0F1E3D] hover:bg-gray-100 rounded-xl transition-all flex-shrink-0"
+                      title="Attach file"
+                    >
+                      <Paperclip size={18} />
+                    </button>
                     <textarea
                       ref={inputRef}
                       value={inputValue}
@@ -490,7 +634,7 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                     />
                     <button
                       onClick={handleSend}
-                      disabled={!inputValue.trim() || isTyping}
+                      disabled={(!inputValue.trim() && !selectedFile) || isTyping}
                       className="p-3.5 bg-[#0F1E3D] text-white rounded-xl hover:bg-[#1a2d4d] active:scale-95 disabled:opacity-50 disabled:scale-100 transition-all shadow-md flex-shrink-0"
                     >
                       <Send size={18} />

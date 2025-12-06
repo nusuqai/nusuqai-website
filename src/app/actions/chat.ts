@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 
 // app/actions/chat.ts
-export async function sendChatMessage(message: string) {
+export async function sendChatMessage(message: string, file?: File) {
   try {
     const sallaToken = process.env.SALLA_TOKEN;
     const mcpClientUrl = process.env.MCP_CLIENT_URL;
@@ -16,13 +16,18 @@ export async function sendChatMessage(message: string) {
       throw new Error("MCP_CLIENT_URL is not configured");
     }
 
-    // Get existing session ID from cookies
     const cookieStore = await cookies();
     const existingSessionId = cookieStore.get("mcp-session-id")?.value;
 
+    const formData = new FormData();
+    formData.append("query", message);
+    
+    if (file) {
+      formData.append("file", file);
+    }
+
     // Prepare headers
     const headers: HeadersInit = {
-      "Content-Type": "application/json",
       Authorization: sallaToken,
     };
 
@@ -34,7 +39,7 @@ export async function sendChatMessage(message: string) {
     const response = await fetch(`${mcpClientUrl}/query`, {
       method: "POST",
       headers,
-      body: JSON.stringify({ query: message }),
+      body: formData,
     });
 
     if (!response.ok) {
