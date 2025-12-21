@@ -1,18 +1,21 @@
 // types/chat.ts
+import { LucideIcon } from 'lucide-react';
+import { ComponentType } from 'react';
+
 export interface ChatConfig {
   title: string;
   subtitle?: string;
   storeUrl?: string;
-  icon: any;
+  icon: LucideIcon | string;
   primaryColor: string;
   accentColor: string;
-  suggestions: PromptSuggestion[];
+  suggestions: Array<{ title: string; prompt: string; icon?: LucideIcon | string }>;
   welcomeMessage: string;
   placeholder: string;
 }
 
 export interface PromptSuggestion {
-  icon: any;
+  icon: ComponentType<{ className?: string }> | string;
   title: string;
   prompt: string;
 }

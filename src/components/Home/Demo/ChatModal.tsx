@@ -21,9 +21,9 @@ import { ChatConfig, Message } from "@/types/chat";
 interface ChatModalProps {
   isOpen: boolean;
   onClose: () => void;
-  sendChatMessage: (msg: string, file?: File) => Promise<any>;
+  sendChatMessage: (msg: string, sessionId?: string, file?: File) => Promise<any>;
   config: ChatConfig;
-  enableFileUpload?: boolean; // Optional: defaults to false
+  enableFileUpload?: boolean;
 }
 
 const ACCEPTED_FILE_TYPES = [
@@ -54,6 +54,7 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
   const [isTyping, setIsTyping] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -84,7 +85,7 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
     };
   }, [isOpen]);
 
-  // Reset messages when config changes
+  // Reset messages and session when config changes or modal opens
   useEffect(() => {
     if (isOpen) {
       setMessages([
@@ -95,6 +96,7 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
           timestamp: new Date(),
         },
       ]);
+      setSessionId(undefined);
     }
   }, [config, isOpen]);
 
@@ -168,7 +170,11 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
     setIsTyping(true);
 
     try {
-      const result = await sendChatMessage(messageToSend, fileToSend);
+      const result = await sendChatMessage(messageToSend, sessionId, fileToSend);
+
+      if (result.sessionId) {
+        setSessionId(result.sessionId);
+      }
 
       const botMessage: Message = {
         id: Date.now() + 1,
@@ -225,7 +231,14 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
               backgroundColor: `${config.primaryColor}10`,
             }}
           >
-            <item.icon size={16} />
+            {typeof item.icon === 'string' ? (
+              item.icon
+            ) : (
+              (() => {
+                const Icon = item.icon;
+                return <Icon size={16} />;
+              })()
+            )}
           </div>
           <div>
             <p className="text-sm font-medium text-gray-900">{item.title}</p>
@@ -250,7 +263,14 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
       onClick={() => handleSuggestionClick(item.prompt)}
       className="flex-shrink-0 flex items-center gap-2 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full active:scale-95 transition-transform active:bg-gray-200"
     >
-      <item.icon size={12} style={{ color: config.primaryColor }} />
+      {typeof item.icon === 'string' ? (
+        item.icon
+      ) : (
+        (() => {
+          const Icon = item.icon;
+          return <Icon size={12} style={{ color: config.primaryColor }} />;
+        })()
+      )}
       <span className="text-[11px] font-medium text-gray-700 whitespace-nowrap">
         {item.title}
       </span>
@@ -302,7 +322,11 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
                   className="w-9 h-9 rounded-lg flex items-center justify-center text-white shadow-md"
                   style={{ backgroundColor: config.primaryColor }}
                 >
-                  <IconComponent size={18} />
+                  {typeof IconComponent === 'string' ? (
+                    IconComponent
+                  ) : (
+                    <IconComponent size={18} />
+                  )}
                 </div>
 
                 <div>
@@ -358,9 +382,10 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
                     <Sparkles size={12} />
                     <span>Quick Drafts</span>
                   </div>
-                  <div className="flex flex-col space-y-3">
-                    {config.suggestions.map((s, i) => (
-                      <DesktopSuggestion key={i} item={s} />
+
+                  <div className="flex flex-col gap-2">
+                    {config.suggestions.map((item, idx) => (
+                      <DesktopSuggestion key={idx} item={item} />
                     ))}
                   </div>
                 </div>
@@ -543,10 +568,10 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
                 </div>
 
                 {/* --- Input Area --- */}
-                <div className="bg-white border-t border-gray-200 p-3 sm:p-5 flex-shrink-0">
+                <div className="bg-white border-t border-gray-100 p-3 sm:p-4 flex-shrink-0">
                   <div className="md:hidden flex gap-2 overflow-x-auto pb-3 -mx-3 px-3 scrollbar-hide snap-x">
-                    {config.suggestions.map((s, i) => (
-                      <MobileSuggestionChip key={i} item={s} />
+                    {config.suggestions.map((item, idx) => (
+                      <MobileSuggestionChip key={idx} item={item} />
                     ))}
                   </div>
 
@@ -592,10 +617,7 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
                     {enableFileUpload && (
                       <button
                         onClick={() => fileInputRef.current?.click()}
-                        className="p-3.5 text-gray-500 hover:bg-gray-100 rounded-xl transition-all flex-shrink-0"
-                        style={{
-                          color: config.primaryColor,
-                        }}
+                        className="p-2.5 hover:bg-gray-100 rounded-lg transition-colors text-gray-500 flex-shrink-0"
                         title="Attach file"
                       >
                         <Paperclip size={18} />
@@ -607,16 +629,16 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyDown={handleKeyPress}
                       placeholder={config.placeholder}
-                      className="flex-1 bg-gray-100 text-gray-900 placeholder-gray-500 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:bg-white transition-all border-transparent border resize-none max-h-32 overflow-y-auto"
+                      className="flex-1 bg-gray-50 text-gray-900 placeholder-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:bg-white transition-all border border-gray-200 resize-none max-h-32 overflow-y-auto"
                       style={{
-                        minHeight: "48px",
+                        minHeight: "42px",
                         height: "auto",
                       }}
                     />
                     <button
                       onClick={handleSend}
                       disabled={(!inputValue.trim() && !selectedFile) || isTyping}
-                      className="p-3.5 text-white rounded-xl active:scale-95 disabled:opacity-50 disabled:scale-100 transition-all shadow-md flex-shrink-0"
+                      className="p-2.5 text-white rounded-lg active:scale-95 disabled:opacity-50 disabled:scale-100 transition-all shadow-sm flex-shrink-0"
                       style={{
                         backgroundColor: config.primaryColor,
                       }}

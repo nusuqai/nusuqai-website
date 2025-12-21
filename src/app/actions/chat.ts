@@ -1,9 +1,10 @@
 "use server";
 
-import { cookies } from "next/headers";
-
-// app/actions/chat.ts
-export async function sendChatMessage(message: string, file?: File) {
+export async function sendChatMessage(
+  message: string,
+  sessionId?: string,
+  file?: File
+) {
   try {
     const sallaToken = process.env.SALLA_TOKEN;
     const mcpClientUrl = process.env.SALLA_MCP_CLIENT_URL;
@@ -15,9 +16,6 @@ export async function sendChatMessage(message: string, file?: File) {
     if (!mcpClientUrl) {
       throw new Error("MCP_CLIENT_URL is not configured");
     }
-
-    const cookieStore = await cookies();
-    const existingSessionId = cookieStore.get("mcp-session-id")?.value;
 
     const formData = new FormData();
     formData.append("query", message);
@@ -31,9 +29,8 @@ export async function sendChatMessage(message: string, file?: File) {
       Authorization: sallaToken,
     };
 
-    // Add session ID to headers if it exists
-    if (existingSessionId) {
-      headers["mcp-session-id"] = existingSessionId;
+    if (sessionId) {
+      headers["mcp-session-id"] = sessionId;
     }
 
     const response = await fetch(`${mcpClientUrl}/query`, {
@@ -48,16 +45,11 @@ export async function sendChatMessage(message: string, file?: File) {
 
     const data = await response.json();
 
-    if (data.sessionId) {
-      cookieStore.set("mcp-session-id", data.sessionId, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 60 * 60, // 1 hour
-      });
-    }
-
-    return { success: true, data };
+    return { 
+      success: true, 
+      data,
+      sessionId: data.sessionId || sessionId
+    };
   } catch (error) {
     console.error("Chat API error:", error);
     return { success: false, error: "Failed to send message" };

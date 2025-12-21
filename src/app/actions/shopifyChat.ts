@@ -1,8 +1,9 @@
 "use server";
 
-import { cookies } from "next/headers";
-
-export async function sendShopifyChatMessage(message: string) {
+export async function sendShopifyChatMessage(
+  message: string,
+  sessionId?: string
+) {
   try {
     const shopifyToken = process.env.SHOPIFY_TOKEN;
     const mcpClientUrl = process.env.SHOPIFY_MCP_CLIENT_URL;
@@ -15,16 +16,13 @@ export async function sendShopifyChatMessage(message: string) {
       throw new Error("SHOPIFY_MCP_CLIENT_URL is not configured");
     }
 
-    const cookieStore = await cookies();
-    const existingSessionId = cookieStore.get("shopify-mcp-session-id")?.value;
-
     const headers: HeadersInit = {
       Authorization: shopifyToken,
       "Content-Type": "application/json",
     };
 
-    if (existingSessionId) {
-      headers["mcp-session-id"] = existingSessionId;
+    if (sessionId) {
+      headers["mcp-session-id"] = sessionId;
     }
 
     const response = await fetch(`${mcpClientUrl}/query`, {
@@ -39,16 +37,11 @@ export async function sendShopifyChatMessage(message: string) {
 
     const data = await response.json();
 
-    if (data.sessionId) {
-      cookieStore.set("shopify-mcp-session-id", data.sessionId, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 60 * 60,
-      });
-    }
-
-    return { success: true, data };
+    return { 
+      success: true, 
+      data,
+      sessionId: data.sessionId || sessionId 
+    };
   } catch (error) {
     console.error("Shopify Chat API error:", error);
     return { success: false, error: "Failed to send message" };
