@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 export async function sendChatMessage(message: string, file?: File) {
   try {
     const sallaToken = process.env.SALLA_TOKEN;
-    const mcpClientUrl = process.env.MCP_CLIENT_URL;
+    const mcpClientUrl = process.env.SALLA_MCP_CLIENT_URL;
 
     if (!sallaToken) {
       throw new Error("SALLA_TOKEN is not configured");
@@ -48,7 +48,6 @@ export async function sendChatMessage(message: string, file?: File) {
 
     const data = await response.json();
 
-    // Store session ID in cookie if it's in the response
     if (data.sessionId) {
       cookieStore.set("mcp-session-id", data.sessionId, {
         httpOnly: true,

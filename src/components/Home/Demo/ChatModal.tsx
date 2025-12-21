@@ -6,76 +6,25 @@ import {
   X,
   Send,
   Sparkles,
-  Package,
-  Search,
-  ShoppingCart,
-  Store,
   CopyPlus,
   ExternalLink,
   PanelLeftClose,
   PanelLeftOpen,
-  CirclePlus,
   Paperclip,
   FileSpreadsheet,
   FileText,
   File,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { ChatConfig, Message } from "@/types/chat";
 
 interface ChatModalProps {
   isOpen: boolean;
   onClose: () => void;
   sendChatMessage: (msg: string, file?: File) => Promise<any>;
+  config: ChatConfig;
+  enableFileUpload?: boolean; // Optional: defaults to false
 }
-
-// --- Types ---
-interface Message {
-  id: number;
-  type: "bot" | "user";
-  text: string;
-  timestamp: Date;
-  file?: {
-    name: string;
-    size: number;
-    type: string;
-  };
-}
-
-interface PromptSuggestion {
-  icon: any;
-  title: string;
-  prompt: string;
-}
-
-// --- Configuration ---
-const PROMPT_SUGGESTIONS: PromptSuggestion[] = [
-  {
-    icon: Package,
-    title: "Browse Products",
-    prompt: "Show me available products",
-  },
-  { icon: Search, title: "Search Items", prompt: "Search for winter clothes" },
-  {
-    icon: ShoppingCart,
-    title: "Check Inventory",
-    prompt: "What products are in stock?",
-  },
-  {
-    icon: Package,
-    title: "Product Details",
-    prompt: "Tell me about product {Product Name or ID}",
-  },
-  { 
-    icon: CirclePlus,
-    title: "Add Product",
-    prompt: `Add this product to the store:
-  Product Name: 
-  Description: 
-  Price: 
-  Image URL: 
-  Quantity: `,
-  },
-];
 
 const ACCEPTED_FILE_TYPES = [
   '.csv',
@@ -92,12 +41,12 @@ const ACCEPTED_FILE_TYPES = [
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
-export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) {
+export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFileUpload = false }: ChatModalProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
       type: "bot",
-      text: "Hello. I'm connected to your Salla store. How can I assist you today?",
+      text: config.welcomeMessage,
       timestamp: new Date(),
     },
   ]);
@@ -135,18 +84,30 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
     };
   }, [isOpen]);
 
+  // Reset messages when config changes
+  useEffect(() => {
+    if (isOpen) {
+      setMessages([
+        {
+          id: 1,
+          type: "bot",
+          text: config.welcomeMessage,
+          timestamp: new Date(),
+        },
+      ]);
+    }
+  }, [config, isOpen]);
+
   // --- File Handling ---
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file size
     if (file.size > MAX_FILE_SIZE) {
       alert(`File size must be less than ${MAX_FILE_SIZE / (1024 * 1024)}MB`);
       return;
     }
 
-    // Validate file type
     const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
     if (!ACCEPTED_FILE_TYPES.some(type => type === fileExtension || type === file.type)) {
       alert('Please upload a supported file type: CSV, Excel, PDF, or Word document');
@@ -248,16 +209,22 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
   };
 
   // --- Sub-Components ---
-
-  // 1. Desktop Sidebar Suggestion
-  const DesktopSuggestion = ({ item }: { item: PromptSuggestion }) => (
+  const DesktopSuggestion = ({ item }: { item: any }) => (
     <button
       onClick={() => handleSuggestionClick(item.prompt)}
-      className="w-full text-left group p-3 rounded-lg border border-gray-100 hover:border-[#0F1E3D]/30 hover:bg-gray-50 transition-all duration-200"
+      className="w-full text-left group p-3 rounded-lg border border-gray-100 hover:border-opacity-30 hover:bg-gray-50 transition-all duration-200"
+      style={{ 
+        borderColor: `${config.primaryColor}20`,
+      }}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-gray-100 rounded-md text-gray-600 group-hover:text-[#0F1E3D] transition-colors">
+          <div 
+            className="p-2 rounded-md text-gray-600 transition-colors"
+            style={{ 
+              backgroundColor: `${config.primaryColor}10`,
+            }}
+          >
             <item.icon size={16} />
           </div>
           <div>
@@ -269,24 +236,28 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
         </div>
         <CopyPlus
           size={14}
-          className="text-gray-300 group-hover:text-[#0F1E3D] transition-colors"
+          className="text-gray-300 transition-colors"
+          style={{ 
+            color: `${config.primaryColor}40`,
+          }}
         />
       </div>
     </button>
   );
 
-  // 2. Mobile Slider Chip
-  const MobileSuggestionChip = ({ item }: { item: PromptSuggestion }) => (
+  const MobileSuggestionChip = ({ item }: { item: any }) => (
     <button
       onClick={() => handleSuggestionClick(item.prompt)}
       className="flex-shrink-0 flex items-center gap-2 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full active:scale-95 transition-transform active:bg-gray-200"
     >
-      <item.icon size={12} className="text-[#0F1E3D]" />
+      <item.icon size={12} style={{ color: config.primaryColor }} />
       <span className="text-[11px] font-medium text-gray-700 whitespace-nowrap">
         {item.title}
       </span>
     </button>
   );
+
+  const IconComponent = config.icon;
 
   return (
     <AnimatePresence>
@@ -315,7 +286,6 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
             {/* --- Header --- */}
             <div className="flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-100 bg-white flex-shrink-0">
               <div className="flex items-center gap-3">
-                {/* Desktop Toggle Sidebar Button */}
                 <button
                   onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                   className="hidden md:flex p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors mr-1"
@@ -328,13 +298,16 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                   )}
                 </button>
 
-                <div className="w-9 h-9 bg-[#0F1E3D] rounded-lg flex items-center justify-center text-white shadow-md">
-                  <Store size={18} />
+                <div 
+                  className="w-9 h-9 rounded-lg flex items-center justify-center text-white shadow-md"
+                  style={{ backgroundColor: config.primaryColor }}
+                >
+                  <IconComponent size={18} />
                 </div>
 
                 <div>
                   <h2 className="text-sm sm:text-base font-bold text-gray-900 leading-tight">
-                    Salla Ecommerce Store Assistant
+                    {config.title}
                   </h2>
                   <div className="flex items-center gap-3 mt-0.5">
                     <div className="flex items-center gap-1.5">
@@ -343,19 +316,21 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                       </span>
                       <span className="text-[10px] sm:text-xs text-gray-500 font-medium">
-                        Online
+                        {config.subtitle}
                       </span>
                     </div>
-                    {/* Store Link */}
-                    <a
-                      href="https://demostore.salla.sa/dev-v6b9z71d8gnepyop"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hidden sm:flex items-center gap-1 text-[10px] sm:text-xs text-[#0F1E3D] hover:underline opacity-80 hover:opacity-100 transition-opacity"
-                    >
-                      <span>Visit Store</span>
-                      <ExternalLink size={10} />
-                    </a>
+                    {config.storeUrl && (
+                      <a
+                        href={config.storeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hidden sm:flex items-center gap-1 text-[10px] sm:text-xs hover:underline opacity-80 hover:opacity-100 transition-opacity"
+                        style={{ color: config.primaryColor }}
+                      >
+                        <span>Visit Store</span>
+                        <ExternalLink size={10} />
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
@@ -368,7 +343,7 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
             </div>
 
             <div className="flex flex-1 overflow-hidden relative">
-              {/* --- Desktop Sidebar (Retractable) --- */}
+              {/* --- Desktop Sidebar --- */}
               <motion.div
                 initial={{ width: 288, opacity: 1 }}
                 animate={{
@@ -384,7 +359,7 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                     <span>Quick Drafts</span>
                   </div>
                   <div className="flex flex-col space-y-3">
-                    {PROMPT_SUGGESTIONS.map((s, i) => (
+                    {config.suggestions.map((s, i) => (
                       <DesktopSuggestion key={i} item={s} />
                     ))}
                   </div>
@@ -393,7 +368,6 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
 
               {/* --- Main Chat Area --- */}
               <div className="flex-1 flex flex-col bg-gray-50/50 relative min-w-0">
-                {/* Messages List */}
                 <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 scroll-smooth">
                   {messages.map((message) => (
                     <motion.div
@@ -413,15 +387,18 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                             : "items-start"
                         } flex flex-col`}
                       >
-                        {/* --- MESSAGE BUBBLE STARTS HERE --- */}
                         <div
                           className={`px-4 py-3 text-[15px] leading-relaxed shadow-sm w-full overflow-hidden ${
                             message.type === "user"
-                              ? "bg-[#0F1E3D] text-white rounded-2xl rounded-tr-sm"
+                              ? "text-white rounded-2xl rounded-tr-sm"
                               : "bg-white text-gray-900 border border-gray-200/60 rounded-2xl rounded-tl-sm"
                           }`}
+                          style={
+                            message.type === "user"
+                              ? { backgroundColor: config.primaryColor }
+                              : {}
+                          }
                         >
-                          {/* File attachment display */}
                           {message.file && (
                             <div className={`mb-2 flex items-center gap-2 p-2 rounded-lg ${
                               message.type === "user" ? "bg-white/10" : "bg-gray-50"
@@ -543,7 +520,6 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                     </motion.div>
                   ))}
 
-                  {/* Typing Indicator */}
                   {isTyping && (
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -566,16 +542,14 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                   <div ref={messagesEndRef} />
                 </div>
 
-                {/* --- Input & Mobile Tips Area --- */}
+                {/* --- Input Area --- */}
                 <div className="bg-white border-t border-gray-200 p-3 sm:p-5 flex-shrink-0">
-                  {/* Mobile Suggestions Slider (Horizontal Scroll) */}
                   <div className="md:hidden flex gap-2 overflow-x-auto pb-3 -mx-3 px-3 scrollbar-hide snap-x">
-                    {PROMPT_SUGGESTIONS.map((s, i) => (
+                    {config.suggestions.map((s, i) => (
                       <MobileSuggestionChip key={i} item={s} />
                     ))}
                   </div>
 
-                  {/* File Preview */}
                   {selectedFile && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
@@ -607,7 +581,6 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                     </motion.div>
                   )}
 
-                  {/* Input Field */}
                   <div className="relative flex items-start gap-2">
                     <input
                       ref={fileInputRef}
@@ -616,26 +589,37 @@ export function ChatModal({ isOpen, onClose, sendChatMessage }: ChatModalProps) 
                       onChange={handleFileSelect}
                       className="hidden"
                     />
-                    <button
-                      onClick={() => fileInputRef.current?.click()}
-                      className="p-3.5 text-gray-500 hover:text-[#0F1E3D] hover:bg-gray-100 rounded-xl transition-all flex-shrink-0"
-                      title="Attach file"
-                    >
-                      <Paperclip size={18} />
-                    </button>
+                    {enableFileUpload && (
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="p-3.5 text-gray-500 hover:bg-gray-100 rounded-xl transition-all flex-shrink-0"
+                        style={{
+                          color: config.primaryColor,
+                        }}
+                        title="Attach file"
+                      >
+                        <Paperclip size={18} />
+                      </button>
+                    )}
                     <textarea
                       ref={inputRef}
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyDown={handleKeyPress}
-                      placeholder="Ask about orders, inventory..."
-                      className="flex-1 bg-gray-100 text-gray-900 placeholder-gray-500 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F1E3D]/10 focus:bg-white transition-all border-transparent border focus:border-[#0F1E3D]/20 resize-none max-h-32 overflow-y-auto"
-                      style={{ minHeight: "48px", height: "auto" }}
+                      placeholder={config.placeholder}
+                      className="flex-1 bg-gray-100 text-gray-900 placeholder-gray-500 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:bg-white transition-all border-transparent border resize-none max-h-32 overflow-y-auto"
+                      style={{
+                        minHeight: "48px",
+                        height: "auto",
+                      }}
                     />
                     <button
                       onClick={handleSend}
                       disabled={(!inputValue.trim() && !selectedFile) || isTyping}
-                      className="p-3.5 bg-[#0F1E3D] text-white rounded-xl hover:bg-[#1a2d4d] active:scale-95 disabled:opacity-50 disabled:scale-100 transition-all shadow-md flex-shrink-0"
+                      className="p-3.5 text-white rounded-xl active:scale-95 disabled:opacity-50 disabled:scale-100 transition-all shadow-md flex-shrink-0"
+                      style={{
+                        backgroundColor: config.primaryColor,
+                      }}
                     >
                       <Send size={18} />
                     </button>

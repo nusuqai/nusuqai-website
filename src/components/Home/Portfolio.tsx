@@ -2,14 +2,17 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslations, useLocale } from "next-intl";
-import { ChatModal } from "./Demo/ChatModal"; // Import the ChatModal component
+import { ChatModal } from "./Demo/ChatModal";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { sendChatMessage } from "@/app/actions/chat";
+import { sendShopifyChatMessage } from "@/app/actions/shopifyChat";
+import { sallaChatConfig, shopifyChatConfig } from "@/config/chatConfigs";
 
 export default function PortfolioShowcase() {
   const t = useTranslations("Portfolio");
   const locale = useLocale();
-  const [isChatOpen, setIsChatOpen] = useState(false); // Add state for chat modal
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [activeDemoType, setActiveDemoType] = useState<'salla' | 'shopify'>('salla');
   
   const projects = [
     {
@@ -19,7 +22,18 @@ export default function PortfolioShowcase() {
       description: t("projects.ecommerce.description"),
       client: t("projects.ecommerce.client"),
       features: t("projects.ecommerce.features"),
-      team: t("projects.ecommerce.team")
+      team: t("projects.ecommerce.team"),
+      demoType: 'salla' as const,
+    },
+    {
+      id: 2,
+      image: "./demo2.png",
+      title: t("projects.shopify.title"),
+      description: t("projects.shopify.description"),
+      client: t("projects.shopify.client"),
+      features: t("projects.shopify.features"),
+      team: t("projects.shopify.team"),
+      demoType: 'shopify' as const,
     },
   ];
 
@@ -36,8 +50,17 @@ export default function PortfolioShowcase() {
     setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
   };
 
+  const handleTryDemo = () => {
+    setActiveDemoType(currentProject.demoType);
+    setIsChatOpen(true);
+  };
+
   const currentProject = projects[currentIndex];
   const IsRTL = ["ar"].includes(locale);
+
+  // Get the appropriate config and action based on demo type
+  const chatConfig = activeDemoType === 'salla' ? sallaChatConfig : shopifyChatConfig;
+  const chatAction = activeDemoType === 'salla' ? sendChatMessage : sendShopifyChatMessage;
   
   return (
     <>
@@ -146,7 +169,6 @@ export default function PortfolioShowcase() {
                     </div>
                   </div>
 
-                  {/* Action Buttons Row */}
                   <div className="flex items-center gap-4">
                     <button
                       onClick={handlePrev}
@@ -176,9 +198,8 @@ export default function PortfolioShowcase() {
                       </svg>
                     </button>
 
-                    {/* Try Demo Link */}
                     <button
-                      onClick={() => setIsChatOpen(true)}
+                      onClick={handleTryDemo}
                       className="ml-auto flex items-center gap-2 text-[#0F1E3D] hover:text-[#00E0FF] transition-colors group"
                     >
                       <span className="text-sm font-medium">Try demo</span>
@@ -187,8 +208,7 @@ export default function PortfolioShowcase() {
                       ) : (
                         <ArrowLeft className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       )}
-
-                      </button>
+                    </button>
                   </div>
                   
                 </motion.div>
@@ -198,12 +218,14 @@ export default function PortfolioShowcase() {
         </div>
       </section>
 
-      {/* Chat Modal */}
+      {/* Single Chat Modal with Dynamic Config */}
       <ChatModal 
         isOpen={isChatOpen} 
         onClose={() => setIsChatOpen(false)}
-        sendChatMessage={sendChatMessage}
-/>
+        sendChatMessage={chatAction}
+        config={chatConfig}
+        enableFileUpload={activeDemoType === 'salla'} // Only enable for Salla
+      />
     </>
   );
 }

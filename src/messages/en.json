@@ -65,9 +65,9 @@
     "features": "AI Integration",
     "team": "Demo"
    },
-   "voucher": {
-    "title": "Dynamic Voucher Management System Enables Businesses To Generate Secure Coupons And Automate Redemption For Seamless Loyalty Campaigns",
-    "description": "We delivered a robust promotional infrastructure that manages the entire lifecycle of digital coupons. The system handles high-volume code generation with complex validation logic to prevent fraud, ensuring that vouchers are redeemed securely and only within their specific validity parameters.",
+   "shopify": {
+    "title": "Improved Shopify Customer Experience using AI-Driven Chatbot Integration.",
+    "description": "Enhancing the shopping journey on Shopify by deploying a sophisticated AI chatbot that interfaces directly with Shopify's APIs. This integration empowers customers to effortlessly browse products and manage their carts  through intuitive conversations, significantly boosting engagement and satisfaction.",
     "client": "Internal Prototype",
     "features": "AI Integration",
     "team": "Demo"
