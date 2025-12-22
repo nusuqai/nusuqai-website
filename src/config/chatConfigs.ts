@@ -65,5 +65,10 @@ export const shopifyChatConfig: ChatConfig = {
       title: "Search Products",
       prompt: "Show me products for ",
     },
+    {
+      icon: Store,
+      title: "Filter Products by Price",
+      prompt: "Show me products under $50",
+    }
   ],
 };
