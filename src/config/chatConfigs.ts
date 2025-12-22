@@ -53,7 +53,7 @@ export const shopifyChatConfig: ChatConfig = {
   primaryColor: "#004C3F",
   accentColor: "#95BF47",
   welcomeMessage: "Hello! I'm connected to your Shopify store. What would you like to do today?",
-  placeholder: "Ask about products, orders, analytics...",
+  placeholder: "Ask about products, orders...",
   suggestions: [
     {
       icon: Package,
