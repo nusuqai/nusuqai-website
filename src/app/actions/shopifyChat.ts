@@ -16,7 +16,7 @@ export async function sendShopifyChatMessage(
       throw new Error("SHOPIFY_MCP_CLIENT_URL is not configured");
     }
 
-    const headers: HeadersInit = {
+    const headers: HeadersInit = {  
       Authorization: shopifyToken,
       "Content-Type": "application/json",
     };
@@ -37,10 +37,15 @@ export async function sendShopifyChatMessage(
 
     const data = await response.json();
 
+    // data should now have: { text: string, toolResults: ToolResult[], sessionId: string }
     return { 
       success: true, 
-      data,
-      sessionId: data.sessionId || sessionId 
+      data: {
+        response: data.text,
+        toolResults: data.toolResults || [],
+        sessionId: data.sessionId || sessionId,
+      },
+      sessionId: data.sessionId || sessionId
     };
   } catch (error) {
     console.error("Shopify Chat API error:", error);

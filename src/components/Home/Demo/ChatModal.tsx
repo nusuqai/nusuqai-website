@@ -14,9 +14,11 @@ import {
   FileSpreadsheet,
   FileText,
   File,
+  ShoppingCart,
+  Package,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { ChatConfig, Message } from "@/types/chat";
+import { ChatConfig, Message, ToolResult } from "@/types/chat";
 
 interface ChatModalProps {
   isOpen: boolean;
@@ -40,6 +42,240 @@ const ACCEPTED_FILE_TYPES = [
 ];
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+// Product Card Component
+function ProductCard({ product, onAddToCart }: { product: any; onAddToCart?: (title: string) => void }) {
+  const handleAddToCart = () => {
+    if (onAddToCart) {
+      onAddToCart(product.title);
+    }
+  };
+
+  return (
+    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow flex flex-col h-full">
+      {product.featuredImage && (
+        <div className="relative w-full h-48 bg-gray-100 flex-shrink-0">
+          <img
+            src={product.featuredImage.url}
+            alt={product.featuredImage.altText || product.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
+      <div className="p-4 flex flex-col flex-1">
+        <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 min-h-[3rem]">
+          {product.title}
+        </h3>
+        {product.description && (
+          <p className="text-sm text-gray-600 mb-3 line-clamp-2 min-h-[2.5rem]">
+            {product.description}
+          </p>
+        )}
+        
+        {/* Spacer to push bottom content down */}
+        <div className="flex-1"></div>
+        
+        {/* Bottom section - always at the bottom */}
+        <div className="mt-auto space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="text-lg font-bold text-gray-900">
+              {product.priceRange?.minVariantPrice?.amount} {product.priceRange?.minVariantPrice?.currencyCode}
+            </div>
+            {product.storeUrl && (
+              <a
+                href={product.storeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 font-medium"
+              >
+                View
+                <ExternalLink size={14} />
+              </a>
+            )}
+          </div>
+          
+          {product.availableForSale !== undefined && (
+            <div className={`text-xs font-medium ${product.availableForSale ? 'text-green-600' : 'text-red-600'}`}>
+              {product.availableForSale ? '✓ In Stock' : '✗ Out of Stock'}
+            </div>
+          )}
+          
+          {onAddToCart && product.availableForSale !== false && (
+            <button
+              onClick={handleAddToCart}
+              className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-2.5 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium active:scale-95"
+            >
+              <ShoppingCart size={16} />
+              Add to Cart
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Cart Display Component
+function CartDisplay({ cart }: { cart: any }) {
+  return (
+    <div className="bg-white border border-gray-200 rounded-lg p-4">
+      <div className="flex items-center gap-2 mb-3">
+        <ShoppingCart size={18} className="text-gray-600" />
+        <h3 className="font-semibold text-gray-900">Shopping Cart</h3>
+      </div>
+      
+      {cart.lines?.edges && cart.lines.edges.length > 0 ? (
+        <div className="space-y-3 mb-4">
+          {cart.lines.edges.map((edge: any, idx: number) => {
+            const merchandise = edge.node.merchandise;
+            const product = merchandise?.product;
+            const imageUrl = product?.images?.edges?.[0]?.node?.url || 
+                           product?.featuredImage?.url || 
+                           merchandise?.image?.url;
+            
+            return (
+              <div key={idx} className="flex items-start gap-3 py-2 border-b border-gray-100 last:border-0">
+                {imageUrl && (
+                  <div className="w-16 h-16 flex-shrink-0 bg-gray-100 rounded-md overflow-hidden">
+                    <img 
+                      src={imageUrl} 
+                      alt={product?.title || merchandise?.title || "Product"}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-gray-900 text-sm mb-1">
+                    {product?.title || merchandise?.title || "Product"}
+                  </p>
+                  {merchandise?.title && merchandise.title !== product?.title && (
+                    <p className="text-xs text-gray-500 mb-1">{merchandise.title}</p>
+                  )}
+                  <p className="text-xs text-gray-600">
+                    Qty: {edge.node.quantity} × {merchandise?.priceV2?.amount} {merchandise?.priceV2?.currencyCode}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <p className="text-sm text-gray-500 mb-4">Cart is empty</p>
+      )}
+
+      {cart.cost?.totalAmount && (
+        <div className="pt-3 border-t border-gray-200">
+          <div className="flex items-center justify-between">
+            <span className="font-semibold text-gray-900">Total:</span>
+            <span className="text-lg font-bold text-gray-900">
+              {cart.cost.totalAmount.amount} {cart.cost.totalAmount.currencyCode}
+            </span>
+          </div>
+        </div>
+      )}
+
+      {cart.checkoutUrl && (
+        <a
+          href={cart.checkoutUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+        >
+          Proceed to Checkout
+          <ExternalLink size={14} />
+        </a>
+      )}
+    </div>
+  );
+}
+
+// Tool Results Renderer
+function ToolResultsDisplay({ toolResults, onAddToCart }: { toolResults: ToolResult[]; onAddToCart?: (title: string) => void }) {
+  if (!toolResults || toolResults.length === 0) return null;
+
+  // Check if there are any cart operations in the results
+  const hasCartOperation = toolResults.some(result => 
+    result.toolName === 'create_cart' || 
+    result.toolName === 'add_to_cart' || 
+    result.toolName === 'get_cart' ||
+    result.toolName === 'update_cart_lines'
+  );
+
+  // If there's a cart operation, ONLY show cart-related results
+  if (hasCartOperation) {
+    return (
+      <div className="space-y-4">
+        {toolResults
+          .filter(result => 
+            result.toolName === 'create_cart' || 
+            result.toolName === 'add_to_cart' || 
+            result.toolName === 'get_cart' ||
+            result.toolName === 'update_cart_lines'
+          )
+          .map((result, idx) => {
+            const cart = result.data.cart || result.data;
+            return (
+              <div key={idx} className="max-w-md">
+                <CartDisplay cart={cart} />
+              </div>
+            );
+          })}
+      </div>
+    );
+  }
+
+  // Otherwise, show all results normally
+  return (
+    <div className="space-y-4">
+      {toolResults.map((result, idx) => {
+        // Handle different tool types
+        if (result.toolName === 'get_all_products' || 
+            result.toolName === 'search_products' || 
+            result.toolName === 'filter_products_by_price' ||
+            result.toolName === 'filter_products_by_category' ||
+            result.toolName === 'filter_products_by_color') {
+          
+          const products = result.data.products || [];
+          
+          if (products.length === 0) {
+            return (
+              <div key={idx} className="text-sm text-gray-500 italic">
+                No products found.
+              </div>
+            );
+          }
+
+          return (
+            <div key={idx} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-fr">
+              {products.map((product: any, pIdx: number) => (
+                <ProductCard key={pIdx} product={product} onAddToCart={onAddToCart} />
+              ))}
+            </div>
+          );
+        }
+
+        if (result.toolName === 'get_product' || result.toolName === 'get_product_variants') {
+          const product = result.data;
+          return (
+            <div key={idx} className="max-w-md">
+              <ProductCard product={product} onAddToCart={onAddToCart} />
+            </div>
+          );
+        }
+
+        // For other tool results, just show a simple info box
+        return (
+          <div key={idx} className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <Package size={16} />
+              <span className="font-medium">{result.toolName}</span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFileUpload = false }: ChatModalProps) {
   const [messages, setMessages] = useState<Message[]>([
@@ -143,13 +379,15 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
   };
 
   // --- Handlers ---
-  const handleSend = async () => {
-    if ((!inputValue.trim() && !selectedFile) || isTyping) return;
+  const handleSend = async (messageOverride?: string) => {
+    const messageToSend = messageOverride || inputValue;
+    
+    if ((!messageToSend.trim() && !selectedFile) || isTyping) return;
 
     const userMessage: Message = {
       id: Date.now(),
       type: "user",
-      text: inputValue || (selectedFile ? `Uploaded file: ${selectedFile.name}` : ''),
+      text: messageToSend || (selectedFile ? `Uploaded file: ${selectedFile.name}` : ''),
       timestamp: new Date(),
       file: selectedFile ? {
         name: selectedFile.name,
@@ -159,7 +397,6 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
     };
 
     setMessages((prev) => [...prev, userMessage]);
-    const messageToSend = inputValue;
     const fileToSend = selectedFile || undefined;
     
     setInputValue("");
@@ -179,11 +416,11 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
       const botMessage: Message = {
         id: Date.now() + 1,
         type: "bot",
-        text:
-          result.success
-            ? result.data?.response || result.data?.message || "Request processed."
-            : "I couldn't complete that request.",
+        text: result.success
+          ? result.data?.response || result.data?.message || "Request processed."
+          : "I couldn't complete that request.",
         timestamp: new Date(),
+        toolResults: result.data?.toolResults || [],
       };
 
       setMessages((prev) => [...prev, botMessage]);
@@ -212,6 +449,12 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
       e.preventDefault();
       handleSend();
     }
+  };
+
+  const handleAddToCart = (productTitle: string) => {
+    const prompt = `Add "${productTitle}" to the cart`;
+    // Send the message immediately
+    handleSend(prompt);
   };
 
   // --- Sub-Components ---
@@ -406,12 +649,13 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
                       }`}
                     >
                       <div
-                        className={`max-w-[90%] sm:max-w-[75%] space-y-1 ${
+                        className={`max-w-[90%] sm:max-w-[75%] space-y-3 ${
                           message.type === "user"
                             ? "items-end"
                             : "items-start"
                         } flex flex-col`}
                       >
+                        {/* Text Message */}
                         <div
                           className={`px-4 py-3 text-[15px] leading-relaxed shadow-sm w-full overflow-hidden ${
                             message.type === "user"
@@ -452,7 +696,7 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
                               {message.text}
                             </div>
                           ) : (
-                            <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-2 prose-li:my-0.5 prose-img:my-2 text-inherit dark:prose-invert break-words">
+                            <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-2 prose-li:my-0.5 text-inherit dark:prose-invert break-words">
                               <ReactMarkdown
                                 components={{
                                   p: ({ children }) => (
@@ -475,16 +719,37 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
                                       {children}
                                     </h3>
                                   ),
-                                  img: ({ src, alt }) => (
-                                    <div className="relative w-full my-3 overflow-hidden rounded-xl border border-gray-100 shadow-sm bg-gray-50">
-                                      <img
-                                        src={src || ""}
-                                        alt={alt || "Product Image"}
-                                        className="w-full h-auto max-h-[300px] object-cover object-center block m-0"
-                                        loading="lazy"
-                                      />
-                                    </div>
-                                  ),
+                                  img: ({ src, alt }) => {
+                                    // Don't render images if we have tool results with products/carts
+                                    const hasProductsOrCart = message.toolResults?.some(result =>
+                                      result.toolName === 'get_all_products' ||
+                                      result.toolName === 'search_products' ||
+                                      result.toolName === 'filter_products_by_price' ||
+                                      result.toolName === 'filter_products_by_category' ||
+                                      result.toolName === 'filter_products_by_color' ||
+                                      result.toolName === 'get_product' ||
+                                      result.toolName === 'get_product_variants' ||
+                                      result.toolName === 'create_cart' ||
+                                      result.toolName === 'add_to_cart' ||
+                                      result.toolName === 'get_cart' ||
+                                      result.toolName === 'update_cart_lines'
+                                    );
+                                    
+                                    if (hasProductsOrCart) {
+                                      return null; // Don't render markdown images
+                                    }
+                                    
+                                    return (
+                                      <div className="relative w-full my-3 overflow-hidden rounded-xl border border-gray-100 shadow-sm bg-gray-50">
+                                        <img
+                                          src={src || ""}
+                                          alt={alt || "Product Image"}
+                                          className="w-full h-auto max-h-[300px] object-cover object-center block m-0"
+                                          loading="lazy"
+                                        />
+                                      </div>
+                                    );
+                                  },
                                   ul: ({ children }) => (
                                     <ul
                                       dir="auto"
@@ -534,6 +799,13 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
                             </div>
                           )}
                         </div>
+
+                        {/* Tool Results */}
+                        {message.toolResults && message.toolResults.length > 0 && (
+                          <div className="w-full">
+                            <ToolResultsDisplay toolResults={message.toolResults} onAddToCart={handleAddToCart} />
+                          </div>
+                        )}
 
                         <span className="text-[10px] text-gray-400 px-1">
                           {message.timestamp.toLocaleTimeString([], {
@@ -636,15 +908,12 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
                       }}
                     />
                     <button
-                      onClick={handleSend}
+                      onClick={() => handleSend()}
                       disabled={(!inputValue.trim() && !selectedFile) || isTyping}
-                      className="p-2.5 text-white rounded-lg active:scale-95 disabled:opacity-50 disabled:scale-100 transition-all shadow-sm flex-shrink-0"
-                      style={{
-                        backgroundColor: config.primaryColor,
-                      }}
                     >
                       <Send size={18} />
                     </button>
+
                   </div>
                 </div>
               </div>

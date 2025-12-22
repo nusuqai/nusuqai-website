@@ -1,28 +1,13 @@
 // types/chat.ts
-import { LucideIcon } from 'lucide-react';
-import { ComponentType } from 'react';
 
-export interface ChatConfig {
-  title: string;
-  subtitle?: string;
-  storeUrl?: string;
-  icon: LucideIcon | string;
-  primaryColor: string;
-  accentColor: string;
-  suggestions: Array<{ title: string; prompt: string; icon?: LucideIcon | string }>;
-  welcomeMessage: string;
-  placeholder: string;
-}
-
-export interface PromptSuggestion {
-  icon: ComponentType<{ className?: string }> | string;
-  title: string;
-  prompt: string;
+export interface ToolResult {
+  toolName: string;
+  data: any;
 }
 
 export interface Message {
   id: number;
-  type: "bot" | "user";
+  type: "user" | "bot";
   text: string;
   timestamp: Date;
   file?: {
@@ -30,4 +15,23 @@ export interface Message {
     size: number;
     type: string;
   };
+  toolResults?: ToolResult[];
+}
+
+export interface ChatSuggestion {
+  title: string;
+  icon: React.ComponentType<{ size?: number }> | string;
+  prompt: string;
+}
+
+export interface ChatConfig {
+  title: string;
+  subtitle: string;
+  icon: React.ComponentType<{ size?: number }> | string;
+  primaryColor: string;
+  accentColor: string;
+  welcomeMessage: string;
+  placeholder: string;
+  suggestions: ChatSuggestion[];
+  storeUrl?: string;
 }
