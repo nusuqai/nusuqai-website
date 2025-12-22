@@ -10,7 +10,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-nusuqai-deep-navy text-gray-300">
+    <footer dir="ltr" className=" bg-nusuqai-deep-navy text-gray-300" >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
@@ -32,7 +32,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <button onClick={() => scrollToSection('services')} className="hover:text-white transition-colors">
-                  MCP Development
+                  App Development
                 </button>
               </li>
               <li>
