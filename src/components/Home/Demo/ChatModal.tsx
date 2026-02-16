@@ -16,6 +16,8 @@ import {
   File,
   ShoppingCart,
   Package,
+  LogIn,
+  LogOut,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { ChatConfig, Message, ToolResult } from "@/types/chat";
@@ -26,6 +28,11 @@ interface ChatModalProps {
   sendChatMessage: (msg: string, sessionId?: string, file?: File) => Promise<any>;
   config: ChatConfig;
   enableFileUpload?: boolean;
+  requiresAuth?: boolean;
+  isAuthenticated?: boolean;
+  isAuthLoading?: boolean;
+  onLogin?: () => void;
+  onLogout?: () => void;
 }
 
 const ACCEPTED_FILE_TYPES = [
@@ -277,7 +284,7 @@ function ToolResultsDisplay({ toolResults, onAddToCart }: { toolResults: ToolRes
   );
 }
 
-export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFileUpload = false }: ChatModalProps) {
+export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFileUpload = false, requiresAuth = false, isAuthenticated = true, isAuthLoading = false, onLogin, onLogout }: ChatModalProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -601,13 +608,62 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
                   </div>
                 </div>
               </div>
-              <button
-                onClick={onClose}
-                className="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full transition-colors text-gray-500"
-              >
-                <X size={20} />
-              </button>
+              <div className="flex items-center gap-2">
+                {requiresAuth && isAuthenticated && onLogout && (
+                  <button
+                    onClick={onLogout}
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Disconnect Salla"
+                  >
+                    <LogOut size={14} />
+                    <span className="hidden sm:inline">Disconnect</span>
+                  </button>
+                )}
+                <button
+                  onClick={onClose}
+                  className="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full transition-colors text-gray-500"
+                >
+                  <X size={20} />
+                </button>
+              </div>
             </div>
+
+            {/* Auth Prompt Screen */}
+            {requiresAuth && !isAuthenticated ? (
+              <div className="flex-1 flex items-center justify-center p-8">
+                <div className="text-center max-w-sm">
+                  {isAuthLoading ? (
+                    <>
+                      <div className="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center animate-pulse" style={{ backgroundColor: `${config.primaryColor}15` }}>
+                        <div className="w-8 h-8 border-2 border-gray-300 border-t-current rounded-full animate-spin" style={{ borderTopColor: config.primaryColor }} />
+                      </div>
+                      <p className="text-gray-500 text-sm">Checking authentication...</p>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center" style={{ backgroundColor: `${config.primaryColor}10` }}>
+                        <LogIn size={32} style={{ color: config.primaryColor }} />
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">Connect to Salla</h3>
+                      <p className="text-sm text-gray-500 mb-8 leading-relaxed">
+                        To use this assistant, please authorize access to your Salla store. This connection expires every 2 weeks.
+                      </p>
+                      <button
+                        onClick={onLogin}
+                        className="inline-flex items-center gap-2 px-6 py-3 text-white rounded-xl font-medium text-sm shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] active:scale-95"
+                        style={{ backgroundColor: config.primaryColor }}
+                      >
+                        <LogIn size={18} />
+                        Authorize with Salla
+                      </button>
+                      <p className="text-xs text-gray-400 mt-4">
+                        You&apos;ll be redirected to Salla to grant access
+                      </p>
+                    </>
+                  )}
+                </div>
+              </div>
+            ) : (
 
             <div className="flex flex-1 overflow-hidden relative">
               {/* --- Desktop Sidebar --- */}
@@ -918,6 +974,8 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
                 </div>
               </div>
             </div>
+
+            )}
           </motion.div>
         </>
       )}

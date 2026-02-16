@@ -7,12 +7,14 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { sendChatMessage } from "@/app/actions/chat";
 import { sendShopifyChatMessage } from "@/app/actions/shopifyChat";
 import { sallaChatConfig, shopifyChatConfig } from "@/config/chatConfigs";
+import { useSallaAuth } from "@/lib/useSallaAuth";
 
 export default function PortfolioShowcase() {
   const t = useTranslations("Portfolio");
   const locale = useLocale();
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [activeDemoType, setActiveDemoType] = useState<'salla' | 'shopify'>('salla');
+  const sallaAuth = useSallaAuth();
   
   const projects = [
     {
@@ -224,7 +226,12 @@ export default function PortfolioShowcase() {
         onClose={() => setIsChatOpen(false)}
         sendChatMessage={chatAction}
         config={chatConfig}
-        enableFileUpload={activeDemoType === 'salla'} // Only enable for Salla
+        enableFileUpload={activeDemoType === 'salla'}
+        requiresAuth={activeDemoType === 'salla'}
+        isAuthenticated={activeDemoType === 'salla' ? sallaAuth.isAuthenticated : true}
+        isAuthLoading={activeDemoType === 'salla' ? sallaAuth.isLoading : false}
+        onLogin={sallaAuth.login}
+        onLogout={sallaAuth.logout}
       />
     </>
   );
