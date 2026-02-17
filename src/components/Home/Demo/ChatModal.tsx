@@ -593,18 +593,7 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
                         {config.subtitle}
                       </span>
                     </div>
-                    {config.storeUrl && (
-                      <a
-                        href={config.storeUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hidden sm:flex items-center gap-1 text-[10px] sm:text-xs hover:underline opacity-80 hover:opacity-100 transition-opacity"
-                        style={{ color: config.primaryColor }}
-                      >
-                        <span>Visit Store</span>
-                        <ExternalLink size={10} />
-                      </a>
-                    )}
+              
                   </div>
                 </div>
               </div>
