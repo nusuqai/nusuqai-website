@@ -424,7 +424,7 @@ export function ChatModal({ isOpen, onClose, sendChatMessage, config, enableFile
         id: Date.now() + 1,
         type: "bot",
         text: result.success
-          ? result.data?.response || result.data?.message || "Request processed."
+          ? result.data?.text || result.data?.response || result.data?.message || "Request processed."
           : "I couldn't complete that request.",
         timestamp: new Date(),
         toolResults: result.data?.toolResults || [],
