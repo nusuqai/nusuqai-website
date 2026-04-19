@@ -71,12 +71,20 @@
     "client": "Internal Prototype",
     "features": "AI Integration",
     "team": "Demo"
+   },
+   "clinica": {
+    "title": "Clinica AI: Conversational Chatbot for Clinic Management Systems.",
+    "description": "Streamlining clinic operations by integrating a smart conversational agent. This AI assistant enables patients to book appointments, access medical records, and resolve inquiries seamlessly through natural language, reducing administrative overhead and enhancing patient care.",
+    "client": "Internal Prototype",
+    "features": "AI Integration",
+    "team": "Demo"
    }
   },
   "stats": {
    "client": "Client",
    "integrations": "Integrations",
-   "team": "Team"
+   "team": "Team",
+   "tryDemo": "Try demo"
   }
  },
  "About": {

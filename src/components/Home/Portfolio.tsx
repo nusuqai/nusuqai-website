@@ -13,7 +13,7 @@ export default function PortfolioShowcase() {
   const t = useTranslations("Portfolio");
   const locale = useLocale();
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [activeDemoType, setActiveDemoType] = useState<'salla' | 'shopify'>('salla');
+  const [activeDemoType, setActiveDemoType] = useState<'salla' | 'shopify' | 'clinica'>('salla');
   const sallaAuth = useSallaAuth();
   
   const projects = [
@@ -37,6 +37,16 @@ export default function PortfolioShowcase() {
       team: t("projects.shopify.team"),
       demoType: 'shopify' as const,
     },
+    {
+      id: 3,
+      image: "./demo3.png",
+      title: t("projects.clinica.title"),
+      description: t("projects.clinica.description"),
+      client: t("projects.clinica.client"),
+      features: t("projects.clinica.features"),
+      team: t("projects.clinica.team"),
+      demoType: 'clinica' as const,
+    },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -53,6 +63,10 @@ export default function PortfolioShowcase() {
   };
 
   const handleTryDemo = () => {
+    if (currentProject.demoType === 'clinica') {
+      window.open('https://clinica.nusuqai.com/', '_blank');
+      return;
+    }
     setActiveDemoType(currentProject.demoType);
     setIsChatOpen(true);
   };
@@ -61,9 +75,8 @@ export default function PortfolioShowcase() {
   const IsRTL = ["ar"].includes(locale);
 
   // Get the appropriate config and action based on demo type
-  const chatConfig = activeDemoType === 'salla' ? sallaChatConfig : shopifyChatConfig;
-  const chatAction = activeDemoType === 'salla' ? sendChatMessage : sendShopifyChatMessage;
-  
+  const chatConfig = activeDemoType === 'shopify' ? shopifyChatConfig : sallaChatConfig;
+  const chatAction = activeDemoType === 'shopify' ? sendShopifyChatMessage : sendChatMessage;
   return (
     <>
       <section className="py-20 bg-gray-50 relative overflow-hidden" id="portfolio">
@@ -204,7 +217,7 @@ export default function PortfolioShowcase() {
                       onClick={handleTryDemo}
                       className="ml-auto flex items-center gap-2 text-[#0F1E3D] hover:text-[#00E0FF] transition-colors group"
                     >
-                      <span className="text-sm font-medium">Try demo</span>
+                      <span className="text-sm font-medium">{t("stats.tryDemo")}</span>
                       {!IsRTL ? (
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       ) : (
