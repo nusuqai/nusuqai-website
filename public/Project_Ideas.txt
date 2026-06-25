@@ -1,0 +1,44 @@
+Project Team Formation (3 to 5) Occasionally 6
+- In some Occasions, Few teams might contains one or two.
+By choice
+Choose the doctor or TA
+
+Two Phases:
+- Idea Statement (Researches, Papers, … etc)
+- Resources aren't mandatory
+- Pre-reviewed Resources
+- Research Phase
+- Presentation (80/200) => Conversion to Grades
+
+2nd Phase: 
+- Implementation
+- Prototype
+
+* Technologies => You use any if you achieved the targets
+* All doctors must participate (Bare minimum team: 2 for example)
+* Ideas are hard to find
+* Students can discuss with the Professor
+* Stress can lead to buying projects
+* Students can't balance between studying and project
+* Mentorship can help outstanding projects
+
+-----------------------
+
+- Each department has specific categories
+
+* DS -> Optimization, Simulation
+* Most students don't participate
+
+------------------------
+
+Suggestions:
+
+* Match Students to form teams [Ideas Suggestion]
+* Allow Students to Choose Doctor or TA Based on Availability X
+* Suggest based on research (Reviewed researches are top priority)
+* Mentor for presentational skills
+* AI Chatbot + Mentorship for Guidance
+* Guidance for the whole process [Categories, Field, Questions, ... ]
+
+* Future Improvements: Integrate system with all faculties across all universities
+

@@ -51,6 +51,10 @@
    "chatbots": {
     "title": "Chatbots",
     "description": "Develop intelligent chatbots to improve customer engagement and support"
+   },
+   "consulting": {
+    "title": "Consulting & Strategy",
+    "description": "Get expert guidance to plan, build, and scale the right products with a clear roadmap to success."
    }
   }
  },
