@@ -88,54 +88,62 @@ function WebDevIllustration() {
 function ScalingIllustration() {
   return (
     <svg viewBox="0 0 200 260" fill="none" className="w-full h-auto">
-      {/* Title area */}
-      <text x="16" y="28" fill="#94A3B8" fontSize="11" fontFamily="system-ui" fontWeight="400" opacity="0.7">Scaling</text>
-      
       {/* Vertical bar chart */}
-      <rect x="16" y="45" width="22" height="100" rx="4" fill="#00D4C2" opacity="0.3"/>
-      <rect x="44" y="65" width="22" height="80" rx="4" fill="#00D4C2" opacity="0.45"/>
-      <rect x="72" y="35" width="22" height="110" rx="4" fill="#00D4C2" opacity="0.55"/>
-      <rect x="100" y="50" width="22" height="95" rx="4" fill="#00D4C2" opacity="0.7"/>
-      <rect x="128" y="25" width="22" height="120" rx="4" fill="#00D4C2" opacity="0.85"/>
-      <rect x="156" y="55" width="22" height="90" rx="4" fill="#00D4C2"/>
+      <rect x="16" y="20" width="22" height="110" rx="4" fill="#00D4C2" opacity="0.3"/>
+      <rect x="44" y="40" width="22" height="90" rx="4" fill="#00D4C2" opacity="0.45"/>
+      <rect x="72" y="15" width="22" height="115" rx="4" fill="#00D4C2" opacity="0.55"/>
+      <rect x="100" y="30" width="22" height="100" rx="4" fill="#00D4C2" opacity="0.7"/>
+      <rect x="128" y="10" width="22" height="120" rx="4" fill="#00D4C2" opacity="0.85"/>
+      <rect x="156" y="35" width="22" height="95" rx="4" fill="#00D4C2"/>
 
-      {/* Date labels */}
-      <text x="16" y="162" fill="#94A3B8" fontSize="9" fontFamily="system-ui" opacity="0.5">Nov 10</text>
-      <text x="72" y="162" fill="#94A3B8" fontSize="9" fontFamily="system-ui" opacity="0.5">Nov 14</text>
-      <text x="138" y="162" fill="#94A3B8" fontSize="9" fontFamily="system-ui" opacity="0.5">Nov 16</text>
+      {/* Axis labels as abstract shapes */}
+      <rect x="18" y="140" width="18" height="4" rx="2" fill="#CBD5E1" opacity="0.5"/>
+      <rect x="74" y="140" width="18" height="4" rx="2" fill="#CBD5E1" opacity="0.5"/>
+      <rect x="140" y="140" width="18" height="4" rx="2" fill="#CBD5E1" opacity="0.5"/>
 
       {/* Bottom section: mini trend line */}
-      <rect x="16" y="185" width="168" height="60" rx="8" fill="#F8FAFC" stroke="#E2E8F0" strokeWidth="0.75"/>
-      <polyline points="30,220 55,210 80,215 105,200 130,205 155,195 170,198" stroke="#00D4C2" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-      <circle cx="105" cy="200" r="3" fill="#00D4C2"/>
-      <circle cx="170" cy="198" r="3" fill="#00D4C2"/>
+      <rect x="16" y="165" width="168" height="60" rx="8" fill="#F8FAFC" stroke="#E2E8F0" strokeWidth="0.75"/>
+      <polyline points="30,200 55,190 80,195 105,180 130,185 155,175 170,178" stroke="#00D4C2" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="105" cy="180" r="3" fill="#CBD5E1"/>
+      <circle cx="170" cy="178" r="3" fill="#CBD5E1"/>
     </svg>
   );
 }
 
 function MobileIllustration() {
   return (
-    <svg viewBox="0 0 220 140" fill="none" className="w-full h-auto">
-      {/* Chat bubble top */}
-      <rect x="40" y="8" width="140" height="36" rx="10" fill="#F1F5F9" stroke="#E2E8F0" strokeWidth="1.2"/>
-      <circle cx="58" cy="26" r="8" fill="#CBD5E1"/>
-      <rect x="74" y="20" width="80" height="5" rx="2.5" fill="#CBD5E1"/>
-      <rect x="74" y="30" width="50" height="4" rx="2" fill="#E2E8F0"/>
-      {/* Tail */}
-      <polygon points="70,44 80,44 75,52" fill="#F1F5F9"/>
+    <svg viewBox="0 0 160 260" fill="none" className="w-full h-auto max-w-[140px] mx-auto">
+      {/* Phone outer frame - soft rounded */}
+      <rect x="15" y="5" width="130" height="250" rx="26" fill="#F6F8FA" stroke="#E5E9EE" strokeWidth="1.5"/>
+      {/* Screen */}
+      <rect x="23" y="30" width="114" height="200" rx="6" fill="white"/>
+      {/* Top speaker/camera area */}
+      <rect x="55" y="12" width="50" height="10" rx="5" fill="#E5E9EE"/>
 
-      {/* Notification card */}
-      <rect x="60" y="60" width="150" height="42" rx="10" fill="white" stroke="#E2E8F0" strokeWidth="1.2"/>
-      <circle cx="78" cy="72" r="4" fill="#00D4C2"/>
-      <text x="88" y="70" fill="#94A3B8" fontSize="7" fontFamily="system-ui" opacity="0.6">New</text>
-      <circle cx="80" cy="88" r="9" fill="#00D4C2" opacity="0.12"/>
-      <rect x="72" y="84" width="16" height="8" rx="2" fill="#00D4C2" opacity="0.3"/>
-      <rect x="96" y="78" width="70" height="5" rx="2.5" fill="#334155" opacity="0.7"/>
-      <rect x="96" y="88" width="50" height="4" rx="2" fill="#CBD5E1"/>
+      {/* Teal app icon */}
+      <rect x="34" y="48" width="28" height="28" rx="7" fill="#00D4C2"/>
 
-      {/* Small status dot */}
-      <circle cx="16" y="26" r="6" fill="#00D4C2" opacity="0.15"/>
-      <circle cx="16" y="26" r="3" fill="#00D4C2"/>
+      {/* Header bars next to icon */}
+      <rect x="72" y="52" width="52" height="6" rx="3" fill="#D8DDE3"/>
+      <rect x="72" y="64" width="36" height="5" rx="2.5" fill="#E5E9EE"/>
+
+      {/* Content block 1 */}
+      <rect x="34" y="92" width="92" height="32" rx="8" fill="#F0F2F5"/>
+      <rect x="42" y="100" width="55" height="5" rx="2.5" fill="#D8DDE3"/>
+      <rect x="42" y="110" width="38" height="4" rx="2" fill="#E5E9EE"/>
+
+      {/* Content block 2 */}
+      <rect x="34" y="132" width="92" height="32" rx="8" fill="#F0F2F5"/>
+      <rect x="42" y="140" width="48" height="5" rx="2.5" fill="#D8DDE3"/>
+      <rect x="42" y="150" width="62" height="4" rx="2" fill="#E5E9EE"/>
+
+      {/* Content block 3 */}
+      <rect x="34" y="172" width="92" height="28" rx="8" fill="#F0F2F5"/>
+      <rect x="42" y="180" width="42" height="5" rx="2.5" fill="#D8DDE3"/>
+      <rect x="42" y="190" width="30" height="4" rx="2" fill="#E5E9EE"/>
+
+      {/* Home indicator */}
+      <rect x="58" y="238" width="44" height="5" rx="2.5" fill="#D8DDE3"/>
     </svg>
   );
 }
@@ -150,7 +158,7 @@ function ChatbotIllustration() {
       <rect x="10" y="5" width="200" height="24" rx="10" fill="#F1F5F9"/>
       <circle cx="30" cy="17" r="6" fill="#CBD5E1"/>
       <rect x="42" y="13" width="50" height="5" rx="2.5" fill="#CBD5E1"/>
-      <circle cx="190" cy="17" r="4" fill="#00D4C2" opacity="0.4"/>
+      <rect x="184" y="13" width="14" height="8" rx="4" fill="#E2E8F0"/>
 
       {/* User message */}
       <rect x="70" y="40" width="120" height="24" rx="8" fill="#00D4C2" opacity="0.12"/>
@@ -232,10 +240,6 @@ export function ServicesSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-14"
         >
-          <span className="inline-flex items-center gap-2 text-sm font-medium tracking-wide text-[#00D4C2] uppercase mb-4">
-            <span className="w-2 h-2 rounded-full bg-[#00D4C2]" />
-            {t("description")}
-          </span>
           <h2 className="text-3xl lg:text-5xl text-[#0F1E3D]">
             {t("title")}
           </h2>

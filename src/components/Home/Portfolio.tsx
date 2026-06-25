@@ -1,9 +1,9 @@
 'use client';
 import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { useTranslations, useLocale } from "next-intl";
 import { ChatModal } from "./Demo/ChatModal";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { sendChatMessage } from "@/app/actions/chat";
 import { sendShopifyChatMessage } from "@/app/actions/shopifyChat";
 import { sallaChatConfig, shopifyChatConfig } from "@/config/chatConfigs";
@@ -49,191 +49,171 @@ export default function PortfolioShowcase() {
     },
   ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const IsRTL = ["ar"].includes(locale);
 
-  const DURATION = 8000; 
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % projects.length);
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
-  };
-
-  const handleTryDemo = () => {
-    if (currentProject.demoType === 'clinica') {
+  const handleTryDemo = (project: typeof projects[0]) => {
+    if (project.demoType === 'clinica') {
       window.open('https://clinica.nusuqai.com/', '_blank');
       return;
     }
-    setActiveDemoType(currentProject.demoType);
+    setActiveDemoType(project.demoType);
     setIsChatOpen(true);
   };
 
-  const currentProject = projects[currentIndex];
-  const IsRTL = ["ar"].includes(locale);
-
-  // Get the appropriate config and action based on demo type
   const chatConfig = activeDemoType === 'shopify' ? shopifyChatConfig : sallaChatConfig;
   const chatAction = activeDemoType === 'shopify' ? sendShopifyChatMessage : sendChatMessage;
+
   return (
     <>
-      <section className="py-20 bg-gray-50 relative overflow-hidden" id="portfolio">
-        <style jsx>{`
-          @keyframes grow-progress {
-            from { width: 0%; }
-            to { width: 100%; }
-          }
-        `}</style>
-
+      <section className="py-20 bg-white relative overflow-hidden" id="portfolio">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+
+          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mb-12"
+            className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-12 gap-6"
           >
-            <h2 className="text-3xl lg:text-5xl text-[#0F1E3D] mb-4">{t("title")}</h2>
-            <p className="text-lg text-[#94A3B8]">
-              {t("description")}
-            </p>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-[#00D4C2] font-medium flex items-center gap-2">
+                <ArrowRight className="w-4 h-4 rtl:rotate-180" />
+                {t("stats.client")}
+              </span>
+            </div>
+            <div className="lg:text-right">
+              <h2 className="text-3xl lg:text-5xl text-[#0F1E3D] mb-2">{t("title")}</h2>
+              <p className="text-lg text-[#94A3B8]">{t("description")}</p>
+            </div>
           </motion.div>
 
-          <div className="flex gap-2 mb-8">
-            {projects.map((_, index) => (
-              <div
-                key={index}
-                className="h-1 flex-1 bg-gray-200 rounded-full overflow-hidden cursor-pointer relative"
-                onClick={() => setCurrentIndex(index)}
-              >
-                {index < currentIndex && (
-                  <div className="h-full w-full bg-gradient-to-r from-[#00E0FF] to-[#00D4C2]" />
-                )}
-                {index === currentIndex && (
-                  <div
-                    className="h-full bg-gradient-to-r from-[#00E0FF] to-[#00D4C2]"
-                    style={{
-                      animation: `grow-progress ${DURATION}ms linear`,
-                      animationPlayState: isPaused ? 'paused' : 'running' 
-                    }}
-                    onAnimationEnd={handleNext} 
-                  />
-                )}
-              </div>
-            ))}
-          </div>
+          {/* Bento Grid - all projects visible */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
 
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Row 1: Wide left (3/5) + Narrow right (2/5) */}
             <motion.div
-              className="relative"
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="lg:col-span-3 group cursor-pointer"
+              onClick={() => handleTryDemo(projects[0])}
             >
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentProject.id}
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 50 }}
-                  transition={{ duration: 0.5 }}
-                  className="relative rounded-2xl overflow-hidden shadow-2xl aspect-square lg:aspect-[4/3]"
-                >
-                  <div className="absolute inset-0 from-[#00E0FF]/20 to-[#00D4C2]/20 z-10" />
+              <div className="rounded-2xl overflow-hidden border border-gray-100 bg-white h-full flex flex-col hover:shadow-lg transition-shadow duration-300">
+                <div className="relative overflow-hidden aspect-[16/10]">
                   <img
-                    src={currentProject.image}
-                    alt={currentProject.title}
-                    className="w-full h-full object-cover" 
+                    src={projects[0].image}
+                    alt={projects[0].title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                   />
-                </motion.div>
-              </AnimatePresence>
+                </div>
+                <div className="p-5 flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-[#94A3B8] mb-1">{projects[0].features}</p>
+                    <h3 className="text-lg font-semibold text-[#0F1E3D] mb-1 line-clamp-2">{projects[0].title}</h3>
+                    <p className="text-sm text-[#94A3B8] line-clamp-2">{projects[0].description}</p>
+                  </div>
+                  <span className="flex-shrink-0 w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-[#00D4C2] transition-colors">
+                    <ArrowRight className="w-4 h-4 text-[#94A3B8] group-hover:text-[#00D4C2] transition-colors rtl:rotate-180" />
+                  </span>
+                </div>
+              </div>
             </motion.div>
 
-            <div
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="lg:col-span-2 group cursor-pointer"
+              onClick={() => handleTryDemo(projects[1])}
             >
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentProject.id}
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -50 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <h3 className="text-2xl lg:text-3xl text-[#0F1E3D] mb-6 leading-tight">
-                    {currentProject.title}
-                  </h3>
-                  <p className="text-[#94A3B8] leading-relaxed mb-8">
-                    {currentProject.description}
-                  </p>
-
-                  <div className="grid grid-cols-3 gap-6 mb-8">
-                    <div>
-                      <p className="text-sm text-[#94A3B8] mb-1">{t("stats.client")}</p>
-                      <p className="text-[#0F1E3D] font-medium">{currentProject.client}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-[#94A3B8] mb-1">{t("stats.integrations")}</p>
-                      <p className="text-[#0F1E3D] font-medium">{currentProject.features}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-[#94A3B8] mb-1">{t("stats.team")}</p>
-                      <p className="text-[#0F1E3D] font-medium">{currentProject.team}</p>
-                    </div>
+              <div className="rounded-2xl overflow-hidden border border-gray-100 bg-white h-full flex flex-col hover:shadow-lg transition-shadow duration-300">
+                <div className="relative overflow-hidden aspect-[4/3]">
+                  <img
+                    src={projects[1].image}
+                    alt={projects[1].title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                </div>
+                <div className="p-5 flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-[#94A3B8] mb-1">{projects[1].features}</p>
+                    <h3 className="text-base font-semibold text-[#0F1E3D] mb-1 line-clamp-2">{projects[1].title}</h3>
+                    <p className="text-sm text-[#94A3B8] line-clamp-3">{projects[1].description}</p>
                   </div>
+                  <span className="flex-shrink-0 w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-[#00D4C2] transition-colors">
+                    <ArrowRight className="w-4 h-4 text-[#94A3B8] group-hover:text-[#00D4C2] transition-colors rtl:rotate-180" />
+                  </span>
+                </div>
+              </div>
+            </motion.div>
 
-                  <div className="flex items-center gap-4">
-                    <button
-                      onClick={handlePrev}
-                      className="w-12 h-12 rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-[#00E0FF] hover:bg-[#00E0FF]/10 transition-all group"
-                    >
-                      <svg
-                        className="rtl:rotate-180 w-5 h-5 text-[#94A3B8] group-hover:text-[#00E0FF] transition-colors"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                      </svg>
-                    </button>
-
-                    <button
-                      onClick={handleNext}
-                      className="w-12 h-12 rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-[#00E0FF] hover:bg-[#00E0FF]/10 transition-all group"
-                    >
-                      <svg
-                        className="rtl:rotate-180 w-5 h-5 text-[#94A3B8] group-hover:text-[#00E0FF] transition-colors"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </button>
-
-                    <button
-                      onClick={handleTryDemo}
-                      className="ml-auto flex items-center gap-2 text-[#0F1E3D] hover:text-[#00E0FF] transition-colors group"
-                    >
-                      <span className="text-sm font-medium">{t("stats.tryDemo")}</span>
-                      {!IsRTL ? (
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      ) : (
-                        <ArrowLeft className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      )}
-                    </button>
+            {/* Row 2: Narrow left (2/5) + Wide right (3/5) - flipped for asymmetry */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.05 }}
+              className="lg:col-span-2 group cursor-pointer"
+              onClick={() => handleTryDemo(projects[2])}
+            >
+              <div className="rounded-2xl overflow-hidden border border-gray-100 bg-white h-full flex flex-col hover:shadow-lg transition-shadow duration-300">
+                <div className="relative overflow-hidden aspect-[4/3]">
+                  <img
+                    src={projects[2].image}
+                    alt={projects[2].title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                </div>
+                <div className="p-5 flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-[#94A3B8] mb-1">{projects[2].features}</p>
+                    <h3 className="text-base font-semibold text-[#0F1E3D] mb-1 line-clamp-2">{projects[2].title}</h3>
+                    <p className="text-sm text-[#94A3B8] line-clamp-3">{projects[2].description}</p>
                   </div>
-                  
-                </motion.div>
-              </AnimatePresence>
-            </div>
+                  <span className="flex-shrink-0 w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-[#00D4C2] transition-colors">
+                    <ArrowRight className="w-4 h-4 text-[#94A3B8] group-hover:text-[#00D4C2] transition-colors rtl:rotate-180" />
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Third project as wide card on right */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.12 }}
+              className="lg:col-span-3 group cursor-pointer"
+              onClick={() => handleTryDemo(projects[0])}
+            >
+              <div className="rounded-2xl overflow-hidden border border-gray-100 bg-white h-full flex flex-col hover:shadow-lg transition-shadow duration-300">
+                <div className="relative overflow-hidden aspect-[16/10]">
+                  <img
+                    src={projects[0].image}
+                    alt={projects[0].title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                </div>
+                <div className="p-5 flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-[#94A3B8] mb-1">{projects[0].features}</p>
+                    <h3 className="text-lg font-semibold text-[#0F1E3D] mb-1 line-clamp-2">{projects[0].title}</h3>
+                    <p className="text-sm text-[#94A3B8] line-clamp-2">{projects[0].description}</p>
+                  </div>
+                  <span className="flex-shrink-0 w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-[#00D4C2] transition-colors">
+                    <ArrowRight className="w-4 h-4 text-[#94A3B8] group-hover:text-[#00D4C2] transition-colors rtl:rotate-180" />
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+
           </div>
         </div>
       </section>
 
-      {/* Single Chat Modal with Dynamic Config */}
       <ChatModal 
         isOpen={isChatOpen} 
         onClose={() => setIsChatOpen(false)}
