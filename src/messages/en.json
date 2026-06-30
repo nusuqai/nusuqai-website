@@ -82,10 +82,24 @@
     "client": "Internal Prototype",
     "features": "AI Integration",
     "team": "Demo"
+   },
+   "elmentor": {
+    "title": "Elmentor: AI-Powered Mentor Matching Platform.",
+    "description": "An intelligent AI agent that takes your interests, career goals, and experience level to match you with vetted professional mentors. Connecting users with expert mentors across Product Management, Data Science, UX Design, and Engineering through personalized, private, and flexible mentorship sessions.",
+    "client": "NusuqAI",
+    "features": "AI Agent",
+    "team": "Live Product"
+   },
+   "realestate": {
+    "title": "AqarLens: Real-Estate Intelligence Platform for Egypt.",
+    "description": "AI-powered real estate platform bringing projects, developers, locations, amenities, investment signals, and buyer feedback into one clear experience. Features smart project comparison, ROI analysis, developer ratings, and an AI agent for personalized property recommendations across 30+ projects and developers.",
+    "client": "NusuqAI",
+    "features": "AI Agent",
+    "team": "Live Product"
    }
   },
   "stats": {
-   "client": "Client",
+   "client": "Portfolio",
    "integrations": "Integrations",
    "team": "Team",
    "tryDemo": "Try demo"
