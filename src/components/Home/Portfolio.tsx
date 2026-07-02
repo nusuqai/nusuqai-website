@@ -81,7 +81,7 @@ export default function PortfolioShowcase() {
     },
     {
       id: 4,
-      image: "./elmentor.png",
+      image: "./demo4.png",
       title: t("projects.elmentor.title"),
       description: t("projects.elmentor.description"),
       features: t("projects.elmentor.features"),
@@ -91,7 +91,7 @@ export default function PortfolioShowcase() {
     },
     {
       id: 5,
-      image: "./realestate.png",
+      image: "./demo5.png",
       title: t("projects.realestate.title"),
       description: t("projects.realestate.description"),
       features: t("projects.realestate.features"),
@@ -126,10 +126,6 @@ export default function PortfolioShowcase() {
   const handleProjectClick = (project: typeof allProjects[0]) => {
     if (project.actionType === 'link' && 'url' in project) {
       window.open(project.url, '_blank');
-      return;
-    }
-    if (project.demoType === 'clinica') {
-      window.open('https://clinica.nusuqai.com/', '_blank');
       return;
     }
     setActiveDemoType(project.demoType);

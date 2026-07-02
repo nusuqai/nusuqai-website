@@ -58,6 +58,33 @@
    }
   }
  },
+ "Process": {
+  "title1": "Building AI Solutions",
+  "title2": "Step by Step",
+  "description": "We follow a clear, structured process to transform your ideas into intelligent AI-powered systems. From understanding your goals to deploying and optimizing, we ensure every stage delivers real value.",
+  "cta1": "Schedule Meeting",
+  "cta2": "Our Services",
+  "steps": {
+   "discovery": "Discovery & Planning",
+   "research": "Infrastructure Analysis",
+   "design": "Research & Design",
+   "development": "AI Development",
+   "integration": "System Integration",
+   "testing": "Quality Testing",
+   "launch": "Launch & Support",
+   "support": "Continuous Support"
+  },
+  "descriptions": {
+   "discovery": "Understanding your goals, workflows, and what success looks like.",
+   "research": "Mapping your existing systems, APIs, and data sources.",
+   "design": "Analyzing your systems and designing the AI-powered experience.",
+   "development": "Building and training the AI models and logic layer.",
+   "integration": "Connecting the AI securely to your live infrastructure.",
+   "testing": "Validating accuracy, performance, and edge cases.",
+   "launch": "Deploying to production with ongoing optimization and support.",
+   "support": "Ongoing optimization, updates, and scaling assistance."
+  }
+ },
  "Portfolio": {
   "title": "Our Work",
   "description": "Explore Demos and Case Studies of Our Recent Projects",
