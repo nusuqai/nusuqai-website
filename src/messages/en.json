@@ -133,8 +133,24 @@
   }
  },
  "About": {
- "title": "Learn More About Us",
- "description": "We simplify your user journey with AI tools that boost engagement, efficiency, and revenue.",
+ "title": "About Us",
+ "description": "A team of AI engineers delivering modern, scalable, and high-impact solutions that drive real digital transformation.",
+ "bento": {
+  "card1": {
+   "title": "Empowering Businesses",
+   "content": "We help businesses deliver smoother, faster, and smarter experiences, whether that means connecting your product to AI or building a tailored system end to end."
+  },
+  "card2": {
+   "title": "Seamless AI Integration",
+   "content": "From AI chatbots to automated workflows, we build intelligent systems that let your users take action directly through AI."
+  },
+  "highlights": {
+   "title": "What we do",
+   "a": "AI Integration",
+   "b": "Custom AI Systems",
+   "c": "Automated Workflows"
+  }
+ },
  "tabs": {
   "story": {
    "label": "Our Story",
