@@ -1,156 +1,167 @@
 'use client';
 import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { Share2, Database, Bot } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Headphones, Layers, Workflow } from "lucide-react";
 
-import KnowledgeGraphAnim from "./KnowledgeGraph";
-import DatabaseActionAnim from "./DatabaseAction";
-import SupportAutomationAnim from "./CustomerSupport";
+import SupportVisual from "./CustomerSupport";
+import KnowledgeVisual from "./KnowledgeGraph";
+import ActionsVisual from "./DatabaseAction";
 
-export default function IntegrationsShowcaseHorizontal() {
+export default function UseCasesShowcase() {
   const t = useTranslations("UseCases");
-  
+
   const useCases = [
     {
       id: "knowledge",
-      icon: Share2,
+      Icon: Layers,
       title: t("cases.knowledge.title"),
-      subtitle: t("cases.knowledge.subtitle"),
-      color: "#00D4C2",
       description: t("cases.knowledge.description"),
-      component: KnowledgeGraphAnim
-    },
-    {
-      id: "actions",
-      icon: Database,
-      title: t("cases.actions.title"),
-      subtitle: t("cases.actions.subtitle"),
-      color: "#00E0FF", 
-      description: t("cases.actions.description"),
-      component: DatabaseActionAnim
+      Visual: KnowledgeVisual,
     },
     {
       id: "support",
-      icon: Bot,
+      Icon: Headphones,
       title: t("cases.support.title"),
-      subtitle: t("cases.support.subtitle"),
-      color: "#00D4C2",
       description: t("cases.support.description"),
-      component: SupportAutomationAnim
-    }
+      Visual: SupportVisual,
+    },
+    {
+      id: "actions",
+      Icon: Workflow,
+      title: t("cases.actions.title"),
+      description: t("cases.actions.description"),
+      Visual: ActionsVisual,
+    },
   ];
 
-  const [activeTab, setActiveTab] = useState(0);
+  // Middle card is the default hero.
+  const [active, setActive] = useState(1);
 
   return (
-    <section id="usecases" className="bg-white py-16">
+    <section id="usecases" className="bg-white py-20 lg:py-28">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        
-        <div className="text-center mb-12 max-w-3xl mx-auto">
-          <h2 className="text-3xl lg:text-4xl text-[#0F1E3D] mb-4 tracking-tight font-poppins">
+        {/* Header */}
+        <div className="text-center mb-14 max-w-2xl mx-auto">
+          <h2 className="text-3xl lg:text-5xl text-[#0F1E3D] mb-4 tracking-tight font-poppins">
             {t("title")}
           </h2>
-          <p className="text-lg text-slate-500 font-inter">
+          <p className="text-lg text-[#94A3B8] leading-relaxed font-inter">
             {t("description")}
           </p>
         </div>
 
-        <div className="flex flex-col gap-8">
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {useCases.map((useCase, index) => {
-              const isActive = activeTab === index;
-              const Icon = useCase.icon;
-              
-              return (
-                <button
-                  key={useCase.id}
-                  onClick={() => setActiveTab(index)}
-                  className={`group relative flex flex-col items-center justify-center p-6 rounded-2xl transition-all duration-300 border ${
-                    isActive 
-                      ? "bg-white border-transparent shadow-lg shadow-[#0F1E3D]/5" 
-                      : "bg-transparent border-slate-100 hover:bg-[#F8FAFF] hover:border-slate-200"
+        {/* ── Desktop: horizontal expandable cards ── */}
+        <div className="hidden lg:flex gap-4 h-[500px]">
+          {useCases.map((useCase, index) => {
+            const isActive = active === index;
+            const Icon = useCase.Icon;
+            const Visual = useCase.Visual;
+
+            return (
+              <div
+                key={useCase.id}
+                onMouseEnter={() => setActive(index)}
+                onClick={() => setActive(index)}
+                style={{
+                  flexGrow: isActive ? 2.4 : 1,
+                  flexBasis: 0,
+                  transition:
+                    "flex-grow 550ms cubic-bezier(0.22, 1, 0.36, 1), background-color 400ms ease",
+                }}
+                className={`group relative flex flex-col overflow-hidden rounded-3xl cursor-pointer p-7 ${
+                  isActive
+                    ? "bg-[#F8FAFF] shadow-xl shadow-[#0F1E3D]/10"
+                    : "bg-[#F1F5F9]"
+                }`}
+              >
+                {/* Icon */}
+                <Icon
+                  strokeWidth={1.5}
+                  className={`w-6 h-6 mb-4 shrink-0 transition-colors duration-300 ${
+                    isActive ? "text-[#00D4C2]" : "text-slate-400"
+                  }`}
+                />
+
+                {/* Title — always at the top, horizontal */}
+                <h3
+                  className={`font-semibold font-poppins leading-tight transition-colors duration-300 ${
+                    isActive
+                      ? "text-2xl xl:text-[28px] text-[#0F1E3D]"
+                      : "text-lg text-[#0F1E3D]/70"
                   }`}
                 >
-                  {isActive && (
-                    <motion.div
-                      layoutId="active-indicator"
-                      className="absolute bottom-0 left-0 right-0 h-1 rounded-b-2xl"
-                      style={{ backgroundColor: useCase.color }}
-                    />
-                  )}
+                  {useCase.title}
+                </h3>
 
-                  <div 
-                    className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors duration-300 mb-4`}
-                    style={{ 
-                      backgroundColor: isActive ? useCase.color : "#F1F5F9",
-                      color: isActive ? "#FFFFFF" : "#94A3B8"
-                    }}
+                {/*
+                  Fixed-width block so the text never reflows while the card
+                  resizes — it just fades in/out and is clipped when collapsed.
+                */}
+                <div
+                  className="w-[380px] transition-opacity duration-300"
+                  style={{
+                    opacity: isActive ? 1 : 0,
+                    pointerEvents: isActive ? "auto" : "none",
+                  }}
+                >
+                  <p className="mt-4 text-[#64748B] leading-relaxed font-inter text-[15px]">
+                    {useCase.description}
+                  </p>
+                  <a
+                    href="#contact"
+                    className="inline-flex mt-5 px-5 py-2.5 rounded-full bg-[#00D4C2] text-white font-semibold text-sm hover:bg-[#00E0FF] transition-colors duration-200 shadow-sm shadow-[#00D4C2]/20"
                   >
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  
-                  <div className="text-center">
-                    <h3 className={`font-semibold text-lg mb-1 transition-colors font-poppins ${
-                      isActive ? "text-[#0F1E3D]" : "text-slate-600"
-                    }`}>
-                      {useCase.title}
-                    </h3>
-                    <p className="text-sm font-medium font-inter transition-colors"
-                         style={{ color: isActive ? useCase.color : "#94A3B8" }}>
-                      {useCase.subtitle}
-                    </p>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+                    {t("cta")}
+                  </a>
+                </div>
 
-          <div className="bg-white rounded-[20px] border border-slate-100 p-8 shadow-sm min-h-[450px] overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="grid lg:grid-cols-2 gap-12 h-full items-center"
+                {/* UI mockup — anchored to the side, bleeding off the edge, desaturated until active */}
+                <div
+                  className="pointer-events-none absolute -right-14 w-[460px] transition-all duration-500 ease-out"
+                  style={{
+                    top: isActive ? "296px" : "128px",
+                    filter: isActive ? "none" : "grayscale(1)",
+                    opacity: isActive ? 1 : 0.5,
+                  }}
+                >
+                  <Visual />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* ── Mobile: stacked cards ── */}
+        <div className="lg:hidden flex flex-col gap-5">
+          {useCases.map((useCase) => {
+            const Icon = useCase.Icon;
+            const Visual = useCase.Visual;
+            return (
+              <div
+                key={useCase.id}
+                className="rounded-3xl bg-[#F8FAFF] p-7 shadow-sm"
               >
-                
-                <div className="w-full h-[350px] lg:h-[400px] bg-slate-50/50 rounded-xl flex items-center justify-center border border-slate-100/50">
-                  {(() => {
-                    const ActiveComponent = useCases[activeTab].component;
-                    return <ActiveComponent />;
-                  })()}
+                <Icon strokeWidth={1.5} className="w-6 h-6 mb-4 text-[#00D4C2]" />
+                <h3 className="text-2xl font-semibold font-poppins text-[#0F1E3D] leading-tight">
+                  {useCase.title}
+                </h3>
+                <p className="mt-4 text-[#64748B] leading-relaxed font-inter text-[15px]">
+                  {useCase.description}
+                </p>
+                <a
+                  href="#contact"
+                  className="inline-flex mt-5 px-5 py-2.5 rounded-full bg-[#00D4C2] text-white font-semibold text-sm hover:bg-[#00E0FF] transition-colors duration-200 shadow-sm shadow-[#00D4C2]/20"
+                >
+                  {t("cta")}
+                </a>
+
+                {/* UI mockup */}
+                <div className="mt-6 overflow-hidden">
+                  <Visual />
                 </div>
-
-                <div className="flex flex-col justify-center space-y-6">
-                  <div className="flex items-center gap-2">
-                    <span 
-                      className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#F8FAFF]"
-                      style={{ color: useCases[activeTab].color }}
-                    >
-                      {t("mcpProtocol")}
-                    </span>
-                  </div>
-
-                  <div>
-                    <h3 className="text-2xl lg:text-3xl font-bold font-poppins text-[#0F1E3D] mb-4">
-                      {useCases[activeTab].title}
-                    </h3>
-                    <p className="text-slate-500 text-lg leading-relaxed font-inter">
-                      {useCases[activeTab].description}
-                    </p>
-                  </div>
-
-
-                </div>
-
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

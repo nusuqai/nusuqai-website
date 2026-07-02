@@ -170,23 +170,27 @@
  }
 },
  "UseCases": {
-  "title": "AI That Takes Action",
+  "title": "Use Cases",
   "description": "We don't just build chatbots. We build interoperable systems that securely connect your AI models to your actual data.",
+  "cta": "Get started",
   "cases": {
+   "support": {
+    "title": "Support that never sleeps",
+    "subtitle": "Customer Support",
+    "stat": "24/7 instant replies",
+    "description": "Your AI assistant answers customer questions around the clock, pulling real order and account details to resolve issues in seconds, with no queues, no waiting, and no extra headcount."
+   },
    "knowledge": {
-    "title": "Unified Interface",
-    "subtitle": "Connect all your data",
-    "description": "Instead of building separate connectors for each AI model, we create a unified interface to connect your knowledge sources. This allows any LLM to securely access your databases, file systems, and APIs through a standard way."
+    "title": "Every answer in one place",
+    "subtitle": "Unified Knowledge",
+    "stat": "One source of truth",
+    "description": "Connect your documents, tools, and databases so your team and customers get accurate answers instantly, instead of digging through scattered systems and outdated files."
    },
    "actions": {
-    "title": "Read/Write Pipelines",
-    "subtitle": "From query to action",
-    "description": "Move beyond passive chat. build chatbots that can listen to database streams and trigger API actions safely, turning your LLM into an active participant in your infrastructure."
-   },
-   "support": {
-    "title": "AI Customer Support",
-    "subtitle": "Service Automation",
-    "description": "Instead of generic answers, the bot pulls actual customer history from the CRM and solutions from the Knowledge Base to resolve tickets and trigger workflows automatically."
+    "title": "AI that gets things done",
+    "subtitle": "Automated Workflows",
+    "stat": "Hands-free operations",
+    "description": "Go beyond chat. Your AI takes action by updating records, sending follow-ups, and triggering tasks across your tools automatically, so your team focuses on what matters."
    }
   },
   "exploreIntegration": "Explore Integration",

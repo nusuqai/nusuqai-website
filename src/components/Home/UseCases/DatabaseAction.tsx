@@ -1,90 +1,61 @@
 'use client';
-import { useState, useEffect } from "react";
-import { motion } from "motion/react";
-import { Database, ArrowRight, LayoutDashboard } from "lucide-react";
 
-export default function DatabaseActionAnim() {
-  const PRIMARY_CYAN = "#00E0FF";
-  const PRIMARY_NAVY = "#0F1E3D";
+import { Zap, Check } from "lucide-react";
 
-    const queries = [
-    "UPDATE users SET plan='pro' WHERE id=12;",
-    "INSERT INTO logs(action) VALUES('deploy');",
-    "SELECT AVG(cpu) FROM metrics;",
-    "DELETE FROM cache WHERE expired=1;",
-    "COMMIT;"
-    ];
+const steps = [
+  "Inventory updated",
+  "Confirmation sent",
+  "Team notified",
+];
 
-  const [queryIndex, setQueryIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setQueryIndex((i) => (i + 1) % queries.length);
-    }, 4000); 
-
-    return () => clearInterval(interval);
-  }, []);
-
+/**
+ * Automation panel mockup — a trigger fires and the AI runs each task itself.
+ * Rendered in full colour; the parent card desaturates it when collapsed.
+ */
+export default function ActionsVisual() {
   return (
-    <div className="relative w-full h-64 md:h-80 flex items-center justify-between px-4 md:px-16 bg-[#F8FAFF] rounded-xl overflow-hidden border border-slate-200">
-      
-      {/* Background Flow */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-full h-1 bg-slate-200/50 rounded-full relative overflow-hidden">
-          <motion.div 
-            className="absolute top-0 left-0 h-full w-1/3"
-            style={{ background: `linear-gradient(90deg, transparent, ${PRIMARY_CYAN}, transparent)` }}
-            animate={{ x: ["-100%", "400%"] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          />
+    <div className="w-full rounded-2xl bg-white ring-1 ring-slate-100 shadow-xl shadow-[#0F1E3D]/10 overflow-hidden font-inter">
+      {/* Window bar */}
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-slate-100">
+        <span className="w-2.5 h-2.5 rounded-full bg-slate-200" />
+        <span className="w-2.5 h-2.5 rounded-full bg-slate-200" />
+        <span className="w-2.5 h-2.5 rounded-full bg-slate-200" />
+      </div>
+
+      <div className="p-4 bg-[#FBFCFE]">
+        {/* Trigger */}
+        <div className="flex items-center gap-2.5 rounded-xl bg-[#0F1E3D] px-3 py-2.5">
+          <span className="w-6 h-6 rounded-lg bg-[#00D4C2] flex items-center justify-center shrink-0">
+            <Zap className="w-3.5 h-3.5 text-white" fill="currentColor" />
+          </span>
+          <span className="text-[12px] font-semibold text-white">
+            New order received
+          </span>
+          <span className="ml-auto text-[10px] font-semibold uppercase tracking-wider text-[#00D4C2]">
+            Auto
+          </span>
+        </div>
+
+        {/* Steps */}
+        <div className="mt-2.5 space-y-2 pl-3 border-l-2 border-dashed border-[#00D4C2]/30 ml-3">
+          {steps.map((step) => (
+            <div
+              key={step}
+              className="flex items-center gap-2.5 rounded-lg bg-white ring-1 ring-slate-100 px-3 py-2"
+            >
+              <span className="w-5 h-5 rounded-full bg-[#00D4C2] flex items-center justify-center shrink-0">
+                <Check className="w-3 h-3 text-white" strokeWidth={3} />
+              </span>
+              <span className="text-[12px] font-medium text-slate-600">
+                {step}
+              </span>
+              <span className="ml-auto text-[10px] font-medium text-emerald-500">
+                Done
+              </span>
+            </div>
+          ))}
         </div>
       </div>
-
-      {/* Step 1: Database */}
-      <div className="relative z-10 flex flex-col items-center gap-2 md:gap-3">
-        <motion.div 
-          className="w-12 h-12 md:w-16 md:h-16 bg-white border border-slate-200 rounded-xl shadow-md flex items-center justify-center"
-          animate={{ borderColor: ["#e2e8f0", PRIMARY_CYAN, "#e2e8f0"] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <Database className="w-6 h-6 md:w-8 md:h-8 text-slate-600" />
-        </motion.div>
-        <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-slate-500">Postgres</span>
-      </div>
-
-      {/* Logic Layer */}
-      <motion.div 
-        className="relative z-10 w-8 h-8 md:w-12 md:h-12 rounded-full flex items-center justify-center shadow-lg"
-        style={{ backgroundColor: PRIMARY_NAVY }}
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 1, repeat: Infinity }}
-      >
-        <ArrowRight className="w-4 h-4 md:w-6 md:h-6 text-white" />
-      </motion.div>
-
-      {/* Step 2: Action Trigger */}
-      <div className="relative z-10 flex flex-col items-center gap-2 md:gap-3">
-        <div className="relative">
-          <div className="w-12 h-12 md:w-16 md:h-16 bg-white border border-slate-200 rounded-xl shadow-md flex items-center justify-center">
-            <LayoutDashboard className="w-6 h-6 md:w-8 md:h-8 text-slate-600" />
-          </div>
-        </div>
-        <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-slate-500">Dashboard</span>
-      </div>
-
-      {/* Floating Code Snippet */}
-      <motion.div
-        key={queryIndex}
-        className="absolute top-8 md:top-12 left-1/2 -translate-x-1/2 bg-[#0A1128] px-2 md:px-3 py-1 md:py-1.5 rounded text-[8px] md:text-[10px] font-mono shadow-xl border border-slate-700 whitespace-nowrap z-20"
-        style={{ color: PRIMARY_CYAN }}
-        initial={{ y: 10, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: -10, opacity: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        {queries[queryIndex]}
-      </motion.div>
-
     </div>
   );
 }
