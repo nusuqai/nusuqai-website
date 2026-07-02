@@ -79,7 +79,7 @@ export default function AboutSection() {
           {/* E — brand logo card (col 3, row 1) */}
           <ImageCard
             src={LOGO}
-            className="md:col-start-3 md:row-start-1 md:mb-3"
+            className="md:col-start-3 md:row-start-1 md:mb-6"
           />
 
           {/* F — value card, navy (col 3, rows 2-3) */}

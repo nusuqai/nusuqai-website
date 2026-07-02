@@ -38,7 +38,7 @@ export default function UseCasesShowcase() {
   const [active, setActive] = useState(1);
 
   return (
-    <section id="usecases" className="bg-white py-20 lg:py-28">
+    <section id="usecases" className="bg-white pt-6 lg:pt-8 pb-20 lg:pb-28">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-14 max-w-2xl mx-auto">
@@ -115,11 +115,10 @@ export default function UseCasesShowcase() {
                   </a>
                 </div>
 
-                {/* UI mockup — anchored to the side, bleeding off the edge, desaturated until active */}
+                {/* UI mockup — fixed in place (no position animation); only colors up on hover */}
                 <div
-                  className="pointer-events-none absolute -right-14 w-[460px] transition-all duration-500 ease-out"
+                  className="pointer-events-none absolute -right-14 top-[296px] w-[460px] transition-[filter,opacity] duration-300 ease-out"
                   style={{
-                    top: isActive ? "296px" : "128px",
                     filter: isActive ? "none" : "grayscale(1)",
                     opacity: isActive ? 1 : 0.5,
                   }}
