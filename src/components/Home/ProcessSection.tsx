@@ -112,19 +112,13 @@ export default function ProcessSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex flex-wrap justify-center gap-3 mt-14 lg:mt-20"
+          className="flex justify-center mt-14 lg:mt-20"
         >
           <a
             href="#contact"
             className="inline-flex items-center px-7 py-3 rounded-full bg-[#00D4C2] text-[#0A1128] font-semibold text-sm hover:bg-[#00E0FF] transition-colors duration-200 shadow-sm shadow-[#00D4C2]/20"
           >
             {t("cta1")}
-          </a>
-          <a
-            href="#services"
-            className="inline-flex items-center px-7 py-3 rounded-full border border-gray-200 text-[#0F1E3D] font-medium text-sm hover:border-[#00D4C2] hover:text-[#00D4C2] transition-all duration-200 bg-white"
-          >
-            {t("cta2")}
           </a>
         </motion.div>
       </div>
@@ -182,7 +176,8 @@ function StepNode({
 function CurvyConnector({ direction }: { direction: "left" | "right" }) {
   // The connector sits between two nodes.
   // mt-[26px] aligns it with the center of the 56px circles (28px center - 2px for border)
-  // The SVG draws a smooth S-curve wave.
+  // mt-[26px] aligns it with the center of the 56px circles
+  // SVG markers auto-rotate to follow the curve tangent at the endpoint
   return (
     <div className="flex-1 mt-[26px] px-0">
       <svg
@@ -192,33 +187,25 @@ function CurvyConnector({ direction }: { direction: "left" | "right" }) {
         fill="none"
       >
         {direction === "right" ? (
-          <>
-            <path
-              d="M 0 20 C 50 2, 150 38, 200 20"
-              stroke="#00D4C2"
-              strokeWidth="2.5"
-              strokeDasharray="8 6"
-              strokeLinecap="round"
-              fill="none"
-              opacity="0.3"
-            />
-            {/* Arrowhead */}
-            <polygon points="192,14 200,20 192,26" fill="#00D4C2" opacity="0.35" />
-          </>
+          <path
+            d="M 0 20 C 50 4, 150 36, 196 20"
+            stroke="#00D4C2"
+            strokeWidth="2"
+            strokeDasharray="8 6"
+            strokeLinecap="round"
+            fill="none"
+            opacity="0.3"
+          />
         ) : (
-          <>
-            <path
-              d="M 200 20 C 150 2, 50 38, 0 20"
-              stroke="#00D4C2"
-              strokeWidth="2.5"
-              strokeDasharray="8 6"
-              strokeLinecap="round"
-              fill="none"
-              opacity="0.3"
-            />
-            {/* Arrowhead */}
-            <polygon points="8,14 0,20 8,26" fill="#00D4C2" opacity="0.35" />
-          </>
+          <path
+            d="M 200 20 C 150 4, 50 36, 4 20"
+            stroke="#00D4C2"
+            strokeWidth="2"
+            strokeDasharray="8 6"
+            strokeLinecap="round"
+            fill="none"
+            opacity="0.3"
+          />
         )}
       </svg>
     </div>
@@ -228,8 +215,6 @@ function CurvyConnector({ direction }: { direction: "left" | "right" }) {
 /* ── Turn connector (vertical curve between rows) ───── */
 
 function TurnConnector({ side }: { side: "left" | "right" }) {
-  // Curves from the bottom of a row-end node down and around to the next row
-  // Height: ~80px to bridge the gap between rows
   return (
     <div className="py-1">
       <svg
@@ -241,9 +226,9 @@ function TurnConnector({ side }: { side: "left" | "right" }) {
       >
         {side === "right" ? (
           <path
-            d="M 10 0 C 10 20, 50 20, 50 36 C 50 52, 10 52, 10 72"
+            d="M 10 0 C 10 20, 50 20, 50 36 C 50 52, 10 52, 10 68"
             stroke="#00D4C2"
-            strokeWidth="2.5"
+            strokeWidth="2"
             strokeDasharray="8 6"
             strokeLinecap="round"
             fill="none"
@@ -251,22 +236,17 @@ function TurnConnector({ side }: { side: "left" | "right" }) {
           />
         ) : (
           <path
-            d="M 50 0 C 50 20, 10 20, 10 36 C 10 52, 50 52, 50 72"
+            d="M 50 0 C 50 20, 10 20, 10 36 C 10 52, 50 52, 50 68"
             stroke="#00D4C2"
-            strokeWidth="2.5"
+            strokeWidth="2"
             strokeDasharray="8 6"
             strokeLinecap="round"
             fill="none"
             opacity="0.3"
           />
         )}
-        {/* Arrowhead pointing down */}
-        <polygon
-          points={side === "right" ? "5,64 10,72 15,64" : "45,64 50,72 55,64"}
-          fill="#00D4C2"
-          opacity="0.35"
-        />
       </svg>
     </div>
   );
 }
+

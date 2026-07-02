@@ -7,12 +7,14 @@ import PortfolioShowcase from "@/components/Home/Portfolio";
 import TestimonialsSection from "@/components/Home/Testemonials";
 import AboutSection from "@/components/Home/Aboutus";
 import ProcessSection from "@/components/Home/ProcessSection";
+import TechStackSection from "@/components/Home/TechStack";
 
 export default function Home() {
   return (
     <main className="overflow-x-hidden">
       <HeroSection />
       <ServicesSection />
+      <TechStackSection />
       <ProcessSection />
       <PortfolioShowcase />
       <UseCases />

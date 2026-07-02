@@ -212,6 +212,12 @@
   "exploreIntegration": "Explore Integration",
   "mcpProtocol": " "
  },
+ "TechStack": {
+  "badge": "Our Tech Stack",
+  "title": "Key Technologies & Platforms",
+  "description": "We work with leading platforms and technologies that empower digital transformation, accelerate delivery, and drive measurable business results.",
+  "cta": "Explore Tech Stack"
+ },
  "Testimonials": {
   "title": "What Our Clients Say",
   "items": {
